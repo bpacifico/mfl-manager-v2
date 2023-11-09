@@ -51,7 +51,7 @@ const ChartScatterPlayerContracts: React.FC<ChartScatterPlayerContractsProps> = 
 
         legendContainer.appendChild(listContainer);
 
-        return;
+        return "";
       });
     }
 
