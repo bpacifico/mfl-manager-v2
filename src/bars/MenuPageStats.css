@@ -9,3 +9,11 @@
 #MenuPageStats .active {
 	font-size: 28px !important;
 }
+
+#MenuPageStats .active:hover {
+  color: white !important;
+}
+
+#MenuPageStats .nav-link:hover {
+  color: #0dcaf0;
+}

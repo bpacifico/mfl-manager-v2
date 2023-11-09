@@ -13,7 +13,7 @@ const Count: React.FC<CountProps> = ({ label, count }) => {
 
     return (
       <div className="w-auto flex-column">
-        <div className="count w-auto h1 text-white lh-1 m-0">{ count }</div>
+        <div className="count w-auto h1 lh-1 m-0">{ count }</div>
         {label && <div className="label w-auto text-secondary lh-1 h5">{ label }</div>}
       </div>
     );
