@@ -51,7 +51,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
     <div>
     	<Popup
 				trigger={
-					<div className="row border btn btn-outline-info text-white p-2">
+					<div className="row border btn btn-outline-info border-info border-3 text-white p-2">
 						<div className="col-12">
 							FILTERS
 						</div>

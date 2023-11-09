@@ -23,8 +23,8 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
 
   return (
     <div className="row">
-      <div className="col-12">
-        <div className="d-flex align-content-end">
+      <div className="col-12 mb-3">
+        <div className="float-end">
           <FilterContainerPlayer
             filters={filters}
             onChange={(f) => setFilters(f)}

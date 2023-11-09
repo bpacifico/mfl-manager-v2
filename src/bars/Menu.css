@@ -17,6 +17,7 @@
 
 #Menu a.active {
   cursor: default;
+  color: white !important;
 }
 
 
