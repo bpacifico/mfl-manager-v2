@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { getApiEndpoint } from "utils/env.js";
-import CountCompetitions from "components/counts/CountCompetitions.js";
 
 interface PageStatsGeneralProps {}
 
 const PageStatsGeneral: React.FC<PageStatsGeneralProps> = ({ initialValue }) => {
-  const [competitions, setCompetitions] = useState([]);
-
   useEffect(() => {
     fetchCompetitions();
   }, []);

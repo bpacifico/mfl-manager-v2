@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Popup from "reactjs-popup";
 import ControllerPositions from "components/controllers/ControllerPositions.js";
 import ControllerScarcity from "components/controllers/ControllerScarcity.js";

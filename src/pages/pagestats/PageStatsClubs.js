@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { getApiEndpoint } from "utils/env.js";
-import CountCompetitions from "components/counts/CountCompetitions.js";
 
 interface PageStatsClubsProps {}
 
 const PageStatsClubs: React.FC<PageStatsClubsProps> = ({ initialValue }) => {
-  const [competitions, setCompetitions] = useState([]);
-
   useEffect(() => {
     fetchCompetitions();
   }, []);
