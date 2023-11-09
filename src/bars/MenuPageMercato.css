@@ -1,0 +1,11 @@
+
+#MenuPageMercato .nav-link {
+	-webkit-transition: font-size .5s;
+	-moz-transition: font-size .5s;
+	-o-transition: font-size .5s;
+	transition: font-size .5s;
+}
+
+#MenuPageMercato .active {
+	font-size: 28px !important;
+}
