@@ -3,22 +3,22 @@ import React from 'react';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 
-interface Trade {
+interface Competition {
   id: number;
 }
 
-interface ChartLinePlayerTradesProps {
-  trades: Trade[];
+interface ChartLineCompetitionsProps {
+  competitions: Competition[];
 }
 
-const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades }) => {
+const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competitions }) => {
   
   const computeData = () => {
     const data = {};
 
-    for (let i = 0; i < trades.length; i++) {
-      let date = new Date(trades[i].purchaseDateTime);
-      date = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDay() + 1).toString().padStart(2, '0')}`
+    for (let i = 0; i < competitions.length; i++) {
+      let date = new Date(competitions[i].startingDate);
+      date = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`
 
       if (!data[date]) {
         data[date] = 1;
@@ -58,7 +58,7 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
                 },
                 title: {
                   display: true,
-                  text: 'Day',
+                  text: 'Month',
                 },
                 grid: {
                   display: false,
@@ -70,7 +70,7 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
                 },
                 title: {
                   display: true,
-                  text: 'Trade',
+                  text: 'Competition',
                 },
                 grid: {
                   color: '#333',
@@ -84,4 +84,4 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
   );
 };
 
-export default ChartLinePlayerTrades;
+export default ChartLineCompetitions;

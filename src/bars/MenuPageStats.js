@@ -12,17 +12,9 @@ const MenuPageStats: React.FC<MenuPageStatsProps> = (props) => {
       <ul className="navbar-nav flex-row h6">
         <li className="nav-item align-self-end lh-1 px-2">
           <Link
-            to="general"
-            className={"nav-link"
-              + (["/stats", "/stats/", "/stats/general"].indexOf(location.pathname) >= 0 ? " active" : "")}
-          >
-            General
-          </Link>
-        </li>
-        <li className="nav-item align-self-end lh-1 px-2">
-          <Link
             to="competitions"
-            className={"nav-link" + (location.pathname === "/stats/competitions" ? " active" : "")}
+            className={"nav-link"
+              + (["/stats", "/stats/", "/stats/competitions"].indexOf(location.pathname) >= 0 ? " active" : "")}
           >
             Competitions
           </Link>

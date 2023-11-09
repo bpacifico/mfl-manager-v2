@@ -1,18 +1,18 @@
 import React from 'react';
 import Popup from "reactjs-popup";
 import ControllerPositions from "components/controllers/ControllerPositions.js";
-import ControllerScarcity from "components/controllers/ControllerScarcity.js";
-import { positions, scarcity } from "utils/player.js";
+import ControllerOverallScore from "components/controllers/ControllerOverallScore.js";
+import { positions } from "utils/player.js";
 
 interface FilterContainerPlayerProps {
 	filters: dict;
 	onChange: func;
   showPositions?: boolean;
-  showScarcity?: boolean;
+  showOverallScore?: boolean;
 }
 
-const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, onChange, showPositions, showScarcity }) => {
-
+const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, onChange, showPositions, showOverallScore }) => {
+	console.log(filters);
 	const getPositionTextValue = () => {
 		if (filters.positions) {
 			const p = positions.filter((p) => filters.positions.indexOf(p.name) >= 0)
@@ -33,23 +33,15 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 		return "All";
 	}
 
-	const getScarcityTextValue = () => {
+	const getOverallScoreTextValue = () => {
 		if (filters.overallMin || filters.overallMax) {
-			const s = scarcity
-				.filter((s) => filters.overallMin === undefined || s.overallMin >= filters.overallMin)
-				.filter((s) => filters.overallMax === undefined || s.overallMax <= filters.overallMax)
+			let text = "";
 
-			if (s.length === scarcity.length) {
-				return "All";
-			}
+			text += filters.overallMin || "-∞"
+			text += " -> ";
+			text += filters.overallMax || "∞"
 
-			if (s.length > 0) {
-				return scarcity
-					.map((p) => p.name)
-					.join(", ");
-			}
-
-			return "None";
+			return text;
 		}
 
 		return "All";
@@ -59,7 +51,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
     <div>
     	<Popup
 				trigger={
-					<div className="row">
+					<div className="row border btn btn-outline-info text-white p-2">
 						<div className="col-12">
 							FILTERS
 						</div>
@@ -70,9 +62,9 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 							</div>
 						}
 
-						{showScarcity
+						{showOverallScore
 							&& <div className="col-12">
-								Scarcity: {getScarcityTextValue()}
+								Overall: {getOverallScoreTextValue()}
 							</div>
 						}
 					</div>
@@ -81,10 +73,10 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 				closeOnDocumentClick
 			>
 				{(close) => (
-					<div className="p-5 bg-dark border-white">
-						<div className="row">
+					<div className="container w-100 bg-dark border border-white p-2 p-md-5">
+						<div className="row mb-4">
 							<div className="col">
-						  	<h2>Filters</h2>
+						  	<h2>FILTERS</h2>
 						  </div>
 				      <div className="col-auto">
 				        <button
@@ -96,29 +88,26 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 						</div>
 
 						<div className="row">
-							<div className="col-12">
+							<div className="col-md-6">
 								{showPositions && <ControllerPositions
 									positions={filters.positions}
 									onChange={(p) => onChange({
-										positions: p,
 										...filters,
+										positions: p,
 									})}
 								/>}
-				    		{showScarcity && <ControllerScarcity
+							</div>
+
+							<div className="col-md-6">
+				    		{showOverallScore && <ControllerOverallScore
 				    			overallMin={filters.overallMin}
 				    			overallMax={filters.overallMax}
 									onChange={(min, max) => onChange({
+										...filters,
 										overallMin: min,
 										overallMax: max,
-										...filters,
 									})}
 								/>}
-			    		</div>
-
-			    		<div className="col-12">
-			    			<button onClick={close}>
-									Apply
-								</button>
 			    		</div>
 			    	</div>
 					</div>

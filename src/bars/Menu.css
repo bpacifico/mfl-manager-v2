@@ -15,6 +15,19 @@
   transform: rotate(-180deg);
 }
 
+#Menu a.active {
+  cursor: default;
+}
+
+
+#Menu a.active:hover i {
+  color: white !important;
+}
+
+#Menu a.nav-link:hover i {
+  color: #0dcaf0;
+}
+
 @keyframes in-out {
   0% {
     max-height: 0;

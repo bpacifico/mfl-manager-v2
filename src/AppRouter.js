@@ -6,7 +6,7 @@ import PageStats from "pages/PageStats";
 import PageMercato from "pages/PageMercato";
 import PageBuilder from "pages/PageBuilder.js";
 import Page404 from "pages/Page404";
-import PageStatsGeneral from "pages/pagestats/PageStatsGeneral.js";
+import PageStatsPlayers from "pages/pagestats/PageStatsPlayers.js";
 import PageStatsCompetitions from "pages/pagestats/PageStatsCompetitions.js";
 import PageStatsClubs from "pages/pagestats/PageStatsClubs.js";
 import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
@@ -36,11 +36,7 @@ const AppRouter: React.FC = () => {
           >
             <Route
               index
-              element={<PageStatsGeneral />}
-            />
-            <Route
-              path="general"
-              element={<PageStatsGeneral />}
+              element={<PageStatsCompetitions />}
             />
             <Route
               path="competitions"
@@ -49,6 +45,10 @@ const AppRouter: React.FC = () => {
             <Route
               path="clubs"
               element={<PageStatsClubs />}
+            />
+            <Route
+              path="players"
+              element={<PageStatsPlayers />}
             />
           </Route>
           <Route

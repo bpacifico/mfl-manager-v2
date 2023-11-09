@@ -40,7 +40,7 @@ const ChartLineCompetitionParticipations: React.FC<ChartLineCompetitionParticipa
               {
                 data: computeData(),
                 fill: false,
-                borderColor: "#03C988",
+                borderColor: "#0dcaf0",
               },
             ],
           }}

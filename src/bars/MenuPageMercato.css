@@ -8,4 +8,13 @@
 
 #MenuPageMercato .active {
 	font-size: 28px !important;
+	cursor: default;
+}
+
+#MenuPageMercato .active:hover {
+  color: white !important;
+}
+
+#MenuPageMercato .nav-link:hover {
+  color: #0dcaf0;
 }

@@ -11,7 +11,6 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
   const [filters, setFilters] = useState({
     positions: ["GK", "CB"],
     overallMin: 80,
-    overallMax: 100,
   });
 
   useEffect(() => {
@@ -28,9 +27,9 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
         <div className="d-flex align-content-end">
           <FilterContainerPlayer
             filters={filters}
-            onChange={setFilters}
+            onChange={(f) => setFilters(f)}
             showPositions={true}
-            showScarcity={true}
+            showOverallScore={true}
           />
         </div>
       </div>
