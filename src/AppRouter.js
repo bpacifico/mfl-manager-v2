@@ -19,65 +19,69 @@ const AppRouter: React.FC = () => {
         <Menu />
       </div>
 
-      <div id="AppContent" className="col position-relative h-100 px-1 px-md-5 py-4">
-        <div className="top-left-quarter-circle"/>
-        <div className="bottom-left-quarter-circle"/>
-        <div className="centered-left-half-circle"/>
-        <div className="centered-left-dot"/>
+      <div id="AppContent" className="col h-100">
+        <div className="AppContent-decoration position-relative w-100 h-100">
+          <div className="top-left-quarter-circle"/>
+          <div className="bottom-left-quarter-circle"/>
+          <div className="centered-left-half-circle"/>
+          <div className="centered-left-dot"/>
 
-        <Routes>
-          <Route
-            path="/"
-            element={<PageHome />}
-          />
-          <Route
-            path="stats"
-            element={<PageStats />}
-          >
-            <Route
-              index
-              element={<PageStatsCompetitions />}
-            />
-            <Route
-              path="competitions"
-              element={<PageStatsCompetitions />}
-            />
-            <Route
-              path="clubs"
-              element={<PageStatsClubs />}
-            />
-            <Route
-              path="players"
-              element={<PageStatsPlayers />}
-            />
-          </Route>
-          <Route
-            path="mercato"
-            element={<PageMercato />}
-          >
-            <Route
-              index
-              element={<PageMercatoContracts />}
-            />
-            <Route
-              path="contracts"
-              element={<PageMercatoContracts />}
-            />
-            <Route
-              path="trades"
-              element={<PageMercatoTrades />}
-            />
-          </Route>
-          <Route
-            path="builder"
-            element={<PageBuilder />}
-          />
+          <div className="AppContent-content position-relative h-100 w-100 px-1 px-md-5 py-4">
+            <Routes>
+              <Route
+                path="/"
+                element={<PageHome />}
+              />
+              <Route
+                path="stats"
+                element={<PageStats />}
+              >
+                <Route
+                  index
+                  element={<PageStatsCompetitions />}
+                />
+                <Route
+                  path="competitions"
+                  element={<PageStatsCompetitions />}
+                />
+                <Route
+                  path="clubs"
+                  element={<PageStatsClubs />}
+                />
+                <Route
+                  path="players"
+                  element={<PageStatsPlayers />}
+                />
+              </Route>
+              <Route
+                path="mercato"
+                element={<PageMercato />}
+              >
+                <Route
+                  index
+                  element={<PageMercatoContracts />}
+                />
+                <Route
+                  path="contracts"
+                  element={<PageMercatoContracts />}
+                />
+                <Route
+                  path="trades"
+                  element={<PageMercatoTrades />}
+                />
+              </Route>
+              <Route
+                path="builder"
+                element={<PageBuilder />}
+              />
 
-          {/* 404 */}
-          <Route
-            element={<Page404 />}
-          />
-        </Routes>
+              {/* 404 */}
+              <Route
+                element={<Page404 />}
+              />
+            </Routes>
+          </div>
+        </div>
       </div>
     </div>
   );

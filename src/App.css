@@ -7,15 +7,25 @@ body,
   font-family: Impact, sans-serif !important;
 }
 
+#App {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
 #AppMenu {
 }
 
 #AppContent {
+  overflow-y: auto !important;
+  overflow-x: hidden;
+}
+
+.AppContent-content {
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-#AppContent {
+#AppContent .AppContent-decoration {
   border-left: solid 10px #343a40;
   border-top: solid 10px #343a40;
   border-bottom: solid 10px #343a40;
