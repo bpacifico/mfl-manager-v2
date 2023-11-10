@@ -91,6 +91,14 @@ body,
   background-color: #343a40;
 }
 
+/* CARDS */
+
+a .card:hover {
+  border-color: #0dcaf0 !important;
+}
+
+/* OTHERS */
+
 canvas {
   width: 100% !important;
 }
