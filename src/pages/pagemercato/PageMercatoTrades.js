@@ -8,7 +8,7 @@ import { getPlayerTrades } from "services/api-mfl.js";
 interface PageMercatoTradesProps {}
 
 const PageMercatoTrades: React.FC<PageMercatoTradesProps> = ({ initialValue }) => {
-  const [trades, setTrades] = useState([]);
+  const [trades, setTrades] = useState(null);
 
   useEffect(() => {
     getPlayerTrades(

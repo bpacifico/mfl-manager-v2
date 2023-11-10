@@ -82,7 +82,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 				        <button
 									className={"grey-background"}
 									onClick={close}>
-									<i class="bi bi-x-lg"></i>
+									<i className="bi bi-x-lg"></i>
 								</button>
 							</div>
 						</div>

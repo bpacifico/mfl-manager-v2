@@ -1,4 +1,6 @@
 import React from 'react';
+import "./Count.css";
+import LoadingSquare from "components/loading/LoadingSquare.js";
 
 interface CountProps {
   label?: string;
@@ -7,14 +9,17 @@ interface CountProps {
 
 const Count: React.FC<CountProps> = ({ label, count }) => {
   const getContent = () => {
-    if (!count) {
-      return <div>Loading...</div>;
-    }
-
     return (
       <div className="w-auto flex-column">
-        <div className="count w-auto h1 lh-1 m-0">{ count }</div>
-        {label && <div className="label w-auto text-secondary lh-1 h5">{ label }</div>}
+        {count
+          ? <div className="count w-auto h1 lh-1 m-0">{ count }</div>
+          : <LoadingSquare />
+        }
+
+        {label
+          && <div className="label w-auto text-secondary lh-1 h5">
+            { label }
+          </div>}
       </div>
     );
   }

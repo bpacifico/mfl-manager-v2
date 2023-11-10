@@ -34,7 +34,7 @@ const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overall
         <div>Minimum overall score</div>
 
     	  <input
-          class="w-100"
+          className="w-100"
           type="range"
           value={overallMin || 45}
           min="45"
@@ -47,7 +47,7 @@ const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overall
         <div>Maximum overall score</div>
 
         <input
-          class="w-100 text-primary bg-dark"
+          className="w-100 text-primary bg-dark"
           type="range"
           value={overallMax || 94}
           min={Math.max(45, overallMin)}

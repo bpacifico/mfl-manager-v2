@@ -2,6 +2,7 @@ import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Scatter } from 'react-chartjs-2';
+import LoadingSquare from "components/loading/LoadingSquare";
 
 interface Trade {
   id: number;
@@ -29,52 +30,55 @@ const ChartScatterPlayerTrades: React.FC<ChartScatterPlayerTradesProps> = ({ tra
   return (
     <div className="py-4 px-1 px-md-3">
       <div className="ratio ratio-16x9 w-100">
-        <Scatter
-          data={{
-            datasets: [
-              {
-                data: computeData(),
+        {!trades
+          ? <LoadingSquare />
+          : <Scatter
+            data={{
+              datasets: [
+                {
+                  data: computeData(),
+                },
+              ],
+            }}
+            options={{
+              scales: {
+                x: {
+                	ticks: {
+                    color: "#AAA",
+                  },
+                  type: 'linear',
+                  position: 'bottom',
+                  title: {
+                    display: true,
+                    text: 'Player overall score',
+                  },
+                  grid: {
+                    color: '#333',
+                  },
+                },
+                y: {
+                	ticks: {
+                    color: "#AAA",
+                  },
+                  type: 'linear',
+                  position: 'left',
+                  title: {
+                    display: true,
+                    text: 'Price',
+                  },
+                  grid: {
+                    color: '#333',
+                  },
+                },
               },
-            ],
-          }}
-          options={{
-            scales: {
-              x: {
-              	ticks: {
-                  color: "#AAA",
-                },
-                type: 'linear',
-                position: 'bottom',
-                title: {
-                  display: true,
-                  text: 'Player overall score',
-                },
-                grid: {
-                  color: '#333',
-                },
-              },
-              y: {
-              	ticks: {
-                  color: "#AAA",
-                },
-                type: 'linear',
-                position: 'left',
-                title: {
-                  display: true,
-                  text: 'Price',
-                },
-                grid: {
-                  color: '#333',
-                },
-              },
-            },
-            plugins: {
-              legend: {
-                display: false,
+              plugins: {
+                legend: {
+                  display: false,
+                }
               }
-            }
-          }}
-        />
+            }}
+          />
+        }
       </div>
   	</div>
   );

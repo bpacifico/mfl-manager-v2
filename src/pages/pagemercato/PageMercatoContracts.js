@@ -7,7 +7,7 @@ import { getUnderContractPlayers } from "services/api-mfl.js";
 interface PageMercatoContractsProps {}
 
 const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValue }) => {
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState(null);
   const [filters, setFilters] = useState({
     positions: ["GK", "CB"],
     overallMin: 80,

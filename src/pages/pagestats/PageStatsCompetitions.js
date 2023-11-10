@@ -8,8 +8,8 @@ import { getPastCompetitions, getUpcomingCompetitions } from "services/api-mfl.j
 interface PageStatsCompetitionsProps {}
 
 const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialValue }) => {
-  const [pastCompetitions, setPastCompetitions] = useState([]);
-  const [upcomingCompetitions, setUpcomingCompetitions] = useState([]);
+  const [pastCompetitions, setPastCompetitions] = useState(null);
+  const [upcomingCompetitions, setUpcomingCompetitions] = useState(null);
 
   useEffect(() => {
     getPastCompetitions(
@@ -28,7 +28,7 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
         <div className="row mt-md-2 mb-md-5">
           <div className="offset-lg-2 col-lg-2 col-sm-4">
             <CountCompetitions
-              competitions={pastCompetitions.concat(upcomingCompetitions)}
+              competitions={pastCompetitions?.concat(upcomingCompetitions)}
             />
           </div>
           <div className="offset-lg-1 col-lg-2 col-sm-4">
@@ -48,7 +48,7 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
             <h4 className="pb-3">Competitions vs. Time</h4>
 
             <ChartLineCompetitions
-              competitions={pastCompetitions.concat(upcomingCompetitions)}
+              competitions={pastCompetitions?.concat(upcomingCompetitions)}
             />
           </div>
 
@@ -56,7 +56,7 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
             <h4 className="pb-3">Participants vs. Time</h4>
 
             <ChartLineCompetitionParticipations
-              competitions={pastCompetitions.concat(upcomingCompetitions)}
+              competitions={pastCompetitions?.concat(upcomingCompetitions)}
             />
           </div>
         </div>

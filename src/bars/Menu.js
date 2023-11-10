@@ -74,7 +74,7 @@ const Menu: React.FC<MenuProps> = (props) => {
               </span>
             }
             <div>
-              <i class="bi bi-cone-striped"></i>
+              <i className="bi bi-cone-striped"></i>
             </div>
           </Link>
         </li>

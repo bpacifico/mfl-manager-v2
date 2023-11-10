@@ -2,6 +2,7 @@ import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
+import LoadingSquare from "components/loading/LoadingSquare";
 
 interface Competition {
   id: number;
@@ -33,52 +34,55 @@ const ChartLineCompetitionParticipations: React.FC<ChartLineCompetitionParticipa
   return (
     <div className="py-4 px-1 px-md-3">
       <div className="ratio ratio-16x9 w-100">
-        <Line
-          data={{
-            labels: [],
-            datasets: [
-              {
-                data: computeData(),
-                fill: false,
-                borderColor: "#0dcaf0",
-              },
-            ],
-          }}
-          options={{
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-            scales: {
-              x: {
-                ticks: {
-                  color: "#AAA",
-                  beginAtZero: true,
+        {!competitions
+          ? <LoadingSquare />
+          : <Line
+            data={{
+              labels: [],
+              datasets: [
+                {
+                  data: computeData(),
+                  fill: false,
+                  borderColor: "#0dcaf0",
                 },
-                title: {
-                  display: true,
-                  text: 'Month',
-                },
-                grid: {
+              ],
+            }}
+            options={{
+              plugins: {
+                legend: {
                   display: false,
                 },
               },
-              y: {
-                ticks: {
-                  color: "#AAA",
+              scales: {
+                x: {
+                  ticks: {
+                    color: "#AAA",
+                    beginAtZero: true,
+                  },
+                  title: {
+                    display: true,
+                    text: 'Month',
+                  },
+                  grid: {
+                    display: false,
+                  },
                 },
-                title: {
-                  display: true,
-                  text: 'Participant',
-                },
-                grid: {
-                  color: '#333',
+                y: {
+                  ticks: {
+                    color: "#AAA",
+                  },
+                  title: {
+                    display: true,
+                    text: 'Participant',
+                  },
+                  grid: {
+                    color: '#333',
+                  },
                 },
               },
-            },
-          }}
-        />
+            }}
+          />
+        }
       </div>
   	</div>
   );
