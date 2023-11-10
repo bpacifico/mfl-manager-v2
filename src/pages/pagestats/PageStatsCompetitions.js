@@ -28,7 +28,10 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
         <div className="row mt-md-2 mb-md-5">
           <div className="offset-lg-2 col-lg-2 col-sm-4">
             <CountCompetitions
-              competitions={pastCompetitions?.concat(upcomingCompetitions)}
+              competitions={pastCompetitions && upcomingCompetitions
+                ? pastCompetitions?.concat(upcomingCompetitions)
+                : null
+              }
             />
           </div>
           <div className="offset-lg-1 col-lg-2 col-sm-4">
@@ -48,7 +51,10 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
             <h4 className="pb-3">Competitions vs. Time</h4>
 
             <ChartLineCompetitions
-              competitions={pastCompetitions?.concat(upcomingCompetitions)}
+              competitions={pastCompetitions && upcomingCompetitions
+                ? pastCompetitions?.concat(upcomingCompetitions)
+                : null
+              }
             />
           </div>
 
@@ -56,7 +62,10 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
             <h4 className="pb-3">Participants vs. Time</h4>
 
             <ChartLineCompetitionParticipations
-              competitions={pastCompetitions?.concat(upcomingCompetitions)}
+              competitions={pastCompetitions && upcomingCompetitions
+                ? pastCompetitions?.concat(upcomingCompetitions)
+                : null
+              }
             />
           </div>
         </div>
