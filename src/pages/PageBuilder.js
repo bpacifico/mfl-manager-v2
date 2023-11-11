@@ -1,11 +1,13 @@
 import React from 'react';
+import "./PageBuilder.css";
 
 interface PageBuilderProps {}
 
-const PageBuilder: React.FC<PageBuilderProps> = ({ initialValue }) => {
+const PageBuilder: React.FC<PageBuilderProps> = ({}) => {
   return (
-    <div id="PageBuilder" className="container">
-      In Construction
+    <div id="PageBuilder" className="d-flex align-items-center justify-content-center w-100 h-100">
+      <img src="/media/images/mower.svg" className="mower"/>
+      <span>Gardeners are working on it...</span>
     </div>
   );
 };
