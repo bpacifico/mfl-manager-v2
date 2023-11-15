@@ -106,18 +106,22 @@ a .card:hover {
 /* GANTT */
 
 svg .calendar rect,
-svg .grid rect  {
+svg .grid rect {
   fill: rgba(0, 0, 0, 0) !important;
   stroke: #333 !important;
 }
 
 svg .calendar line,
-svg .grid line  {
+svg .grid line {
   stroke: #333 !important;
 }
 
-svg .calendar text  {
-  fill: #AAA !important;
+svg .calendar text {
+  fill: #6c757d !important;
+}
+
+svg .content .bar text {
+  fill: #adb5bd !important;
 }
 
 /* OTHERS */
