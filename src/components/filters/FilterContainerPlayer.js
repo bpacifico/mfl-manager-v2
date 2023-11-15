@@ -1,4 +1,5 @@
 import React from 'react';
+import "./FilterContainerPlayer.css";
 import Popup from "reactjs-popup";
 import ControllerPositions from "components/controllers/ControllerPositions.js";
 import ControllerOverallScore from "components/controllers/ControllerOverallScore.js";
@@ -7,12 +8,13 @@ import { positions } from "utils/player.js";
 interface FilterContainerPlayerProps {
 	filters: dict;
 	onChange: func;
+	onClose?: func;
   showPositions?: boolean;
   showOverallScore?: boolean;
 }
 
-const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, onChange, showPositions, showOverallScore }) => {
-	console.log(filters);
+const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, onChange, onClose, showPositions, showOverallScore }) => {
+
 	const getPositionTextValue = () => {
 		if (filters.positions) {
 			const p = positions.filter((p) => filters.positions.indexOf(p.name) >= 0)
@@ -22,9 +24,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 			}
 
 			if (p.length > 0) {
-				return p
-					.map((p) => p.name)
-					.join(", ");
+				return p.map((p) => <div className="lh-1 text-white">{p.name}</div>);
 			}
 
 			return "All";
@@ -35,11 +35,11 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 
 	const getOverallScoreTextValue = () => {
 		if (filters.overallMin || filters.overallMax) {
-			let text = "";
+			let text = [];
 
-			text += filters.overallMin || "-∞"
-			text += " -> ";
-			text += filters.overallMax || "∞"
+			text.push(<div>{filters.overallMin || -<i className="bi bi-infinity"></i>}</div>);
+			text.push(<i className="bi bi-arrow-down small"></i>);
+			text.push(<div>{filters.overallMax || <i className="bi bi-infinity"></i>}</div>);
 
 			return text;
 		}
@@ -48,37 +48,40 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 	}
 
   return (
-    <div>
+    <div className="FilterContainerPlayer">
     	<Popup
 				trigger={
 					<div>
-						<div className="position-absolute d-none d-md-block border btn btn-outline-info border-info border-3 text-white p-2">
-							<div className="col-12">
-								FILTERS
+						<div className="big-filter-box position-absolute bg-body d-none d-md-block border btn border-info border-3 text-white p-2">
+							<div className="col-12 my-3 mb-4 h5">
+								<i className="bi bi-filter-square-fill"></i>
 							</div>
 
 							{showPositions
-								&& <div className="col-12">
-									Positions: {getPositionTextValue()}
+								&& <div className="col-12 my-2 mb-4">
+									<div className="text-white-50 my-1">POS</div>
+									{getPositionTextValue()}
 								</div>
 							}
 
 							{showOverallScore
-								&& <div className="col-12">
-									Overall: {getOverallScoreTextValue()}
+								&& <div className="col-12 my-2">
+									<div className="text-white-50 my-1">OVR</div>
+									{getOverallScoreTextValue()}
 								</div>
 							}
 						</div>
-						<div className="d-block d-md-none">
-							moobbb
+						<div className="d-block d-md-none btn mb-3">
+							<i className="bi bi-filter-square-fill text-info h3"></i>
 						</div>
 					</div>
 				}
 				modal
 				closeOnDocumentClick
+				onClose={onClose}
 			>
 				{(close) => (
-					<div className="container w-100 bg-dark border border-white p-2 p-md-5">
+					<div className="container w-100 bg-dark border border-white p-3 p-md-5">
 						<div className="row mb-4">
 							<div className="col">
 						  	<h2>FILTERS</h2>
@@ -93,7 +96,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 						</div>
 
 						<div className="row">
-							<div className="col-md-6">
+							<div className="col-md-6 mb-4">
 								{showPositions && <ControllerPositions
 									positions={filters.positions}
 									onChange={(p) => onChange({
@@ -103,7 +106,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 								/>}
 							</div>
 
-							<div className="col-md-6">
+							<div className="col-md-6 mb-4">
 				    		{showOverallScore && <ControllerOverallScore
 				    			overallMin={filters.overallMin}
 				    			overallMax={filters.overallMax}
@@ -115,6 +118,19 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 								/>}
 			    		</div>
 			    	</div>
+
+			    	<div className="row">
+							<div className="col-md-12">
+								<div className="float-end">
+									<button
+										className="bg-info"
+										onClick={close}
+									>
+										Apply
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				)}
 			</Popup>

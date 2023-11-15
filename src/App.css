@@ -97,6 +97,12 @@ a .card:hover {
   border-color: #0dcaf0 !important;
 }
 
+/* POPUP */
+
+.popup-overlay {
+  background-color: rgba(0, 0, 0, .8);
+}
+
 /* OTHERS */
 
 canvas {

@@ -1,0 +1,9 @@
+
+.FilterContainerPlayer .big-filter-box {
+	right: 0px;
+	top: 20%;
+	max-height: 60%;
+	border-right: none !important;
+	border-top-right-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+}

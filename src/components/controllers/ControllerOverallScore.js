@@ -10,11 +10,11 @@ const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overall
   
   const getOverallScoreTextValue = () => {
     if (overallMin || overallMax) {
-      let text = "";
+      let text = [];
 
-      text += overallMin || "-∞"
-      text += " -> ";
-      text += overallMax || "∞"
+      text.push(<span>{overallMin || -<i className="bi bi-infinity"></i>}</span>);
+      text.push(<i className="bi bi-arrow-right small mx-2"></i>);
+      text.push(<span>{overallMax || <i className="bi bi-infinity"></i>}</span>);
 
       return text;
     }
@@ -40,7 +40,7 @@ const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overall
           min="45"
           max={Math.min(94, overallMax)}
           step="1"
-          onTouchEnd={(v) => onChange(v.target.value, overallMax)}
+          onChange={(v) => onChange(v.target.value, overallMax)}
         >
         </input>
 
@@ -53,7 +53,7 @@ const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overall
           min={Math.max(45, overallMin)}
           max="94"
           step="1"
-          onTouchEnd={(v) => onChange(overallMin, v.target.value)}
+          onChange={(v) => onChange(overallMin, v.target.value)}
         >
         </input>
       </div>
