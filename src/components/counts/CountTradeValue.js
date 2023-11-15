@@ -13,9 +13,10 @@ const CountTrades: React.FC<CountTradesProps> = ({ trades }) => {
   return (
     <Count
     	label="Value traded"
-    	count={"$"
-    	  + trades?.map((t) => t.price)
-    	    .reduce((a, b) => a + b, 0)}
+    	count={trades
+        ? "$" + trades.map((t) => t.price)
+    	    .reduce((a, b) => a + b, 0)
+        : undefined}
     />
   );
 };

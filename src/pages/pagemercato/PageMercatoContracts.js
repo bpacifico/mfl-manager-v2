@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import CountContracts from "components/counts/CountContracts.js";
+import CountContractRevenueShare from "components/counts/CountContractRevenueShare.js";
 import ChartScatterPlayerContracts from "components/charts/ChartScatterPlayerContracts.js";
 import { getUnderContractPlayers } from "services/api-mfl.js";
 
@@ -10,16 +11,22 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
   const [players, setPlayers] = useState(null);
   const [filters, setFilters] = useState({
     positions: ["GK", "CB"],
-    overallMin: 80,
+    overallMax: 78,
+    overallMin: 72,
   });
 
-  useEffect(() => {
+  const getData = () => {
+    setPlayers(null);
     getUnderContractPlayers(
       (v) => setPlayers(v),
       (e) => console.log(e),
       filters,
     );
-  }, [filters]);
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div className="row">
@@ -28,6 +35,7 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
           <FilterContainerPlayer
             filters={filters}
             onChange={(f) => setFilters(f)}
+            onClose={() => getData()}
             showPositions={true}
             showOverallScore={true}
           />
@@ -36,20 +44,20 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
 
       <div className="col-12">
         <div className="row mt-md-2 mb-md-5">
-          <div className="offset-lg-2 col-lg-3 col-sm-4">
+          <div className="offset-0 offset-sm-2 col-lg-3 col-sm-4">
             <CountContracts
               players={players}
             />
           </div>
-          <div className="offset-lg-2 col-lg-2 col-sm-4">
-            <CountContracts
+          <div className="offset-0 offset-lg-2 col-lg-2 col-sm-4">
+            <CountContractRevenueShare
               players={players}
             />
           </div>
         </div>
       </div>
 
-      <div className="col-12 col-xl-6">
+      <div className="col-12">
         <h4>Contract rate vs. overall score</h4>
 
         <ChartScatterPlayerContracts

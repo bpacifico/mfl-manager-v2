@@ -15,11 +15,11 @@ interface ChartLinePlayerTradesProps {
 const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades }) => {
   
   const computeData = () => {
-    const data = {};
+    let data = {};
 
     for (let i = 0; i < trades.length; i++) {
       let date = new Date(trades[i].purchaseDateTime);
-      date = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDay() + 1).toString().padStart(2, '0')}`
+      date = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate() + 1).toString().padStart(2, '0')}`
 
       if (!data[date]) {
         data[date] = 1;
@@ -27,6 +27,13 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
         data[date] += 1;
       }
     }
+
+    data = Object.keys(data)
+      .sort()
+      .reduce((accumulator, key) => {
+        accumulator[key] = data[key];
+        return accumulator;
+      }, {});
 
     return data;
   }
@@ -57,7 +64,6 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
                 x: {
                   ticks: {
                     color: "#AAA",
-                    beginAtZero: true,
                   },
                   title: {
                     display: true,

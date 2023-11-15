@@ -79,6 +79,7 @@ const ChartScatterPlayerContracts: React.FC<ChartScatterPlayerContractsProps> = 
                 x: {
                   ticks: {
                     color: "#AAA",
+                    stepSize: 1
                   },
                   type: 'linear',
                   position: 'bottom',
