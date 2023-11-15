@@ -51,22 +51,27 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
     <div>
     	<Popup
 				trigger={
-					<div className="row border btn btn-outline-info border-info border-3 text-white p-2">
-						<div className="col-12">
-							FILTERS
+					<div>
+						<div className="position-absolute d-none d-md-block border btn btn-outline-info border-info border-3 text-white p-2">
+							<div className="col-12">
+								FILTERS
+							</div>
+
+							{showPositions
+								&& <div className="col-12">
+									Positions: {getPositionTextValue()}
+								</div>
+							}
+
+							{showOverallScore
+								&& <div className="col-12">
+									Overall: {getOverallScoreTextValue()}
+								</div>
+							}
 						</div>
-
-						{showPositions
-							&& <div className="col-12">
-								Positions: {getPositionTextValue()}
-							</div>
-						}
-
-						{showOverallScore
-							&& <div className="col-12">
-								Overall: {getOverallScoreTextValue()}
-							</div>
-						}
+						<div className="d-block d-md-none">
+							moobbb
+						</div>
 					</div>
 				}
 				modal
