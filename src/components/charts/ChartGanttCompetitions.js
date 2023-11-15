@@ -13,27 +13,23 @@ interface ChartGanttCompetitionsProps {
 
 const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competitions }) => {
   
-  const tasks = [
-    {
-      id: 'Task-1',
-      name: 'Task 1',
-      start: new Date(2020, 1, 1),
-      end: new Date(2020, 1, 1),
-    },
-    {
-      id: 'Task-2',
-      name: 'Task 2',
-      start: new Date(2020, 2, 10),
-      end: new Date(2020, 2, 20),
-      styles: {
-      	backgroundColor: "blue",
-      }
-    },
-  ];
+  const computeData = () => {
+    return competitions
+      .filter((c) => !c.root)
+      .map((c, i) => ({
+        id: i,
+        name: c.name,
+        start: new Date(c.startingDate),
+        end: new Date(c.startingDate + 2000000000),
+        styles: {
+          barBackgroundColor: "#6c757d",
+        }
+      }));
+  };
 
   const config = {
-    headerHasStartAndEnd: true,
     todayColor: "red",
+    rowHeight: 22,
   };
 
   return (
@@ -42,10 +38,11 @@ const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competi
         {!competitions
           ? <LoadingSquare />
           : <Gantt
-          	tasks={tasks}
+          	tasks={computeData()}
           	config={config}
-          	viewMode={ViewMode.Year}
+          	viewMode={ViewMode.Week}
           	listCellWidth={""}
+            {...config}
           />
         }
       </div>

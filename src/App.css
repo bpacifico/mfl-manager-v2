@@ -103,6 +103,23 @@ a .card:hover {
   background-color: rgba(0, 0, 0, .8);
 }
 
+/* GANTT */
+
+svg .calendar rect,
+svg .grid rect  {
+  fill: rgba(0, 0, 0, 0) !important;
+  stroke: #333 !important;
+}
+
+svg .calendar line,
+svg .grid line  {
+  stroke: #333 !important;
+}
+
+svg .calendar text  {
+  fill: #AAA !important;
+}
+
 /* OTHERS */
 
 canvas {
