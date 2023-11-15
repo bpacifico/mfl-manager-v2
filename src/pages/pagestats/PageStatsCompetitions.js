@@ -3,6 +3,7 @@ import CountCompetitions from "components/counts/CountCompetitions.js";
 import CountParticipations from "components/counts/CountParticipations.js";
 import ChartLineCompetitionParticipations from "components/charts/ChartLineCompetitionParticipations.js";
 import ChartLineCompetitions from "components/charts/ChartLineCompetitions.js";
+import ChartGanttCompetitions from "components/charts/ChartGanttCompetitions.js";
 import { getPastCompetitions, getUpcomingCompetitions } from "services/api-mfl.js";
 
 interface PageStatsCompetitionsProps {}
@@ -62,6 +63,19 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
             <h4 className="pb-3">Participants vs. Time</h4>
 
             <ChartLineCompetitionParticipations
+              competitions={pastCompetitions && upcomingCompetitions
+                ? pastCompetitions?.concat(upcomingCompetitions)
+                : null
+              }
+            />
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-sm-12">
+            <h4 className="pb-3">Calendar</h4>
+
+            <ChartGanttCompetitions
               competitions={pastCompetitions && upcomingCompetitions
                 ? pastCompetitions?.concat(upcomingCompetitions)
                 : null
