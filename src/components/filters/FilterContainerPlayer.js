@@ -24,7 +24,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 			}
 
 			if (p.length > 0) {
-				return p.map((p) => <div className="lh-1 text-white">{p.name}</div>);
+				return p.map((p) => <div key={p.id} className="lh-1 text-white">{p.name}</div>);
 			}
 
 			return "All";

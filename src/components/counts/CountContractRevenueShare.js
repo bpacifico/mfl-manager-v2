@@ -14,8 +14,12 @@ const CountContractRevenueShare: React.FC<CountContractRevenueShareProps> = ({ p
     <Count
     	label="Revenue share"
     	count={players
-        ? players.map((t) => t.activeContract.revenueShare)
-          .reduce((a, b) => a + b, 0) + "%"
+        ? parseInt(
+          players
+            .map((t) => t.activeContract.revenueShare)
+            .reduce((a, b) => a + b, 0)
+            / 100
+          ) + "%"
         : undefined
       }
     />
