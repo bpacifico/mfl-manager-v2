@@ -29,7 +29,8 @@ const ControllerPositions: React.FC<ControllerPositionsProps> = ({ positions, on
       	{playerPositions
           .map((p) => (
             <button
-              className={positions.indexOf(p.name) >= 0 && "bg-info"}
+              key={p.name}
+              className={positions.indexOf(p.name) >= 0 ? "bg-info" : undefined}
               onClick={() => onClick(p.name)}>
               {p.name}
             </button>
