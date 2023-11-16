@@ -54,7 +54,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 					<div>
 						<div className="big-filter-box position-absolute bg-body d-none d-md-block border btn border-info border-3 text-white p-2">
 							<div className="col-12 my-3 mb-4 h5">
-								<i className="bi bi-filter-square-fill"></i>
+								<i className="bi bi-filter-square-fill text-info"></i>
 							</div>
 
 							{showPositions
