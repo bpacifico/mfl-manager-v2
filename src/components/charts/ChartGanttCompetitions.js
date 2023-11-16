@@ -20,7 +20,7 @@ const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competi
         id: i,
         name: c.name,
         start: new Date(c.startingDate),
-        end: new Date(c.startingDate + 2000000000),
+        end: new Date(c.startingDate + 1000000000),
         styles: {
           backgroundColor: "#0dcaf0",
         }
@@ -36,7 +36,9 @@ const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competi
     <div className="py-4 px-1 px-md-3">
       <div className="w-100 border border-body">
         {!competitions
-          ? <LoadingSquare />
+          ? <div className="ratio ratio-16x9">
+            <LoadingSquare />
+          </div>
           : <Gantt
           	tasks={computeData()}
           	config={config}

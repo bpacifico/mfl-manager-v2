@@ -3,6 +3,7 @@ import React from 'react';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
+import { sortDataset } from "utils/chart.js";
 
 interface Trade {
   id: number;
@@ -28,12 +29,7 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
       }
     }
 
-    data = Object.keys(data)
-      .sort()
-      .reduce((accumulator, key) => {
-        accumulator[key] = data[key];
-        return accumulator;
-      }, {});
+    data = sortDataset(data);
 
     return data;
   }

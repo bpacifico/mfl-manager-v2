@@ -3,6 +3,8 @@ import React from 'react';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
+import { sortDataset, fillMonthlyDataset } from "utils/chart.js";
+import { unixTimestampToMonthString } from "utils/date.js";
 
 interface Competition {
   id: number;
@@ -18,17 +20,16 @@ const ChartLineCompetitionParticipations: React.FC<ChartLineCompetitionParticipa
     const data = {};
 
     for (let i = 0; i < competitions.length; i++) {
-      let date = new Date(competitions[i].startingDate);
-      date = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`
+      let month = unixTimestampToMonthString(competitions[i].startingDate);
 
-      if (!data[date]) {
-        data[date] = competitions[i].nbParticipants;
+      if (!data[month]) {
+        data[month] = competitions[i].nbParticipants;
       } else {
-        data[date] += competitions[i].nbParticipants;
+        data[month] += competitions[i].nbParticipants;
       }
     }
 
-    return data;
+    return sortDataset(fillMonthlyDataset(data));
   }
 
   return (
