@@ -12,12 +12,6 @@ interface TablePlayerContractLinearRegressionProps {
 
 const TablePlayerContractLinearRegression: React.FC<TablePlayerContractLinearRegressionProps> = ({ players }) => {
 
-  const data = [
-    { id: 1, name: 'John', age: 25, city: 'New York' },
-    { id: 2, name: 'Jane', age: 30, city: 'Los Angeles' },
-    { id: 3, name: 'Doe', age: 22, city: 'Chicago' },
-  ];
-
   const renderTableHeader = () => {
     const minOverall = Math.min(...players.map((p) => (p.metadata?.overall)));
     const maxOverall = Math.max(...players.map((p) => (p.metadata?.overall)));
