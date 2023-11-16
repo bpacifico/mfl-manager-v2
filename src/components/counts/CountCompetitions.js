@@ -6,13 +6,14 @@ interface Competition {
 }
 
 interface CountCompetitionsProps {
+  label?: string;
   competitions: Competition[];
 }
 
-const CountCompetitions: React.FC<CountCompetitionsProps> = ({ competitions }) => {
+const CountCompetitions: React.FC<CountCompetitionsProps> = ({ label, competitions }) => {
   return (
     <Count
-    	label="Competitions"
+    	label={label || "Competitions"}
     	count={competitions?.length}
     />
   );

@@ -37,6 +37,7 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
           </div>
           <div className="offset-lg-1 col-lg-2 col-sm-4">
             <CountCompetitions
+              label={"Upcoming"}
               competitions={upcomingCompetitions}
             />
           </div>
