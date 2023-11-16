@@ -26,6 +26,7 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
 
   useEffect(() => {
     getData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
