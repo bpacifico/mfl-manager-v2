@@ -35,8 +35,6 @@ const ChartScatterPlayerTrades: React.FC<ChartScatterPlayerTradesProps> = ({ tra
       data.push(getOverallColor(trades[i].player?.metadata?.overall));
     }
 
-    console.log(data);
-
     return data;
   }
 

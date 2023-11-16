@@ -7,7 +7,6 @@ interface ControllerPositionsProps {
 }
 
 const ControllerPositions: React.FC<ControllerPositionsProps> = ({ positions, onChange }) => {
-  console.log(onChange)
 
   const onClick = (p) => {
     let newSelectedPositions = positions;
