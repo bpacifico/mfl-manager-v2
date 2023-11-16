@@ -3,6 +3,8 @@ import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import CountContracts from "components/counts/CountContracts.js";
 import CountContractRevenueShare from "components/counts/CountContractRevenueShare.js";
 import ChartScatterPlayerContracts from "components/charts/ChartScatterPlayerContracts.js";
+import ChartLinePlayerContractLinearRegression from "components/charts/ChartLinePlayerContractLinearRegression.js";
+import TablePlayerContractLinearRegression from "components/tables/TablePlayerContractLinearRegression.js";
 import { getUnderContractPlayers } from "services/api-mfl.js";
 
 interface PageMercatoContractsProps {}
@@ -62,6 +64,22 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
         <h4>Contract rate vs. overall score</h4>
 
         <ChartScatterPlayerContracts
+          players={players}
+        />
+      </div>
+
+      <div className="col-6">
+        <h4>Linear regression</h4>
+
+        <ChartLinePlayerContractLinearRegression
+          players={players}
+        />
+      </div>
+
+      <div className="col-6">
+        <h4>Average rate: Division vs. overall score</h4>
+
+        <TablePlayerContractLinearRegression
           players={players}
         />
       </div>
