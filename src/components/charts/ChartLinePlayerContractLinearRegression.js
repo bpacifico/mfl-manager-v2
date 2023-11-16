@@ -15,6 +15,13 @@ interface ChartLinePlayerContractLinearRegressionProps {
 }
 
 const ChartLinePlayerContractLinearRegression: React.FC<ChartLinePlayerContractLinearRegressionProps> = ({ players }) => {
+
+  const computeLabels = () => {
+    const minX = Math.min(...players.map((p) => p.metadata?.overall));
+    const maxX = Math.max(...players.map((p) => p.metadata?.overall));
+
+    return [...Array(maxX - minX + 1).keys()].map((i) => (i + minX) + "");
+  }
   
   const computeDataset = () => {
     let data = [];
@@ -56,7 +63,7 @@ const ChartLinePlayerContractLinearRegression: React.FC<ChartLinePlayerContractL
           ? <LoadingSquare />
           : <Line
             data={{
-              labels: [],
+              labels: computeLabels(),
               datasets: computeDataset(),
             }}
             options={{
@@ -69,6 +76,7 @@ const ChartLinePlayerContractLinearRegression: React.FC<ChartLinePlayerContractL
                 x: {
                   ticks: {
                     color: "#AAA",
+                    stepSize: 1,
                   },
                   title: {
                     display: true,

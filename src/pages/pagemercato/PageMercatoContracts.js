@@ -60,7 +60,7 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
         </div>
       </div>
 
-      <div className="col-12">
+      <div className="col-12 col-md-6 mb-md-5">
         <h4>Contract rate vs. overall score</h4>
 
         <ChartScatterPlayerContracts
@@ -68,7 +68,7 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
         />
       </div>
 
-      <div className="col-6">
+      <div className="col-12 col-md-6 mb-md-5">
         <h4>Linear regression</h4>
 
         <ChartLinePlayerContractLinearRegression
@@ -76,7 +76,7 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
         />
       </div>
 
-      <div className="col-6">
+      <div className="col-12 mb-md-5">
         <h4>Average rate: Division vs. overall score</h4>
 
         <TablePlayerContractLinearRegression
