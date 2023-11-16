@@ -81,7 +81,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 				onClose={onClose}
 			>
 				{(close) => (
-					<div className="container w-100 bg-dark border border-white p-3 p-md-5">
+					<div className="container w-100 bg-dark border border-white border-3 rounded-3 p-3 p-md-5">
 						<div className="row mb-4">
 							<div className="col">
 						  	<h2>FILTERS</h2>

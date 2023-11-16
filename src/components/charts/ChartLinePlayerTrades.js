@@ -4,6 +4,7 @@ import { Chart as ChartJS } from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
 import { sortDataset } from "utils/chart.js";
+import { unixTimestampToDayString } from "utils/date.js";
 
 interface Trade {
   id: number;
@@ -19,19 +20,16 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
     let data = {};
 
     for (let i = 0; i < trades.length; i++) {
-      let date = new Date(trades[i].purchaseDateTime);
-      date = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate() + 1).toString().padStart(2, '0')}`
+      let day = unixTimestampToDayString(trades[i].purchaseDateTime);
 
-      if (!data[date]) {
-        data[date] = 1;
+      if (!data[day]) {
+        data[day] = 1;
       } else {
-        data[date] += 1;
+        data[day] += 1;
       }
     }
 
-    data = sortDataset(data);
-
-    return data;
+    return sortDataset(data);
   }
 
   return (

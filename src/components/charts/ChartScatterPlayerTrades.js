@@ -3,6 +3,7 @@ import React from 'react';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Scatter } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
+import { getOverallColor } from "utils/player.js";
 
 interface Trade {
   id: number;
@@ -27,6 +28,18 @@ const ChartScatterPlayerTrades: React.FC<ChartScatterPlayerTradesProps> = ({ tra
     return data;
   }
 
+  const computeBackgroundColor = () => {
+    const data = [];
+
+    for (let i = 0; i < trades.length; i++) {
+      data.push(getOverallColor(trades[i].player?.metadata?.overall));
+    }
+
+    console.log(data);
+
+    return data;
+  }
+
   return (
     <div className="py-4 px-1 px-md-3">
       <div className="ratio ratio-16x9 w-100">
@@ -37,6 +50,8 @@ const ChartScatterPlayerTrades: React.FC<ChartScatterPlayerTradesProps> = ({ tra
               datasets: [
                 {
                   data: computeData(),
+                  pointBackgroundColor: computeBackgroundColor(),
+                  pointBorderWidth : 0,
                 },
               ],
             }}

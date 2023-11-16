@@ -23,3 +23,13 @@ export const scarcity = [
   { name: "Rare",       overallMin: 75, overallMax: 84, color: "#0047ff" },
   { name: "Legendary",  overallMin: 85, overallMax: 99, color: "#fa53ff" },
 ];
+
+export const getOverallColor = (overall) => {
+  for (let i = 0; i < scarcity.length; i++) {
+    if (overall <= scarcity[i].overallMin) {
+      return scarcity[i].color;
+    }
+  }
+
+  return "black";
+}

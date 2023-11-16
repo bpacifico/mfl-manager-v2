@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import CountTrades from "components/counts/CountTrades.js";
 import CountTradeValue from "components/counts/CountTradeValue.js";
 import ChartLinePlayerTrades from "components/charts/ChartLinePlayerTrades.js";
@@ -9,16 +10,38 @@ interface PageMercatoTradesProps {}
 
 const PageMercatoTrades: React.FC<PageMercatoTradesProps> = ({ initialValue }) => {
   const [trades, setTrades] = useState(null);
+  const [filters, setFilters] = useState({
+    positions: [],
+  });
 
-  useEffect(() => {
+  const getData = () => {
+    setTrades(null);
     getPlayerTrades(
       (v) => setTrades(v),
       (e) => console.log(e),
+      filters,
     );
+  }
+
+  useEffect(() => {
+    getData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="row">
+      <div className="col-12 mb-3">
+        <div className="float-end">
+          <FilterContainerPlayer
+            filters={filters}
+            onChange={(f) => setFilters(f)}
+            onClose={() => getData()}
+            showPositions={true}
+            showOverallScore={true}
+          />
+        </div>
+      </div>
+
       <div className="col-12">
         <div className="row mt-md-2 mb-md-5">
           <div className="offset-0 offset-sm-2 col-lg-3 col-sm-4">
