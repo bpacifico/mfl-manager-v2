@@ -26,7 +26,7 @@ export const scarcity = [
 
 export const getOverallColor = (overall) => {
   for (let i = 0; i < scarcity.length; i++) {
-    if (overall <= scarcity[i].overallMin) {
+    if (overall <= scarcity[i].overallMax) {
       return scarcity[i].color;
     }
   }
