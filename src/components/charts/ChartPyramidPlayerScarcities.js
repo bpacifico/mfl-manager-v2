@@ -3,35 +3,29 @@ import { Bar } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
 import { scarcity } from "utils/player.js";
 
-interface Player {
-  id: number;
-}
-
 interface ChartPyramidPlayerScarcitiesProps {
-  players: Player[];
+  scarcityCount?: dict;
 }
 
-const ChartPyramidPlayerScarcities: React.FC<ChartPyramidPlayerScarcitiesProps> = ({ players }) => {
+const ChartPyramidPlayerScarcities: React.FC<ChartPyramidPlayerScarcitiesProps> = ({ scarcityCount }) => {
 
-  const data = {
-    labels: scarcity.map((d) => d.name),
+  const getData = () => ({
+    labels: Object.keys(scarcityCount).reverse(),
     datasets: [
       {
-        label: 'Positive',
         stack: "Stack 0",
-        backgroundColor: scarcity.reverse().map((d) => d.color),
-        data: scarcity.reverse().map((_, i) => 1 + i * 3),
+        backgroundColor: scarcity.map((d) => d.color).reverse(),
+        data: Object.values(scarcityCount).reverse(),
       },
       {
-        label: 'Negative',
         stack: "Stack 0",
-        backgroundColor: scarcity.reverse().map((d) => d.color),
-        data: scarcity.reverse().map((_, i) => 1 + i * 3).map((k) => -k),
+        backgroundColor: scarcity.map((d) => d.color).reverse(),
+        data: Object.values(scarcityCount).reverse().map((k) => -k),
       },
     ],
-  };
+  });
 
-  const options = {
+  const getOptions = () => ({
   	indexAxis: 'y',
   	barPercentage: 1.0,
   	categoryPercentage: 1.0,
@@ -74,16 +68,16 @@ const ChartPyramidPlayerScarcities: React.FC<ChartPyramidPlayerScarcitiesProps> 
         display: false
       },
     }
-  };
+  });
 
   return (
     <div className="py-4 px-1 px-md-3">
       <div className="ratio ratio-16x9 w-100">
-        {!players
+        {!scarcityCount
           ? <LoadingSquare />
       	  : <Bar
-      	  	data={data}
-      	  	options={options}
+      	  	data={getData()}
+      	  	options={getOptions()}
       	  />
       	}
       </div>

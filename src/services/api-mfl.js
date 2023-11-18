@@ -14,6 +14,14 @@ export const getUpcomingCompetitions = (handleSuccess, handleError) => get(
   handleError,
 );
 
+export const getPlayerCount = (handleSuccess, handleError, params) => get(
+  getApiEndpoint()
+    + "players?limit=1&withCount=true&excludingMflOwned=true&"
+    + transformDictToUrlParams(params),
+  handleSuccess,
+  handleError,
+);
+
 export const getUnderContractPlayers = (handleSuccess, handleError, params) => get(
   getApiEndpoint()
     + "players?limit=400&sorts=metadata.overall&sortsOrders=DESC&excludingMflOwned=true&isFreeAgent=false&"
