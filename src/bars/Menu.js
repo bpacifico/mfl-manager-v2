@@ -57,11 +57,11 @@ const Menu: React.FC<MenuProps> = (props) => {
               </span>
             }
             <div>
-              <i className="bi bi-person-bounding-box"></i>
+              <i className="bi bi-cash-coin"></i>
             </div>
           </Link>
         </li>
-        <li className="nav-item">
+        <li className="nav-item d-none">
           <Link
             to="/builder"
             className={"nav-link" + (location.pathname.startsWith("/builder") ? " active" : "")}

@@ -108,7 +108,7 @@ const PageHome: React.FC<PageHomeProps> = () => {
                   <img src="/media/images/increase.svg" className="card-img-top p-4" alt="Random"></img>
                   <div className="card-body">
                     <h4 className="card-title text-white">Increase contract profits</h4>
-                    <p className="card-text">Build strong aguments to convince the club owners to sign your best donkey.</p>
+                    <p className="card-text">Build strong arguments to convince the club owners to sign your best donkey.</p>
                   </div>
                 </div>
               </Link>

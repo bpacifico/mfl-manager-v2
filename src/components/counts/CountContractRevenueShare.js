@@ -12,7 +12,7 @@ interface CountContractRevenueShareProps {
 const CountContractRevenueShare: React.FC<CountContractRevenueShareProps> = ({ players }) => {
   return (
     <Count
-    	label="Revenue share"
+    	label="Rev. share"
     	count={players
         ? parseInt(
           players
