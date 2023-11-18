@@ -22,8 +22,10 @@ export const getUnderContractPlayers = (handleSuccess, handleError, params) => g
   handleError,
 );
 
-export const getPlayerTrades = (handleSuccess, handleError) => get(
-  getApiEndpoint() + "listings/feed?limit=25",
+export const getPlayerTrades = (handleSuccess, handleError, params) => get(
+  getApiEndpoint()
+    + "listings?limit=25&type=PLAYER&status=BOUGHT&"
+    + transformDictToUrlParams(params),
   handleSuccess,
   handleError,
 );
