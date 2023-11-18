@@ -10,7 +10,7 @@ interface CountProps {
 const Count: React.FC<CountProps> = ({ label, count }) => {
   const getContent = () => {
     return (
-      <div className="w-auto flex-column">
+      <div className="w-auto flex-column text-center text-md-start">
         {count
           ? <div className="count w-auto h1 lh-1 m-0">{ count }</div>
           : <LoadingSquare />

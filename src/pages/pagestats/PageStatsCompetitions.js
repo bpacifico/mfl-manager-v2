@@ -48,7 +48,7 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
           </div>
         </div>
 
-        <div className="row">
+        <div className="row mb-5">
           <div className="col-sm-6">
             <h4 className="pb-3">Competitions vs. Time</h4>
 
@@ -72,7 +72,7 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
           </div>
         </div>
 
-        <div className="row">
+        <div className="row mb-5">
           <div className="col-sm-12">
             <h4 className="pb-3">Calendar</h4>
 
