@@ -6,7 +6,7 @@ import { scarcity } from "utils/player.js";
 
 interface PageStatsPlayersProps {}
 
-const PageStatsPlayers: React.FC<PageStatsPlayersProps> = ({}) => {
+const PageStatsPlayers: React.FC<PageStatsPlayersProps> = () => {
 
   const [playerCount, setPlayerCount] = useState(null);
   const [scarcityCount, setScarcityCount] = useState(null);
