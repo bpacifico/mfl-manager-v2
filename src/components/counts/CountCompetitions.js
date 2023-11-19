@@ -14,7 +14,21 @@ const CountCompetitions: React.FC<CountCompetitionsProps> = ({ label, competitio
   return (
     <Count
     	label={label || "Competitions"}
-    	count={competitions?.length}
+    	count={competitions
+        ? competitions.map((c) => ({
+            name: c.root?.name ? c.root.name : c.name,
+            startingDate: c.startingDate,
+            type: c.type,
+          }))
+          .reduce((accumulator, current) => {
+            if (!accumulator.find((item) => item.startingDate === current.startingDate)) {
+              accumulator.push(current);
+            }
+            return accumulator;
+          }, [])
+          .length
+        : undefined
+      }
     />
   );
 };

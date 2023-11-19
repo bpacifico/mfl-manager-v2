@@ -19,8 +19,20 @@ const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competiti
   const computeData = () => {
     const data = {};
 
-    for (let i = 0; i < competitions.length; i++) {
-      let month = unixTimestampToMonthString(competitions[i].startingDate);
+    const cleanedCompetitions = competitions.map((c) => ({
+      name: c.root?.name ? c.root.name : c.name,
+      startingDate: c.startingDate,
+      type: c.type,
+    }))
+    .reduce((accumulator, current) => {
+      if (!accumulator.find((item) => item.startingDate === current.startingDate)) {
+        accumulator.push(current);
+      }
+      return accumulator;
+    }, []);
+
+    for (let i = 0; i < cleanedCompetitions.length; i++) {
+      let month = unixTimestampToMonthString(cleanedCompetitions[i].startingDate);
 
       if (!data[month]) {
         data[month] = 1;

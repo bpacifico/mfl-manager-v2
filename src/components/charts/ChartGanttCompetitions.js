@@ -15,21 +15,31 @@ const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competi
   
   const computeData = () => {
     return competitions
-      .filter((c) => !c.root)
+      .map((c) => ({
+        name: c.root?.name ? c.root.name : c.name,
+        startingDate: c.startingDate,
+        type: c.type,
+      }))
+      .reduce((accumulator, current) => {
+        if (!accumulator.find((item) => item.name === current.name && item.startingDate === current.startingDate)) {
+          accumulator.push(current);
+        }
+        return accumulator;
+      }, [])
       .map((c, i) => ({
         id: i,
         name: c.name,
         start: new Date(c.startingDate),
-        end: new Date(c.startingDate + 1000000000),
+        end: new Date(c.startingDate + 500000000),
         styles: {
-          backgroundColor: "#0dcaf0",
+          backgroundColor: c.type === "CUP" ? "#0dcaf0" : "#adb5bd",
         }
       }));
   };
 
   const config = {
     todayColor: "red",
-    rowHeight: 22,
+    rowHeight: 18,
   };
 
   return (
@@ -44,6 +54,7 @@ const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competi
           	config={config}
           	viewMode={ViewMode.Week}
           	listCellWidth={""}
+            allowSorting={true}
             {...config}
           />
         }
