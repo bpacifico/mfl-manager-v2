@@ -12,8 +12,8 @@ interface PageMercatoContractsProps {}
 const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValue }) => {
   const [players, setPlayers] = useState(null);
   const [filters, setFilters] = useState({
-    positions: ["GK", "CB"],
-    overallMax: 78,
+    positions: ["GK"],
+    overallMax: 90,
     overallMin: 72,
   });
 
