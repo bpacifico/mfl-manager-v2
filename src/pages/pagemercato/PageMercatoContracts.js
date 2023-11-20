@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
+import Count from "components/counts/Count.js";
 import CountContracts from "components/counts/CountContracts.js";
 import CountContractRevenueShare from "components/counts/CountContractRevenueShare.js";
 import ChartScatterPlayerContracts from "components/charts/ChartScatterPlayerContracts.js";
@@ -20,15 +21,15 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
     overallMax: 90,
   });
 
+  const resetData = () => {
+    setPlayers(null);
+    setPlayerCount(null);
+  }
+
   const getData = (pursue, beforePlayerId) => {
     console.log(pursue, isLoading, beforePlayerId);
-    if (!pursue) {
-      if (isLoading) {
-        return;
-      }
-
-      setPlayers(null);
-      setIsLoading(true);
+    if (!pursue && isLoading) {
+      return;
     }
 
     getUnderContractPlayers(
@@ -38,7 +39,10 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
           : v.items;
         
         setPlayers(p);
-        setPlayerCount(v.count);
+
+        if (!playerCount) {
+          setPlayerCount(v.count);
+        }
       },
       (e) => console.log(e),
       {
@@ -48,16 +52,24 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
     );
   }
 
-  useEffect(() => {
-    getData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const getLoadingProgress = () => {
+    if (!players || !playerCount) {
+      return 5;
+    }
+
+    return players.length / Math.min(playerCount, 2000) * 100;
+  }
 
   useEffect(() => {
+    if (!players && !playerCount) {
+      setIsLoading(true);
+      getData();
+    }
+
     if (players && playerCount) {
       if (players.length < playerCount) {
         if (players.length >= 2000) {
-          nm.warning("Stopped loading at 2000 players out of " + playerCount);
+          nm.warning("Stopped loading at " + players.length + " players out of " + playerCount);
           setIsLoading(false);
         } else {
           getData(true, players.slice(-1)[0].id);
@@ -76,21 +88,48 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
           <FilterContainerPlayer
             filters={filters}
             onChange={(f) => setFilters(f)}
-            onClose={() => getData()}
+            onClose={() => resetData()}
             showPositions={true}
             showOverallScore={true}
           />
         </div>
       </div>
 
+      {isLoading
+        && <div className="col-12">
+          <div className="progress">
+            <div
+              className="progress-bar progress-bar-striped bg-info progress-bar-animated"
+              role="progressbar"
+              style={{ width: getLoadingProgress() + "%" }}
+              aria-valuenow={getLoadingProgress()}
+              aria-valuemin="0"
+              aria-valuemax="100"
+              >
+              {players && playerCount
+                ? players.length + " / " + Math.min(playerCount, 2000)
+                : "? / ?"
+              }
+            </div>
+          </div>
+        </div>
+      }
+      
+
       <div className="col-12">
         <div className="row mt-md-2 mb-md-5">
-          <div className="offset-0 offset-sm-2 col-lg-3 col-sm-4">
+          <div className="offset-lg-2 col-lg-2 col-sm-4">
+            <Count
+              label={"Total contract"}
+              count={playerCount}
+            />
+          </div>
+          <div className="offset-lg-1 col-lg-2 col-sm-4">
             <CountContracts
               players={players}
             />
           </div>
-          <div className="offset-0 offset-lg-2 col-lg-2 col-sm-4">
+          <div className="offset-lg-1 col-lg-2 col-sm-4">
             <CountContractRevenueShare
               players={players}
             />

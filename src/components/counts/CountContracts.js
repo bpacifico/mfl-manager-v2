@@ -12,7 +12,7 @@ interface CountContractsProps {
 const CountContracts: React.FC<CountContractsProps> = ({ players }) => {
   return (
     <Count
-    	label="Contracts"
+    	label="Loaded contracts"
     	count={players?.length}
     />
   );
