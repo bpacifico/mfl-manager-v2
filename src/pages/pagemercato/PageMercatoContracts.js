@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import CountContracts from "components/counts/CountContracts.js";
 import CountContractRevenueShare from "components/counts/CountContractRevenueShare.js";
@@ -10,19 +11,40 @@ import { getUnderContractPlayers } from "services/api-mfl.js";
 interface PageMercatoContractsProps {}
 
 const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValue }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [players, setPlayers] = useState(null);
+  const [playerCount, setPlayerCount] = useState(null);
   const [filters, setFilters] = useState({
     positions: ["GK"],
-    overallMax: 90,
     overallMin: 72,
+    overallMax: 90,
   });
 
-  const getData = () => {
-    setPlayers(null);
+  const getData = (pursue, beforePlayerId) => {
+    console.log(pursue, isLoading, beforePlayerId);
+    if (!pursue) {
+      if (isLoading) {
+        return;
+      }
+
+      setPlayers(null);
+      setIsLoading(true);
+    }
+
     getUnderContractPlayers(
-      (v) => setPlayers(v),
+      (v) => {
+        const p = players
+          ? players.concat(v.items)
+          : v.items;
+        
+        setPlayers(p);
+        setPlayerCount(v.count);
+      },
       (e) => console.log(e),
-      filters,
+      {
+        ...filters,
+        beforePlayerId,
+      },
     );
   }
 
@@ -30,6 +52,22 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
     getData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (players && playerCount) {
+      if (players.length < playerCount) {
+        if (players.length >= 2000) {
+          nm.warning("Stopped loading at 2000 players out of " + playerCount);
+          setIsLoading(false);
+        } else {
+          getData(true, players.slice(-1)[0].id);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [players, playerCount]);
 
   return (
     <div className="row">

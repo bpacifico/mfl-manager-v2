@@ -24,7 +24,7 @@ export const getPlayerCount = (handleSuccess, handleError, params) => get(
 
 export const getUnderContractPlayers = (handleSuccess, handleError, params) => get(
   getApiEndpoint()
-    + "players?limit=400&sorts=metadata.overall&sortsOrders=DESC&excludingMflOwned=true&isFreeAgent=false&"
+    + "players?limit=400&withCount=true&sorts=metadata.overall&sortsOrders=DESC&excludingMflOwned=true&isFreeAgent=false&"
     + transformDictToUrlParams(params),
   handleSuccess,
   handleError,
