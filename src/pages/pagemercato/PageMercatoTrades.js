@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
+import LoadingBar from "components/loading/LoadingBar.js";
 import CountTrades from "components/counts/CountTrades.js";
 import CountTradeValue from "components/counts/CountTradeValue.js";
 import ChartLinePlayerTrades from "components/charts/ChartLinePlayerTrades.js";
@@ -74,6 +75,13 @@ const PageMercatoTrades: React.FC<PageMercatoTradesProps> = ({ initialValue }) =
             showOverallScore={true}
           />
         </div>
+      </div>
+
+      <div className="col-12">
+        <LoadingBar
+          display={isLoading}
+          value={trades?.length}
+        />
       </div>
 
       <div className="col-12">

@@ -25,7 +25,7 @@ const Count: React.FC<CountProps> = ({ label, count }) => {
   }
 
   return (
-    <div className="Count d-flex justify-content-center pt-2 pb-5 py-md-5 px-4">
+    <div className="Count d-flex justify-content-center pt-4 pb-5 px-4">
       {getContent()}
     </div>
   );

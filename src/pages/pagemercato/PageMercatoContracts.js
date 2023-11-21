@@ -87,14 +87,13 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
         </div>
       </div>
 
-      {isLoading
-        && <div className="col-12">
-          <LoadingBar
-            value={players?.length}
-            total={Math.min(playerCount, 2000)}
-          />
-        </div>
-      }
+      <div className="col-12">
+        <LoadingBar
+          display={isLoading}
+          value={players?.length}
+          total={Math.min(playerCount, 2000)}
+        />
+      </div>
       
 
       <div className="col-12">
