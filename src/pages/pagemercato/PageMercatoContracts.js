@@ -53,14 +53,6 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
     );
   }
 
-  const getLoadingProgress = () => {
-    if (!players || !playerCount) {
-      return 5;
-    }
-
-    return players.length / Math.min(playerCount, 2000) * 100;
-  }
-
   useEffect(() => {
     if (!players && !playerCount) {
       setIsLoading(true);
