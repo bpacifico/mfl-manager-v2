@@ -24,6 +24,9 @@ const ChartDoughnutPlayerScarcities: React.FC<ChartDoughnutPlayerScarcitiesProps
     maintainAspectRatio: false,
     plugins: {
 		  legend: {
+		  	labels: {
+		  		color: "#AAA",
+		  	},
 		    position: 'bottom',
 		  }
 		},

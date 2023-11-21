@@ -1,7 +1,6 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
-import { scarcity } from "utils/player.js";
 
 interface ChartDoughnutPlayerAvailabilityProps {
   freeAgentCount?: number;
@@ -25,6 +24,9 @@ const ChartDoughnutPlayerAvailability: React.FC<ChartDoughnutPlayerAvailabilityP
     maintainAspectRatio: false,
     plugins: {
 	  legend: {
+	  	labels: {
+	  	  color: "#AAA",
+	  	},
 	    position: 'bottom',
 	  }
 	},
