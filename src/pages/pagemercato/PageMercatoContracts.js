@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
+import LoadingBar from "components/loading/LoadingBar.js";
 import Count from "components/counts/Count.js";
 import CountContracts from "components/counts/CountContracts.js";
 import CountContractRevenueShare from "components/counts/CountContractRevenueShare.js";
@@ -97,21 +98,10 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
 
       {isLoading
         && <div className="col-12">
-          <div className="progress">
-            <div
-              className="progress-bar progress-bar-striped bg-info progress-bar-animated"
-              role="progressbar"
-              style={{ width: getLoadingProgress() + "%" }}
-              aria-valuenow={getLoadingProgress()}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              >
-              {players && playerCount
-                ? players.length + " / " + Math.min(playerCount, 2000)
-                : "? / ?"
-              }
-            </div>
-          </div>
+          <LoadingBar
+            value={players?.length}
+            total={Math.min(playerCount, 2000)}
+          />
         </div>
       }
       
