@@ -68,7 +68,7 @@ const PageStatsPlayers: React.FC<PageStatsPlayersProps> = () => {
           <div className="offset-lg-1 col-lg-2 col-sm-4">
             <Count
               label="Legendaries"
-              count={scarcityCount.Legendary}
+              count={scarcityCount?.Legendary}
             />
           </div>
         </div>
