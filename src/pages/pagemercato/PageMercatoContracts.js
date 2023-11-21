@@ -28,7 +28,6 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
   }
 
   const getData = (pursue, beforePlayerId) => {
-    console.log(pursue, isLoading, beforePlayerId);
     if (!pursue && isLoading) {
       return;
     }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import CountTrades from "components/counts/CountTrades.js";
 import CountTradeValue from "components/counts/CountTradeValue.js";
@@ -9,24 +10,57 @@ import { getPlayerTrades } from "services/api-mfl.js";
 interface PageMercatoTradesProps {}
 
 const PageMercatoTrades: React.FC<PageMercatoTradesProps> = ({ initialValue }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [trades, setTrades] = useState(null);
   const [filters, setFilters] = useState({
     positions: [],
   });
 
-  const getData = () => {
+  const resetData = () => {
     setTrades(null);
+  }
+
+  const getData = (pursue, beforeListingId) => {
+    if (!pursue && isLoading) {
+      return;
+    }
+
     getPlayerTrades(
-      (v) => setTrades(v),
+      (v) => {
+        if (v.length > 0) {
+          const p = trades
+            ? trades.concat(v)
+            : v;
+          
+          setTrades(p);
+        } else {
+          setIsLoading(false);
+        }
+      },
       (e) => console.log(e),
-      filters,
+      {
+        ...filters,
+        beforeListingId,
+      },
     );
   }
 
   useEffect(() => {
-    getData();
+    if (!trades) {
+      setIsLoading(true);
+      getData();
+    }
+
+    if (trades) {
+      if (trades.length >= 100) {
+        nm.warning("Stopped loading at " + trades.length + " players out of 100");
+        setIsLoading(false);
+      } else {
+        getData(true, trades.slice(-1)[0].listingResourceId);
+      }
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [trades]);
 
   return (
     <div className="row">
@@ -35,7 +69,7 @@ const PageMercatoTrades: React.FC<PageMercatoTradesProps> = ({ initialValue }) =
           <FilterContainerPlayer
             filters={filters}
             onChange={(f) => setFilters(f)}
-            onClose={() => getData()}
+            onClose={() => resetData()}
             showPositions={true}
             showOverallScore={true}
           />
