@@ -45,6 +45,7 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
                   data: computeData(),
                   fill: false,
                   borderColor: "#0dcaf0",
+                  lineTension: 0.3,
                 },
               ],
             }}

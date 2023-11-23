@@ -57,6 +57,7 @@ const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competiti
                   data: computeData(),
                   fill: false,
                   borderColor: "#0dcaf0",
+                  lineTension: 0.3,
                 },
               ],
             }}
