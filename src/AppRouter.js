@@ -14,12 +14,12 @@ import PageMercatoTrades from "pages/pagemercato/PageMercatoTrades.js";
 
 const AppRouter: React.FC = () => {
   return (
-    <div id="AppRouter" className="row g-0 h-100">
-      <div id="AppMenu" className="col-auto h-100 pe-0">
+    <div id="AppRouter" className="d-flex flex-column flex-md-row vh-100">
+      <div id="AppMenu" className="order-2 order-md-1">
         <Menu />
       </div>
 
-      <div id="AppContent" className="col h-100">
+      <div id="AppContent" className="order-1 order-md-2 flex-fill">
         <div className="AppContent-decoration position-relative w-100 h-100">
           <div className="top-left-quarter-circle"/>
           <div className="bottom-left-quarter-circle"/>

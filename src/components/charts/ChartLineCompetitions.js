@@ -45,7 +45,7 @@ const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competiti
   }
 
   return (
-    <div className="py-4 px-1 px-md-3">
+    <div className="mb-4 py-2 px-1 px-md-3">
       <div className="ratio ratio-16x9 w-100">
         {!competitions
           ? <LoadingSquare />

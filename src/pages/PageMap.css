@@ -1,0 +1,4 @@
+
+.leaflet-tile {
+    filter: grayscale(1) !important;
+}

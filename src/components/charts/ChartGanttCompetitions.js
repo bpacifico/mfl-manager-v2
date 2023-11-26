@@ -43,7 +43,7 @@ const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competi
   };
 
   return (
-    <div className="py-4 px-1 px-md-3">
+    <div className="mb-4 py-2 px-1 px-md-3">
       <div className="w-100 border border-body">
         {!competitions
           ? <div className="ratio ratio-16x9">

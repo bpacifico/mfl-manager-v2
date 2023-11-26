@@ -74,7 +74,7 @@ const PageDashPlayers: React.FC<PageDashPlayersProps> = () => {
         </div>
 
         <div className="row">
-          <div className="col-6">
+          <div className="col-md-6">
             <h4 className="pb-3">Scarcity distribution</h4>
 
             <ChartDoughnutPlayerScarcities
@@ -82,7 +82,7 @@ const PageDashPlayers: React.FC<PageDashPlayersProps> = () => {
             />
           </div>
 
-          <div className="col-6">
+          <div className="col-md-6">
             <h4 className="pb-3">Availability distribution</h4>
 
             <ChartDoughnutPlayerAvailability

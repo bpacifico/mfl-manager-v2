@@ -65,6 +65,10 @@ const PageMercatoTrades: React.FC<PageMercatoTradesProps> = ({ initialValue }) =
 
   return (
     <div className="row">
+      <LoadingBar
+        display={isLoading}
+        value={trades?.length}
+      />
       <div className="col-12 mb-3">
         <div className="float-end">
           <FilterContainerPlayer
@@ -75,13 +79,6 @@ const PageMercatoTrades: React.FC<PageMercatoTradesProps> = ({ initialValue }) =
             showOverallScore={true}
           />
         </div>
-      </div>
-
-      <div className="col-12">
-        <LoadingBar
-          display={isLoading}
-          value={trades?.length}
-        />
       </div>
 
       <div className="col-12">

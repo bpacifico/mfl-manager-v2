@@ -1,6 +1,5 @@
 
 #Menu .nav-link span {
-  writing-mode: vertical-rl;
   color: #0000;
   background: 
     linear-gradient(white 0 0) no-repeat,
@@ -13,6 +12,28 @@
     t .3s .2s both,
     b .3s .3s both;
   transform: rotate(-180deg);
+}
+
+@media (max-width: 768px) {
+  #Menu {
+    height: auto;
+    width: 100%;
+  }
+
+  #Menu .nav-link div {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 768px) {
+  #Menu {
+    height: 100%;
+    width: auto;
+  }
+
+  #Menu .nav-link span {
+    writing-mode: vertical-rl;
+  }
 }
 
 #Menu a.active {

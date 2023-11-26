@@ -8,8 +8,8 @@ const Menu: React.FC<MenuProps> = (props) => {
   const location = useLocation();
 
   return (
-    <nav id="Menu" className="navbar h-100 px-3 px-md-4 py-3">
-      <ul className="navbar-nav flex-column h4">
+    <nav id="Menu" className="navbar h-100 justify-content-center px-3 px-md-4 py-2">
+      <ul className="navbar-nav flex-row flex-md-column h4">
         <li className="nav-item">
           <Link
             to="/"
@@ -17,12 +17,12 @@ const Menu: React.FC<MenuProps> = (props) => {
           >
             {location.pathname === "/"
               && <span
-                className="text-center text-capitalize w-100 lh-1 pt-1 pb-2"
+                className="text-center text-capitalize w-100 lh-1 py-3 pt-md-1 pb-md-2 px-1 px-md-0"
               >
                 Home
               </span>
             }
-            <div>
+            <div className="px-2 px-md-0">
               {location.pathname === "/"
                 ? <i className="bi bi-house-fill"></i>
                 : <i className="bi bi-house"></i>
@@ -37,12 +37,12 @@ const Menu: React.FC<MenuProps> = (props) => {
           >
             {location.pathname.startsWith("/dash")
               && <span
-                className="text-center text-capitalize w-100 lh-1 pt-1 pb-2"
+                className="text-center text-capitalize w-100 py-3 pt-md-1 pb-md-2 px-1 px-md-0"
               >
                 MFL Dash
               </span>
             }
-            <div>
+            <div className="px-2 px-md-0">
               {location.pathname.startsWith("/dash")
                 ? <i className="bi bi-clipboard-data-fill"></i>
                 : <i className="bi bi-clipboard-data"></i>
@@ -57,12 +57,12 @@ const Menu: React.FC<MenuProps> = (props) => {
           >
             {location.pathname.startsWith("/mercato")
               && <span
-                className="text-center text-capitalize w-100 lh-1 pt-1 pb-2"
+                className="text-center text-capitalize w-100 py-3 pt-md-1 pb-md-2 px-1 px-md-0"
               >
                 Mercato
               </span>
             }
-            <div>
+            <div className="px-2 px-md-0">
               {location.pathname.startsWith("/mercato")
                 ? <i className="bi bi-person-vcard-fill"></i>
                 : <i className="bi bi-person-vcard"></i>
@@ -77,12 +77,12 @@ const Menu: React.FC<MenuProps> = (props) => {
           >
             {location.pathname.startsWith("/map")
               && <span
-                className="text-center text-capitalize w-100 lh-1 pt-1 pb-2"
+                className="text-center text-capitalize w-100 py-3 pt-md-1 pb-md-2 px-1 px-md-0"
               >
                 Map
               </span>
             }
-            <div>
+            <div className="px-2 px-md-0">
               {location.pathname.startsWith("/map")
                 ? <i className="bi bi-globe-europe-africa"></i>
                 : <i className="bi bi-globe-americas"></i>

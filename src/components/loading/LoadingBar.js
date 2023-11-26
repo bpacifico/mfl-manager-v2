@@ -33,7 +33,7 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ value, total, display }) => {
 	}
 
   return (
-    <div className={"progress position-relative mb-3 w-100" + (!display ? " fade" : "")}>
+    <div className={"progress position-fixed top-0 start-0 rounded-0 w-100 p-0" + (!display ? " fade" : "")}>
 	    <div
 	      className="progress-bar progress-bar-striped bg-info progress-bar-animated text-align-middle"
 	      role="progressbar"

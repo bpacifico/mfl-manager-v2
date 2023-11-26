@@ -25,6 +25,12 @@ body,
   overflow-x: hidden;
 }
 
+@media (min-width: 768px) {
+  #AppContent {
+    height: 100%;
+  }
+}
+
 .AppContent-content {
   overflow-y: auto;
   overflow-x: hidden;
