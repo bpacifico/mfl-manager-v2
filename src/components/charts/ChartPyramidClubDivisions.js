@@ -13,23 +13,26 @@ interface ChartPyramidClubDivisionsProps {
 
 const ChartPyramidClubDivisions: React.FC<ChartPyramidClubDivisionsProps> = ({ clubs }) => {
 
-  const data = {
+  const getData = () => ({
     labels: divisions.map((d) => d.name),
     datasets: [
       {
         label: 'Positive',
         stack: "Stack 0",
         backgroundColor: divisions.map((d) => d.color),
-        data: divisions.map((d) => d.number * 3),
+        data: divisions
+          .map((d) => clubs.filter((c) => c.division === d.number).length),
       },
       {
         label: 'Negative',
         stack: "Stack 0",
         backgroundColor: divisions.map((d) => d.color),
-        data: divisions.map((d) => d.number * 3).map((k) => -k),
+        data: divisions
+          .map((d) => clubs.filter((c) => c.division === d.number).length)
+          .map((k) => -k),
       },
     ],
-  };
+  });
 
   const options = {
   	indexAxis: 'y',
@@ -82,7 +85,7 @@ const ChartPyramidClubDivisions: React.FC<ChartPyramidClubDivisionsProps> = ({ c
         {!clubs
           ? <LoadingSquare />
       	  : <Bar
-      	  	data={data}
+      	  	data={getData()}
       	  	options={options}
       	  />
       	}

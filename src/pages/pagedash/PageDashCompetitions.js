@@ -6,9 +6,9 @@ import ChartLineCompetitions from "components/charts/ChartLineCompetitions.js";
 import ChartGanttCompetitions from "components/charts/ChartGanttCompetitions.js";
 import { getPastCompetitions, getUpcomingCompetitions } from "services/api-mfl.js";
 
-interface PageStatsCompetitionsProps {}
+interface PageDashCompetitionsProps {}
 
-const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialValue }) => {
+const PageDashCompetitions: React.FC<PageDashCompetitionsProps> = ({ initialValue }) => {
   const [pastCompetitions, setPastCompetitions] = useState(null);
   const [upcomingCompetitions, setUpcomingCompetitions] = useState(null);
 
@@ -24,7 +24,7 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
   }, []);
 
   return (
-    <div className="row">
+    <div className="row mb-5">
       <div className="col">
         <div className="row mt-md-2 mb-md-5">
           <div className="offset-lg-2 col-lg-2 col-sm-4">
@@ -72,7 +72,7 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
           </div>
         </div>
 
-        <div className="row mb-5">
+        <div className="row">
           <div className="col-sm-12">
             <h4 className="pb-3">Calendar</h4>
 
@@ -89,4 +89,4 @@ const PageStatsCompetitions: React.FC<PageStatsCompetitionsProps> = ({ initialVa
   );
 };
 
-export default PageStatsCompetitions;
+export default PageDashCompetitions;

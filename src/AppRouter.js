@@ -2,13 +2,13 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Menu from "bars/Menu";
 import PageHome from "pages/PageHome";
-import PageStats from "pages/PageStats";
+import PageDash from "pages/PageDash";
 import PageMercato from "pages/PageMercato";
-import PageBuilder from "pages/PageBuilder.js";
+import PageMap from "pages/PageMap.js";
 import Page404 from "pages/Page404";
-import PageStatsPlayers from "pages/pagestats/PageStatsPlayers.js";
-import PageStatsCompetitions from "pages/pagestats/PageStatsCompetitions.js";
-import PageStatsClubs from "pages/pagestats/PageStatsClubs.js";
+import PageDashPlayers from "pages/pagedash/PageDashPlayers.js";
+import PageDashCompetitions from "pages/pagedash/PageDashCompetitions.js";
+import PageDashClubs from "pages/pagedash/PageDashClubs.js";
 import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
 import PageMercatoTrades from "pages/pagemercato/PageMercatoTrades.js";
 
@@ -33,24 +33,24 @@ const AppRouter: React.FC = () => {
                 element={<PageHome />}
               />
               <Route
-                path="stats"
-                element={<PageStats />}
+                path="dash"
+                element={<PageDash />}
               >
                 <Route
                   index
-                  element={<PageStatsCompetitions />}
+                  element={<PageDashCompetitions />}
                 />
                 <Route
                   path="competitions"
-                  element={<PageStatsCompetitions />}
+                  element={<PageDashCompetitions />}
                 />
                 <Route
                   path="clubs"
-                  element={<PageStatsClubs />}
+                  element={<PageDashClubs />}
                 />
                 <Route
                   path="players"
-                  element={<PageStatsPlayers />}
+                  element={<PageDashPlayers />}
                 />
               </Route>
               <Route
@@ -71,8 +71,8 @@ const AppRouter: React.FC = () => {
                 />
               </Route>
               <Route
-                path="builder"
-                element={<PageBuilder />}
+                path="map"
+                element={<PageMap />}
               />
 
               {/* 404 */}

@@ -30,6 +30,11 @@ body,
   overflow-x: hidden;
 }
 
+.AppContent-content:has(#PageMap) {
+  overflow-y: hidden;
+  padding: 0px !important;
+}
+
 #AppContent .AppContent-decoration {
   border-left: solid 10px #343a40;
   border-top: solid 10px #343a40;

@@ -1,19 +1,19 @@
 
-#MenuPageStats .nav-link {
+#MenuPageDash .nav-link {
 	-webkit-transition: font-size .5s;
 	-moz-transition: font-size .5s;
 	-o-transition: font-size .5s;
 	transition: font-size .5s;
 }
 
-#MenuPageStats .active {
+#MenuPageDash .active {
 	font-size: 28px !important;
 }
 
-#MenuPageStats .active:hover {
+#MenuPageDash .active:hover {
   color: white !important;
 }
 
-#MenuPageStats .nav-link:hover {
+#MenuPageDash .nav-link:hover {
   color: #0dcaf0;
 }

@@ -5,9 +5,9 @@ import ChartDoughnutPlayerAvailability from "components/charts/ChartDoughnutPlay
 import { getPlayerCount } from "services/api-mfl.js";
 import { scarcity } from "utils/player.js";
 
-interface PageStatsPlayersProps {}
+interface PageDashPlayersProps {}
 
-const PageStatsPlayers: React.FC<PageStatsPlayersProps> = () => {
+const PageDashPlayers: React.FC<PageDashPlayersProps> = () => {
   const [playerCount, setPlayerCount] = useState(null);
   const [freeAgentCount, setFreeAgentCount] = useState(null);
   const [scarcityCount, setScarcityCount] = useState(null);
@@ -50,7 +50,7 @@ const PageStatsPlayers: React.FC<PageStatsPlayersProps> = () => {
   }, []);
 
   return (
-    <div className="row">
+    <div className="row mb-5">
       <div className="col">
         <div className="row mt-md-2 mb-md-5">
           <div className="offset-lg-2 col-lg-2 col-sm-4">
@@ -96,4 +96,4 @@ const PageStatsPlayers: React.FC<PageStatsPlayersProps> = () => {
   );
 };
 
-export default PageStatsPlayers;
+export default PageDashPlayers;

@@ -23,24 +23,30 @@ const Menu: React.FC<MenuProps> = (props) => {
               </span>
             }
             <div>
-              <i className="bi bi-house"></i>
+              {location.pathname === "/"
+                ? <i className="bi bi-house-fill"></i>
+                : <i className="bi bi-house"></i>
+              }
             </div>
           </Link>
         </li>
         <li className="nav-item">
           <Link
-            to="/stats"
-            className={"nav-link" + (location.pathname.startsWith("/stats") ? " active" : "")}
+            to="/dash"
+            className={"nav-link" + (location.pathname.startsWith("/dash") ? " active" : "")}
           >
-            {location.pathname.startsWith("/stats")
+            {location.pathname.startsWith("/dash")
               && <span
                 className="text-center text-capitalize w-100 lh-1 pt-1 pb-2"
               >
-                MFL Stats
+                MFL Dash
               </span>
             }
             <div>
-              <i className="bi bi-speedometer"></i>
+              {location.pathname.startsWith("/dash")
+                ? <i className="bi bi-clipboard-data-fill"></i>
+                : <i className="bi bi-clipboard-data"></i>
+              }
             </div>
           </Link>
         </li>
@@ -57,24 +63,30 @@ const Menu: React.FC<MenuProps> = (props) => {
               </span>
             }
             <div>
-              <i className="bi bi-cash-coin"></i>
+              {location.pathname.startsWith("/mercato")
+                ? <i className="bi bi-person-vcard-fill"></i>
+                : <i className="bi bi-person-vcard"></i>
+              }
             </div>
           </Link>
         </li>
-        <li className="nav-item d-none">
+        <li className="nav-item">
           <Link
-            to="/builder"
-            className={"nav-link" + (location.pathname.startsWith("/builder") ? " active" : "")}
+            to="/map"
+            className={"nav-link" + (location.pathname.startsWith("/map") ? " active" : "")}
           >
-            {location.pathname.startsWith("/builder")
+            {location.pathname.startsWith("/map")
               && <span
                 className="text-center text-capitalize w-100 lh-1 pt-1 pb-2"
               >
-                Team Builder
+                Map
               </span>
             }
             <div>
-              <i className="bi bi-cone-striped"></i>
+              {location.pathname.startsWith("/map")
+                ? <i className="bi bi-globe-europe-africa"></i>
+                : <i className="bi bi-globe-americas"></i>
+              }
             </div>
           </Link>
         </li>

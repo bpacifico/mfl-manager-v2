@@ -42,7 +42,7 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ value, total, display }) => {
 	      aria-valuemin="0"
 	      aria-valuemax="100"
 	      >
-	      <small class="justify-content-center d-flex position-absolute w-100">
+	      <small className="justify-content-center d-flex position-absolute w-100">
 	      	{getProgressText()}
 	      </small>
 	    </div>
