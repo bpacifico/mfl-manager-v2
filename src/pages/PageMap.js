@@ -40,7 +40,7 @@ const PageMap: React.FC<PageMapProps> = () => {
                 icon={markerIcon}
                 position={[c.lat, c.lng]}>
                 <Popup>
-                  Hey
+                  {c.city}
                 </Popup>
               </Marker>
             ))
