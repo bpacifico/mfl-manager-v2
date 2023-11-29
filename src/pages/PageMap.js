@@ -29,7 +29,7 @@ const PageMap: React.FC<PageMapProps> = () => {
       <MapContainer className="bg-dark h-100 w-100" center={[49.61, 6.13]} zoom={4}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
         />
         {clubs &&
           clubs
