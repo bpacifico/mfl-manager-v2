@@ -79,12 +79,13 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 				modal
 				closeOnDocumentClick
 				onClose={onClose}
+				className={"slide-in"}
 			>
 				{(close) => (
-					<div className="container w-100 bg-dark border border-white border-3 rounded-3 p-3 p-md-5">
+					<div className="FilterContainerPlayer-content container bg-dark border border-info border-3 rounded-3 p-4">
 						<div className="row mb-4">
 							<div className="col">
-						  	<h2>FILTERS</h2>
+						  	<h2 className="text-white">FILTERS</h2>
 						  </div>
 				      <div className="col-auto">
 				        <button
@@ -96,7 +97,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 						</div>
 
 						<div className="row">
-							<div className="col-md-6 mb-4">
+							<div className="col-md-12 mb-4">
 								{showPositions && <ControllerPositions
 									positions={filters.positions}
 									onChange={(p) => onChange({
@@ -106,7 +107,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 								/>}
 							</div>
 
-							<div className="col-md-6 mb-4">
+							<div className="col-md-12 mb-4">
 				    		{showOverallScore && <ControllerOverallScore
 				    			overallMin={filters.overallMin}
 				    			overallMax={filters.overallMax}
