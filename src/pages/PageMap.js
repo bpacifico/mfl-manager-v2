@@ -4,11 +4,13 @@ import "statics/leaflet.css";
 import { NotificationManager as nm } from "react-notifications";
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import FilterClub from "components/filters/FilterClub.js";
 
 interface PageMapProps {}
 
 const PageMap: React.FC<PageMapProps> = () => {
   const [clubs, setClubs] = useState(null);
+  const [filters, setFilters] = useState({ divisions: [1] });
 
   var markerIcon = L.icon({
     iconUrl: "/media/images/buildings-blue.svg",
@@ -26,6 +28,12 @@ const PageMap: React.FC<PageMapProps> = () => {
 
   return (
     <div id="PageMap" className="position-relative w-100 h-100">
+      <FilterClub
+        filters={filters}
+        onChange={(f) => setFilters(f)}
+        showDivisions={true}
+      />
+
       <MapContainer className="bg-dark h-100 w-100" center={[49.61, 6.13]} zoom={4}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -33,7 +41,7 @@ const PageMap: React.FC<PageMapProps> = () => {
         />
         {clubs &&
           clubs
-            .filter((c) => c.division === 1)
+            .filter((c) => filters.divisions.indexOf(c.division) > -1)
             .map((c) => (
               <Marker
                 key={c.id}
