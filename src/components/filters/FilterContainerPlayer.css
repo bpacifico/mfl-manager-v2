@@ -15,6 +15,13 @@
     max-height: calc(100% - 50px) !important;
     width: 300px !important;
     max-width: 100% !important;
+    overflow-y: auto;
+    border-right: none !important;
+	border-top-right-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+	border-right: none !important;
+	border-top-right-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
 }
 
 .FilterContainerPlayer-content {
@@ -28,7 +35,7 @@
 }
 
 @keyframes slide-in {
-    100% { transform: translateX(-510px); }
+    100% { transform: translateX(-520px); }
 }
 
 @-webkit-keyframes slide-in {
