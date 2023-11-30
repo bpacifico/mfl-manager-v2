@@ -18,7 +18,7 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
   const [playerCount, setPlayerCount] = useState(null);
   const [filters, setFilters] = useState({
     positions: ["GK"],
-    overallMin: 72,
+    overallMin: 78,
     overallMax: 90,
   });
 

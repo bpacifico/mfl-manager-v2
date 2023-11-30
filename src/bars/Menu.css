@@ -21,7 +21,11 @@
   }
 
   #Menu .nav-link div {
-    display: inline-block;
+    display: inline;
+  }
+
+  #Menu .nav-link span {
+    transform: none;
   }
 }
 

@@ -9,7 +9,7 @@ const PageHome: React.FC<PageHomeProps> = () => {
       <div className="row">
         <div className="offset-xl-2 offset-lg-1 col-xl-8 col-lg-10">
           <div className="row min-vh-100">
-            <div className="col-md-6 d-flex align-items-end align-items-md-center pe-5 ps-5 p-md-0">
+            <div className="offset-2 offset-md-0 col-8 col-md-6 d-flex align-items-end align-items-md-center pe-5 ps-5 p-md-0">
                 <img
                   className="w-100 mb-0 mb-md-5"
                   src="/media/images/assistant.svg"
