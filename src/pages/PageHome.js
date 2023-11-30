@@ -9,7 +9,7 @@ const PageHome: React.FC<PageHomeProps> = () => {
       <div className="row">
         <div className="offset-xl-2 offset-lg-1 col-xl-8 col-lg-10">
           <div className="row min-vh-100">
-            <div className="offset-2 offset-md-0 col-8 col-md-6 d-flex align-items-end align-items-md-center pe-5 ps-5 p-md-0">
+            <div className="offset-1 offset-md-0 col-10 col-md-6 d-flex align-items-end align-items-md-center pe-5 ps-5 p-md-0">
                 <img
                   className="w-100 mb-0 mb-md-5"
                   src="/media/images/assistant.svg"
@@ -21,6 +21,16 @@ const PageHome: React.FC<PageHomeProps> = () => {
               <div className="flex-column w-100 w-md-auto">
                 <span>Tighten your shoelaces thanks to the</span>
                 <h1 className="text-white">MFL Assistant.</h1>
+
+                <div>
+                  <a className="text-info h4 me-3" href="https://discord.com/users/_alexisp.">
+                    <i class="bi bi-discord"></i>
+                  </a>
+
+                  <a className="text-info h5" href="https://twitter.com/AlexisPrunier_">
+                    <i class="bi bi-twitter-x"></i>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
