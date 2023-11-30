@@ -21,7 +21,7 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
   return (
     <div className="row mb-5">
       <div className="col">
-        <div className="row mt-md-2 mb-md-5">
+        <div className="row mt-md-2 mb-5">
           <div className="offset-lg-2 col-lg-2 col-sm-4">
             <Count
               label="Clubs"

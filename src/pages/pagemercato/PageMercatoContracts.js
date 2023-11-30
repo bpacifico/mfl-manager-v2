@@ -94,7 +94,7 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
       </div>
 
       <div className="col-12">
-        <div className="row mt-md-2 mb-md-5">
+        <div className="row mt-md-2 mb-5">
           <div className="offset-lg-2 col-lg-2 col-sm-4">
             <Count
               label={"Total contract"}

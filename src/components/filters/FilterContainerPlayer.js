@@ -71,7 +71,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 								</div>
 							}
 						</div>
-						<div className="d-block d-md-none btn mb-3">
+						<div className="d-block d-md-none btn">
 							<i className="bi bi-filter-square-fill text-info h3"></i>
 						</div>
 					</div>
