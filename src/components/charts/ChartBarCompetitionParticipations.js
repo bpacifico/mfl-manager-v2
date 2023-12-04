@@ -1,50 +1,50 @@
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
-import { sortDataset } from "utils/chart.js";
-import { unixTimestampToDayString } from "utils/date.js";
+import { sortDataset, fillMonthlyDataset } from "utils/chart.js";
+import { unixTimestampToMonthString } from "utils/date.js";
 
-interface Trade {
+interface Competition {
   id: number;
 }
 
-interface ChartLinePlayerTradesProps {
-  trades: Trade[];
+interface ChartLineCompetitionParticipationsProps {
+  competitions: Competition[];
 }
 
-const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades }) => {
+const ChartLineCompetitionParticipations: React.FC<ChartLineCompetitionParticipationsProps> = ({ competitions }) => {
   
   const computeData = () => {
-    let data = {};
+    const data = {};
 
-    for (let i = 0; i < trades.length; i++) {
-      let day = unixTimestampToDayString(trades[i].purchaseDateTime);
+    for (let i = 0; i < competitions.length; i++) {
+      let month = unixTimestampToMonthString(competitions[i].startingDate);
 
-      if (!data[day]) {
-        data[day] = 1;
+      if (!data[month]) {
+        data[month] = competitions[i].nbParticipants;
       } else {
-        data[day] += 1;
+        data[month] += competitions[i].nbParticipants;
       }
     }
 
-    return sortDataset(data);
+    return sortDataset(fillMonthlyDataset(data));
   }
 
   return (
     <div className="mb-4 py-2 px-1 px-md-3">
       <div className="ratio ratio-16x9 w-100">
-        {!trades
+        {!competitions
           ? <LoadingSquare />
-          : <Line
+          : <Bar
             data={{
               labels: [],
               datasets: [
                 {
                   data: computeData(),
                   fill: false,
-                  borderColor: "#0dcaf0",
+                  backgroundColor: "#0dcaf0",
                   lineTension: 0.3,
                 },
               ],
@@ -59,10 +59,11 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
                 x: {
                   ticks: {
                     color: "#AAA",
+                    beginAtZero: true,
                   },
                   title: {
                     display: true,
-                    text: 'Day',
+                    text: 'Month',
                   },
                   grid: {
                     display: false,
@@ -74,7 +75,7 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
                   },
                   title: {
                     display: true,
-                    text: 'Trade',
+                    text: 'Participant',
                   },
                   grid: {
                     color: '#333',
@@ -89,4 +90,4 @@ const ChartLinePlayerTrades: React.FC<ChartLinePlayerTradesProps> = ({ trades })
   );
 };
 
-export default ChartLinePlayerTrades;
+export default ChartLineCompetitionParticipations;

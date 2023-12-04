@@ -15,6 +15,8 @@ body,
 #App {
   overflow-y: hidden;
   overflow-x: hidden;
+  background-image: repeating-linear-gradient(-45deg, rgba(255,255,255, 0.07), rgba(255,255,255, 0.07) 1px, transparent 1px, transparent 6px);
+  background-size: 4px 4px;
 }
 
 #AppMenu {
@@ -31,86 +33,22 @@ body,
   }
 }
 
-.AppContent-content {
+#AppContent-content {
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-.AppContent-content:has(#PageMap) {
+#AppContent-content:has(#PageMap) {
   overflow-y: hidden;
   padding: 0px !important;
-}
-
-#AppContent .AppContent-decoration {
-  border-left: solid 10px #343a40;
-  border-top: solid 10px #343a40;
-  border-bottom: solid 10px #343a40;
-  border-right: solid 5px #343a40;
-}
-
-/* FIELD DECORATION */
-
-.top-left-quarter-circle {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 50px;
-  width: 50px;
-  line-height: 75px;
-  text-align: center;
-  border-bottom-right-radius: 100%;
-  border-right: 10px solid #343a40;
-  border-bottom: 10px solid #343a40;
-}
-
-.bottom-left-quarter-circle {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  height: 50px;
-  width: 50px;
-  line-height: 75px;
-  text-align: center;
-  border-top-right-radius: 100%;
-  border-right: 10px solid #343a40;
-  border-top: 10px solid #343a40;
-}
-
-.centered-left-half-circle {
-  position: absolute;
-  right: -15%;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  width: 30%;
-  aspect-ratio: 1;
-  line-height: 75px;
-  text-align: center;
-  border-top-left-radius: 100%;
-  border-bottom-left-radius: 100%;
-  border-left: 10px solid #343a40;
-  border-top: 10px solid #343a40;
-  border-bottom: 10px solid #343a40;
-}
-
-.centered-left-dot {
-  position: absolute;
-  right: -1.5%;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  width: 3%;
-  aspect-ratio: 1;
-  line-height: 75px;
-  text-align: center;
-  border-radius: 100%;
-  background-color: #343a40;
 }
 
 /* CARDS */
 
 a .card {
   transition: border-width 0.1s ease-in-out;
+  border-width: 2px;
+  background-color: #16191C;
 }
 
 a .card:hover {

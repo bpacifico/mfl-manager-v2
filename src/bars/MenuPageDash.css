@@ -1,9 +1,17 @@
 
+#MenuPageDash {
+	background-color: #16191C;
+}
+
 #MenuPageDash .nav-link {
 	-webkit-transition: font-size .5s;
 	-moz-transition: font-size .5s;
 	-o-transition: font-size .5s;
 	transition: font-size .5s;
+}
+
+#MenuPageDash .nav-link:hover {
+	color: #0dcaf0;
 }
 
 #MenuPageDash .active {

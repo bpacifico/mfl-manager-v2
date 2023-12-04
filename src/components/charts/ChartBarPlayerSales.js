@@ -1,62 +1,50 @@
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
-import { sortDataset, fillMonthlyDataset } from "utils/chart.js";
-import { unixTimestampToMonthString } from "utils/date.js";
+import { sortDataset } from "utils/chart.js";
+import { unixTimestampToDayString } from "utils/date.js";
 
-interface Competition {
+interface Sale {
   id: number;
 }
 
-interface ChartLineCompetitionsProps {
-  competitions: Competition[];
+interface ChartBarPlayerSalesProps {
+  sales: Sale[];
 }
 
-const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competitions }) => {
+const ChartBarPlayerSales: React.FC<ChartBarPlayerSalesProps> = ({ sales }) => {
   
   const computeData = () => {
-    const data = {};
+    let data = {};
 
-    const cleanedCompetitions = competitions.map((c) => ({
-      name: c.root?.name ? c.root.name : c.name,
-      startingDate: c.startingDate,
-      type: c.type,
-    }))
-    .reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.startingDate === current.startingDate)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
+    for (let i = 0; i < sales.length; i++) {
+      let day = unixTimestampToDayString(sales[i].purchaseDateTime);
 
-    for (let i = 0; i < cleanedCompetitions.length; i++) {
-      let month = unixTimestampToMonthString(cleanedCompetitions[i].startingDate);
-
-      if (!data[month]) {
-        data[month] = 1;
+      if (!data[day]) {
+        data[day] = 1;
       } else {
-        data[month] += 1;
+        data[day] += 1;
       }
     }
 
-    return sortDataset(fillMonthlyDataset(data));
+    return sortDataset(data);
   }
 
   return (
     <div className="mb-4 py-2 px-1 px-md-3">
       <div className="ratio ratio-16x9 w-100">
-        {!competitions
+        {!sales
           ? <LoadingSquare />
-          : <Line
+          : <Bar
             data={{
               labels: [],
               datasets: [
                 {
                   data: computeData(),
                   fill: false,
-                  borderColor: "#0dcaf0",
+                  backgroundColor: "#0dcaf0",
                   lineTension: 0.3,
                 },
               ],
@@ -71,14 +59,10 @@ const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competiti
                 x: {
                   ticks: {
                     color: "#AAA",
-                    beginAtZero: true,
-                  },
-                  time: {
-                    unit: 'month'
                   },
                   title: {
                     display: true,
-                    text: 'Month',
+                    text: 'Day',
                   },
                   grid: {
                     display: false,
@@ -90,7 +74,7 @@ const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competiti
                   },
                   title: {
                     display: true,
-                    text: 'Competition',
+                    text: 'Sale',
                   },
                   grid: {
                     color: '#333',
@@ -105,4 +89,4 @@ const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competiti
   );
 };
 
-export default ChartLineCompetitions;
+export default ChartBarPlayerSales;

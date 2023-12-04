@@ -1,4 +1,8 @@
 
+#MenuPageMercato {
+	background-color: #16191C;
+}
+
 #MenuPageMercato .nav-link {
 	-webkit-transition: font-size .5s;
 	-moz-transition: font-size .5s;
@@ -6,9 +10,12 @@
 	transition: font-size .5s;
 }
 
+#MenuPageMercato .nav-link:hover {
+	color: #0dcaf0;
+}
+
 #MenuPageMercato .active {
 	font-size: 28px !important;
-	cursor: default;
 }
 
 #MenuPageMercato .active:hover {

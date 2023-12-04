@@ -5,23 +5,23 @@ import { Scatter } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
 import { getOverallColor } from "utils/player.js";
 
-interface Trade {
+interface Sale {
   id: number;
 }
 
-interface ChartScatterPlayerTradesProps {
-  trades: Trade[];
+interface ChartScatterPlayerSalesProps {
+  sales: Sale[];
 }
 
-const ChartScatterPlayerTrades: React.FC<ChartScatterPlayerTradesProps> = ({ trades }) => {
+const ChartScatterPlayerSales: React.FC<ChartScatterPlayerSalesProps> = ({ sales }) => {
   
   const computeData = () => {
     const data = [];
 
-    for (let i = 0; i < trades.length; i++) {
+    for (let i = 0; i < sales.length; i++) {
       data.push({
-        x: trades[i].player?.metadata?.overall,
-        y: trades[i].price,
+        x: sales[i].player?.metadata?.overall,
+        y: sales[i].price,
       });
     }
 
@@ -31,8 +31,8 @@ const ChartScatterPlayerTrades: React.FC<ChartScatterPlayerTradesProps> = ({ tra
   const computeBackgroundColor = () => {
     const data = [];
 
-    for (let i = 0; i < trades.length; i++) {
-      data.push(getOverallColor(trades[i].player?.metadata?.overall));
+    for (let i = 0; i < sales.length; i++) {
+      data.push(getOverallColor(sales[i].player?.metadata?.overall));
     }
 
     return data;
@@ -41,7 +41,7 @@ const ChartScatterPlayerTrades: React.FC<ChartScatterPlayerTradesProps> = ({ tra
   return (
     <div className="mb-4 py-2 px-1 px-md-3">
       <div className="ratio ratio-16x9 w-100">
-        {!trades
+        {!sales
           ? <LoadingSquare />
           : <Scatter
             data={{
@@ -97,4 +97,4 @@ const ChartScatterPlayerTrades: React.FC<ChartScatterPlayerTradesProps> = ({ tra
   );
 };
 
-export default ChartScatterPlayerTrades;
+export default ChartScatterPlayerSales;

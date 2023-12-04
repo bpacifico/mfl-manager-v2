@@ -48,7 +48,8 @@ const FilterClub: React.FC<FilterClubProps> = ({ filters, onChange, onClose, sho
 								</div>
 							}
 						</div>
-						<div className="d-block d-md-none btn">
+
+						<div className="small-filter-box d-block d-md-none btn">
 							<i className="bi bi-filter-square-fill text-info h3"></i>
 						</div>
 					</div>

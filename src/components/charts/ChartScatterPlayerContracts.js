@@ -99,7 +99,7 @@ const ChartScatterPlayerContracts: React.FC<ChartScatterPlayerContractsProps> = 
                   position: 'left',
                   title: {
                     display: true,
-                    text: 'Contract rate (%)',
+                    text: 'Revenue share (%)',
                   },
                   grid: {
                     color: '#333',

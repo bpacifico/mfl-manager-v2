@@ -2,3 +2,10 @@
 .leaflet-tile {
     filter: grayscale(1) !important;
 }
+
+#PageMap .FilterClub .small-filter-box {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 500;
+}

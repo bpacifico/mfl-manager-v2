@@ -8,15 +8,15 @@ const MenuPageDash: React.FC<MenuPageDashProps> = (props) => {
   const location = useLocation();
 
   return (
-    <nav id="MenuPageDash" className="navbar justify-content-center w-100 p-2 mb-4 mb-md-5">
+    <nav id="MenuPageDash" className="navbar justify-content-center w-100 p-2">
       <ul className="navbar-nav flex-row h6">
         <li className="nav-item align-self-end lh-1 px-2">
           <Link
-            to="competitions"
+            to="players"
             className={"nav-link"
-              + (["/dash", "/dash/", "/dash/competitions"].indexOf(location.pathname) >= 0 ? " active" : "")}
+              + (["/dash", "/dash/", "/dash/players"].indexOf(location.pathname) >= 0 ? " active" : "")}
           >
-            Competitions
+            Players
           </Link>
         </li>
         <li className="nav-item align-self-end lh-1 px-2">
@@ -29,10 +29,10 @@ const MenuPageDash: React.FC<MenuPageDashProps> = (props) => {
         </li>
         <li className="nav-item align-self-end lh-1 px-2">
           <Link
-            to="players"
-            className={"nav-link" + (location.pathname === "/dash/players" ? " active" : "")}
+            to="competitions"
+            className={"nav-link" + (location.pathname === "/dash/competitions" ? " active" : "")}
           >
-            Players
+            Competitions
           </Link>
         </li>
       </ul>

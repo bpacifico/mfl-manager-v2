@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Menu from "bars/Menu";
 import PageHome from "pages/PageHome";
 import PageDash from "pages/PageDash";
@@ -10,10 +10,27 @@ import PageDashPlayers from "pages/pagedash/PageDashPlayers.js";
 import PageDashCompetitions from "pages/pagedash/PageDashCompetitions.js";
 import PageDashClubs from "pages/pagedash/PageDashClubs.js";
 import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
-import PageMercatoTrades from "pages/pagemercato/PageMercatoTrades.js";
+import PageMercatoSales from "pages/pagemercato/PageMercatoSales.js";
 import BoxBeta from "components/box/BoxBeta.js";
 
 const AppRouter: React.FC = () => {
+  const location = useLocation();
+  const [yScrollPosition, setYScrollPosition] = useState(0);
+
+  const handleScroll = (event) => {
+    const { scrollTop } = event.target;
+    const scroll = scrollTop;
+    setYScrollPosition(scroll);
+  }
+
+  React.useEffect(() => {
+    document.getElementById("AppContent-content")
+      .scroll({
+        top: 0,
+        behavior: "smooth",
+      });
+  }, [location.pathname]);
+
   return (
     <div id="AppRouter" className="d-flex flex-column flex-md-row vh-100">
       <BoxBeta />
@@ -22,68 +39,74 @@ const AppRouter: React.FC = () => {
         <Menu />
       </div>
 
-      <div id="AppContent" className="order-1 order-md-2 flex-fill">
-        <div className="AppContent-decoration position-relative w-100 h-100">
-          <div className="top-left-quarter-circle"/>
-          <div className="bottom-left-quarter-circle"/>
-          <div className="centered-left-half-circle"/>
-          <div className="centered-left-dot"/>
+      <div
+        id="AppContent"
+        className="order-1 order-md-2 flex-fill"
+      >
+        <div
+          id="AppContent-content"
+          className="position-relative h-100 w-100"
+          onScroll={handleScroll}
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={<PageHome
+                yScrollPosition={yScrollPosition}
+              />}
+            />
+            <Route
+              path="dash"
+              element={<PageDash
+                yScrollPosition={yScrollPosition}
+              />}
+            >
+              <Route
+                index
+                element={<PageDashPlayers />}
+              />
+              <Route
+                path="players"
+                element={<PageDashPlayers />}
+              />
+              <Route
+                path="clubs"
+                element={<PageDashClubs />}
+              />
+              <Route
+                path="competitions"
+                element={<PageDashCompetitions />}
+              />
+            </Route>
+            <Route
+              path="mercato"
+              element={<PageMercato
+                yScrollPosition={yScrollPosition}
+              />}
+            >
+              <Route
+                index
+                element={<PageMercatoContracts />}
+              />
+              <Route
+                path="contracts"
+                element={<PageMercatoContracts />}
+              />
+              <Route
+                path="sales"
+                element={<PageMercatoSales />}
+              />
+            </Route>
+            <Route
+              path="map"
+              element={<PageMap />}
+            />
 
-          <div className="AppContent-content position-relative h-100 w-100 px-1 px-md-5 py-4">
-            <Routes>
-              <Route
-                path="/"
-                element={<PageHome />}
-              />
-              <Route
-                path="dash"
-                element={<PageDash />}
-              >
-                <Route
-                  index
-                  element={<PageDashCompetitions />}
-                />
-                <Route
-                  path="competitions"
-                  element={<PageDashCompetitions />}
-                />
-                <Route
-                  path="clubs"
-                  element={<PageDashClubs />}
-                />
-                <Route
-                  path="players"
-                  element={<PageDashPlayers />}
-                />
-              </Route>
-              <Route
-                path="mercato"
-                element={<PageMercato />}
-              >
-                <Route
-                  index
-                  element={<PageMercatoContracts />}
-                />
-                <Route
-                  path="contracts"
-                  element={<PageMercatoContracts />}
-                />
-                <Route
-                  path="trades"
-                  element={<PageMercatoTrades />}
-                />
-              </Route>
-              <Route
-                path="map"
-                element={<PageMap />}
-              />
-
-              {/* 404 */}
-              <Route
-                element={<Page404 />}
-              />
-            </Routes>
-          </div>
+            {/* 404 */}
+            <Route
+              element={<Page404 />}
+            />
+          </Routes>
         </div>
       </div>
     </div>

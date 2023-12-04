@@ -1,0 +1,10 @@
+
+.BoxSocials > * {
+	background-color: #16191C;
+}
+
+.BoxSocials .social-title {
+	position: absolute;
+	top: -18px;
+	left: 10px;
+}

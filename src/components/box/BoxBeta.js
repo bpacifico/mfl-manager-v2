@@ -10,9 +10,9 @@ const BoxBeta: React.FC<BoxBetaProps> = () => {
       style={{ zIndex: 1000 }}
     >
       <div
-      	className="w-100 bg-info small text-center rounded-bottom text-white px-2 ms-2"
+      	className="w-100 bg-black small text-center rounded-bottom text-white px-2 ms-2"
       >
-		Beta
+		    Beta
       </div>
     </div>
   );

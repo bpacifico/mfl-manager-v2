@@ -1,12 +1,19 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import MenuPageMercato from "bars/MenuPageMercato.js";
+import BoxScrollUp from "components/box/BoxScrollUp.js";
 
-interface PageMercatoProps {}
+interface PageMercatoProps {
+  yScrollPosition: number;
+}
 
-const PageMercato: React.FC<PageMercatoProps> = ({ initialValue }) => {
+const PageMercato: React.FC<PageMercatoProps> = ({ yScrollPosition }) => {
   return (
-    <div id="PageMercato" className="container">
+    <div id="PageMercato">
+      {yScrollPosition > 100
+        && <BoxScrollUp />
+      }
+
       <MenuPageMercato />
       <Outlet />
     </div>

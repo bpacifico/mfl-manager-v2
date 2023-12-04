@@ -10,9 +10,9 @@ import ChartLinePlayerContractLinearRegression from "components/charts/ChartLine
 import TablePlayerContractLinearRegression from "components/tables/TablePlayerContractLinearRegression.js";
 import { getUnderContractPlayers } from "services/api-mfl.js";
 
-interface PageMercatoContractsProps {}
+interface PageMercatoSalesProps {}
 
-const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValue }) => {
+const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [players, setPlayers] = useState(null);
   const [playerCount, setPlayerCount] = useState(null);
@@ -74,71 +74,75 @@ const PageMercatoContracts: React.FC<PageMercatoContractsProps> = ({ initialValu
   }, [players, playerCount]);
 
   return (
-    <div className="row">
+    <div id="PageMercatoSales" className="position-relative">
       <LoadingBar
         display={isLoading}
         value={players?.length}
         total={Math.min(playerCount, 2000)}
       />
 
-      <div className="col-12 mb-3">
-        <div className="float-end">
-          <FilterContainerPlayer
-            filters={filters}
-            onChange={(f) => setFilters(f)}
-            onClose={() => resetData()}
-            showPositions={true}
-            showOverallScore={true}
-          />
-        </div>
-      </div>
-
-      <div className="col-12">
-        <div className="row mt-md-2 mb-5">
-          <div className="offset-lg-2 col-lg-2 col-sm-4">
-            <Count
-              label={"Total contract"}
-              count={playerCount}
-            />
+      <div className="container px-4 py-5">
+        <div className="row">
+          <div className="col-12 mb-3">
+            <div className="float-end">
+              <FilterContainerPlayer
+                filters={filters}
+                onChange={(f) => setFilters(f)}
+                onClose={() => resetData()}
+                showPositions={true}
+                showOverallScore={true}
+              />
+            </div>
           </div>
-          <div className="offset-lg-1 col-lg-2 col-sm-4">
-            <CountContracts
+
+          <div className="col-12">
+            <div className="row mt-md-2 mb-5">
+              <div className="offset-lg-2 col-lg-2 col-sm-4">
+                <Count
+                  label={"Total contract"}
+                  count={playerCount}
+                />
+              </div>
+              <div className="offset-lg-1 col-lg-2 col-sm-4">
+                <CountContracts
+                  players={players}
+                />
+              </div>
+              <div className="offset-lg-1 col-lg-2 col-sm-4">
+                <CountContractRevenueShare
+                  players={players}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="col-12 col-md-6 mb-md-5">
+            <h4>Running contracts per division</h4>
+
+            <ChartScatterPlayerContracts
               players={players}
             />
           </div>
-          <div className="offset-lg-1 col-lg-2 col-sm-4">
-            <CountContractRevenueShare
+
+          <div className="col-12 col-md-6 mb-md-5">
+            <h4>Estimation of revenue share per division</h4>
+
+            <ChartLinePlayerContractLinearRegression
+              players={players}
+            />
+          </div>
+
+          <div className="col-12 mb-md-5">
+            <h4>Estimation of revenue share</h4>
+
+            <TablePlayerContractLinearRegression
               players={players}
             />
           </div>
         </div>
-      </div>
-
-      <div className="col-12 col-md-6 mb-md-5">
-        <h4>Contract rate vs. overall score</h4>
-
-        <ChartScatterPlayerContracts
-          players={players}
-        />
-      </div>
-
-      <div className="col-12 col-md-6 mb-md-5">
-        <h4>Linear regression</h4>
-
-        <ChartLinePlayerContractLinearRegression
-          players={players}
-        />
-      </div>
-
-      <div className="col-12 mb-md-5">
-        <h4>Average rate: Division vs. overall score</h4>
-
-        <TablePlayerContractLinearRegression
-          players={players}
-        />
       </div>
     </div>
   );
 };
 
-export default PageMercatoContracts;
+export default PageMercatoSales;

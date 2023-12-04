@@ -2,7 +2,7 @@ import React from 'react';
 import { positions as playerPositions } from "utils/player.js";
 
 interface ControllerPositionsProps {
-  positions: string[];
+  positions?: string[];
   onChange: func;
 }
 
@@ -11,10 +11,12 @@ const ControllerPositions: React.FC<ControllerPositionsProps> = ({ positions, on
   const onClick = (p) => {
     let newSelectedPositions = positions;
 
-    if (newSelectedPositions.indexOf(p) >= 0) {
+    if (newSelectedPositions?.indexOf(p) >= 0) {
       newSelectedPositions = newSelectedPositions.filter((pos) => pos !== p);
     } else {
-      newSelectedPositions = newSelectedPositions.concat([p]);
+      newSelectedPositions = newSelectedPositions
+        ? newSelectedPositions.concat([p])
+        : [p];
     }
 
     onChange(newSelectedPositions);
@@ -30,7 +32,7 @@ const ControllerPositions: React.FC<ControllerPositionsProps> = ({ positions, on
           .map((p) => (
             <button
               key={p.name}
-              className={positions.indexOf(p.name) >= 0 ? "bg-info" : undefined}
+              className={positions?.indexOf(p.name) >= 0 ? "bg-info" : undefined}
               onClick={() => onClick(p.name)}>
               {p.name}
             </button>
