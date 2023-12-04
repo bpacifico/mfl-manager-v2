@@ -1,5 +1,5 @@
 
-#PageHome .BoxSocials {
+#PageHome > .BoxSocials {
   position: absolute;
   top: 12%;
   left: 50%;

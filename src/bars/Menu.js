@@ -103,6 +103,4 @@ const Menu: React.FC<MenuProps> = (props) => {
   );
 }
 
-
-
 export default Menu;

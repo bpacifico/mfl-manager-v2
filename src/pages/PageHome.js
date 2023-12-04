@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import BoxScrollDown from "components/box/BoxScrollDown.js";
 import BoxScrollUp from "components/box/BoxScrollUp.js";
 import BoxSocials from "components/box/BoxSocials.js";
+import Footer from "bars/Footer.js";
 
 interface PageHomeProps {
   yScrollPosition: number;
@@ -144,13 +145,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
         </div>
       </div>
 
-      <div className="container bg-black">
-        <div className="row">
-          <div className="col-12">
-            TODO
-          </div>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 };
