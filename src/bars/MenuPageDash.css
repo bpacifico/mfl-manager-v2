@@ -1,6 +1,7 @@
 
 #MenuPageDash {
 	background-color: #16191C;
+	box-shadow: 0px 15px 15px -5px rgba(22, 25, 28, 0.4);
 }
 
 #MenuPageDash .nav-link {

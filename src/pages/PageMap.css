@@ -1,7 +1,8 @@
 
-.leaflet-tile {
-    filter: grayscale(1) !important;
+#PageMap .leaflet-container {
+    background-color: #262626 !important;
 }
+
 
 #PageMap .FilterClub .small-filter-box {
     position: absolute;

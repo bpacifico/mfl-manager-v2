@@ -34,7 +34,7 @@ const PageMap: React.FC<PageMapProps> = () => {
         showDivisions={true}
       />
 
-      <MapContainer className="bg-dark h-100 w-100" center={[49.61, 6.13]} zoom={4}>
+      <MapContainer className="bg-dark h-100 w-100" center={[49.61, 6.13]} zoom={3}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"

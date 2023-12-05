@@ -72,16 +72,22 @@ const PageDashPlayers: React.FC<PageDashPlayersProps> = () => {
 
   return (
     <div id="PageDashClubs" className="position-relative">
-      <FilterContainerPlayer
-        filters={filters}
-        onChange={(f) => setFilters(f)}
-        onClose={() => resetData()}
-        showPositions={true}
-        showOverallScore={true}
-      />
+
 
       <div className="container px-4 py-5">
         <div className="row mb-5">
+          <div className="col-12 mb-3">
+            <div className="float-end">
+              <FilterContainerPlayer
+                filters={filters}
+                onChange={(f) => setFilters(f)}
+                onClose={() => resetData()}
+                showPositions={true}
+                showOverallScore={true}
+              />
+            </div>
+          </div>
+
           <div className="col">
             <div className="row mt-md-2 mb-5">
               <div className="offset-lg-2 col-lg-2 col-sm-4">
