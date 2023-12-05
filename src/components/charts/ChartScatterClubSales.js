@@ -4,7 +4,6 @@ import { Chart as ChartJS } from 'chart.js/auto';
 import { Scatter } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
 import { getDivisionColor } from "utils/division.js";
-import { unixTimestampToDayString } from "utils/date.js";
 
 interface Sale {
   id: number;
