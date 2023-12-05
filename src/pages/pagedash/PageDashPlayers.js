@@ -21,52 +21,58 @@ const PageDashPlayers: React.FC<PageDashPlayersProps> = () => {
   }
 
   useEffect(() => {
-    getPlayerCount(
-      (v) => setPlayerCount(v.count),
-      (e) => console.log(e),
-      {
-        ...filters,
-      }
-    );
+    if (playerCount === null) {
+      getPlayerCount(
+        (v) => setPlayerCount(v.count),
+        (e) => console.log(e),
+        {
+          ...filters,
+        }
+      );
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerCount]);
 
   useEffect(() => {
-    getPlayerCount(
-      (v) => setFreeAgentCount(v.count),
-      (e) => console.log(e),
-      {
-        ...filters,
-        isFreeAgent: true,
-      }
-    );
+    if (freeAgentCount === null) {
+      getPlayerCount(
+        (v) => setFreeAgentCount(v.count),
+        (e) => console.log(e),
+        {
+          ...filters,
+          isFreeAgent: true,
+        }
+      );
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [freeAgentCount]);
 
   useEffect(() => {
-    const promises = scarcity.map((s) =>
-      new Promise((resolve, reject) =>
-        getPlayerCount(
-          (v) => resolve(v.count),
-          (e) => console.log(e),
-          { 
-            ...filters,
-            overallMin: s.overallMin,
-            overallMax: s.overallMax,
-          }
-        ),
-      )
-    );
-
-    Promise.all(promises).then((values) => {
-      setScarcityCount(
-        Object.fromEntries(
-          scarcity.map((s, i) =>
-            [s.name, values[i]]
+    if (scarcityCount === null) {
+      const promises = scarcity.map((s) =>
+        new Promise((resolve, reject) =>
+          getPlayerCount(
+            (v) => resolve(v.count),
+            (e) => console.log(e),
+            { 
+              ...filters,
+              overallMin: filters.overallMin ? Math.max(filters.overallMin, s.overallMin) : s.overallMin,
+              overallMax: filters.overallMax ? Math.min(filters.overallMax, s.overallMax) : s.overallMax,
+            }
           ),
-        ),
+        )
       );
-    });
+
+      Promise.all(promises).then((values) => {
+        setScarcityCount(
+          Object.fromEntries(
+            scarcity.map((s, i) =>
+              [s.name, values[i]]
+            ),
+          ),
+        );
+      });
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scarcityCount]);
 

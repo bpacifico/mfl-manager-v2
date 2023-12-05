@@ -61,9 +61,12 @@ const ChartScatterClubSales: React.FC<ChartScatterClubSalesProps> = ({ sales }) 
                     color: "#AAA",
                   },
                   /* type: "time",
-		          time: {
-		            unit: "day",
-		          }, */
+    		          time: {
+    		            unit: "day",
+                    displayFormats: {
+                      day: 'D MMM',
+                    },
+    		          }, */
                   position: 'bottom',
                   title: {
                     display: true,
