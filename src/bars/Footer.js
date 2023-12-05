@@ -11,16 +11,18 @@ const Footer: React.FC<FooterProps> = (props) => {
     	<div className="container py-5 px-3 px-md-5">
 	      <div className="row">
 	      	<div className="col-12 col-md-2 p-4 p-md-1">
-	      		<div className="h5">
-	      			<Link to="/">
-	            	<i className="bi bi-house-fill me-2"></i>Home
-	          	</Link>
-	          </div>
+	      		<div className="text-center text-md-start">
+		      		<div className="h5">
+		      			<Link to="/">
+		            	<i className="bi bi-house-fill me-2"></i>Home
+		          	</Link>
+		          </div>
 
-	          <div className="h5">
-	          	<Link to="/map">
-	            	<i className="bi bi-globe-americas me-2"></i>Map
-	          	</Link>
+		          <div className="h5">
+		          	<Link to="/map">
+		            	<i className="bi bi-globe-americas me-2"></i>Map
+		          	</Link>
+		          </div>
 	          </div>
 	      	</div>
 
@@ -63,7 +65,9 @@ const Footer: React.FC<FooterProps> = (props) => {
 	      	</div>
 
 	      	<div className="col-12 col-md-6 p-4 p-md-1">
-	      		<BoxSocials />
+	      		<div className="w-100 d-flex justify-content-center justify-content-md-end pt-4">
+	      			<BoxSocials />
+	      		</div>
 	      	</div>
 	      </div>
 	    </div>
