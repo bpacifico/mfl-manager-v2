@@ -22,7 +22,11 @@ const FilterClub: React.FC<FilterClubProps> = ({ filters, onChange, onClose, sho
 			}
 
 			if (p.length > 0) {
-				return p.map((p) => <div key={p.id} className="lh-1 text-white">{p.name}</div>);
+				return p.map((p) =>
+					<div key={p.id} className="lh-1 text-white">
+						{p.name.substring(0, 4).toUpperCase()}
+					</div>
+				);
 			}
 
 			return "None";
@@ -67,7 +71,7 @@ const FilterClub: React.FC<FilterClubProps> = ({ filters, onChange, onClose, sho
 						  </div>
 				      <div className="col-auto">
 				        <button
-									className={"grey-background"}
+									className={"btn"}
 									onClick={close}>
 									<i className="bi bi-x-lg"></i>
 								</button>
@@ -90,7 +94,7 @@ const FilterClub: React.FC<FilterClubProps> = ({ filters, onChange, onClose, sho
 							<div className="col-md-12">
 								<div className="float-end">
 									<button
-										className="bg-info"
+										className="btn btn-info text-white"
 										onClick={close}
 									>
 										Apply

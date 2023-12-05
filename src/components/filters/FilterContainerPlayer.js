@@ -89,7 +89,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 						  </div>
 				      <div className="col-auto">
 				        <button
-									className={"grey-background"}
+									className={"btn"}
 									onClick={close}>
 									<i className="bi bi-x-lg"></i>
 								</button>
@@ -124,7 +124,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 							<div className="col-md-12">
 								<div className="float-end">
 									<button
-										className="bg-info"
+										className="btn btn-info text-white"
 										onClick={close}
 									>
 										Apply

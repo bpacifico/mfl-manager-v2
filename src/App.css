@@ -104,3 +104,7 @@ a {
 .table>:not(caption)>*>* {
   background-color: transparent !important
 }
+
+input[type='range'] {
+  accent-color: #0dcaf0;
+}
