@@ -2,12 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { NotificationManager as nm } from "react-notifications";
 import Count from "components/counts/Count.js";
 import ChartPyramidClubDivisions from "components/charts/ChartPyramidClubDivisions.js";
+import ChartScatterClubSales from "components/charts/ChartScatterClubSales.js";
 import BoxClubMap from "components/box/BoxClubMap.js";
+import { getClubSales } from "services/api-mfl.js";
 
 interface PageDashClubsProps {}
 
 const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [clubs, setClubs] = useState(null);
+  const [sales, setSales] = useState(null);
+
+  const getData = (pursue, beforeListingId) => {
+    if (!pursue && isLoading) {
+      return;
+    }
+
+    getClubSales(
+      (v) => {
+        if (v.length > 0) {
+          const p = sales
+            ? sales.concat(v)
+            : v;
+          
+          setSales(p);
+        } else {
+          setIsLoading(false);
+        }
+      },
+      (e) => console.log(e),
+      {
+        beforeListingId,
+      },
+    );
+  }
 
   useEffect(() => {
     fetch('/data/mfl_clubs.json')
@@ -17,6 +45,22 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
         nm.warning("The input data is a snapshot prior to the issuance of the stone clubs");
       });
   }, []);
+
+  useEffect(() => {
+    if (!sales) {
+      setIsLoading(true);
+      getData();
+    }
+
+    if (sales) {
+      if (sales.length >= 50) {
+        setIsLoading(false);
+      } else {
+        getData(true, sales.slice(-1)[0].listingResourceId);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sales]);
 
   return (
     <div id="PageDashClubs" className="position-relative">
@@ -48,7 +92,7 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
             </div>
 
             <div className="row">
-              <div className="col-sm-6">
+              <div className="col-sm-6 mb-5">
                 <h4 className="pb-3">Number of clubs per divisions</h4>
 
                 <ChartPyramidClubDivisions
@@ -56,7 +100,7 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
                 />
               </div>
 
-              <div className="col-sm-6">
+              <div className="col-sm-6 mb-5">
                 <h4 className="pb-3">Map visualisation</h4>
 
                 <BoxClubMap />
@@ -65,7 +109,11 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
 
             <div className="row">
               <div className="col-12">
-                <h4 className="pb-3">Recent club sales</h4>
+                <h4 className="pb-3">Last 50 club sales</h4>
+
+                <ChartScatterClubSales
+                  sales={sales}
+                />
               </div>
             </div>
           </div>

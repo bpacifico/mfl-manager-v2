@@ -37,3 +37,11 @@ export const getPlayerSales = (handleSuccess, handleError, params) => get(
   handleSuccess,
   handleError,
 );
+
+export const getClubSales = (handleSuccess, handleError, params) => get(
+  getApiEndpoint()
+    + "listings?limit=25&type=CLUB&status=BOUGHT&"
+    + transformDictToUrlParams(params),
+  handleSuccess,
+  handleError,
+);

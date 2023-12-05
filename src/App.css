@@ -100,3 +100,7 @@ canvas {
 a {
   text-decoration: none !important;
 }
+
+.table>:not(caption)>*>* {
+  background-color: transparent !important
+}
