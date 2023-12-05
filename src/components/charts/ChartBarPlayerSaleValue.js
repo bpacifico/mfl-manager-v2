@@ -79,6 +79,9 @@ const ChartBarPlayerSaleValue: React.FC<ChartBarPlayerSaleValueProps> = ({ sales
                   grid: {
                     color: '#333',
                   },
+                  border: {
+                    color: '#333',
+                  },
                 },
               },
             }}

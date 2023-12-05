@@ -80,6 +80,9 @@ const ChartLineCompetitionParticipations: React.FC<ChartLineCompetitionParticipa
                   grid: {
                     color: '#333',
                   },
+                  border: {
+                    color: '#333',
+                  },
                 },
               },
             }}
