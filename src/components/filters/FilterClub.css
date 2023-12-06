@@ -1,14 +1,4 @@
 
-.FilterClub .big-filter-box {
-	right: 0px;
-	top: 50px;
-	max-height: 60%;
-	border-right: none !important;
-	border-top-right-radius: 0px !important;
-	border-bottom-right-radius: 0px !important;
-	z-index: 500;
-}
-
 .FilterClub-content {
 	position: fixed;
 	right: -520px;

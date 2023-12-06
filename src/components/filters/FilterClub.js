@@ -22,11 +22,7 @@ const FilterClub: React.FC<FilterClubProps> = ({ filters, onChange, onClose, sho
 			}
 
 			if (p.length > 0) {
-				return p.map((p) =>
-					<div key={p.id} className="lh-1 text-white">
-						{p.name.substring(0, 4).toUpperCase()}
-					</div>
-				);
+				return p.map((p) => p.name.substring(0, 4).toUpperCase()).join(",");
 			}
 
 			return "None";
@@ -39,23 +35,17 @@ const FilterClub: React.FC<FilterClubProps> = ({ filters, onChange, onClose, sho
     <div className="FilterClub">
     	<Popup
 				trigger={
-					<div>
-						<div className="big-filter-box position-absolute bg-body d-none d-md-block border btn border-info border-3 text-white p-2">
-							<div className="col-12 my-3 mb-4 h5">
-								<i className="bi bi-filter-square-fill text-info"></i>
+					<div className="big-filter-box flex-row bg-body d-flex border btn border-info border-3 text-white p-1 pe-2">
+						<div className="d-flex align-items-center mx-3 my-2 h5">
+							<i className="bi bi-filter-square-fill text-info"></i>
+						</div>
+
+						{showDivisions && getDivisionTextValue() !== "None"
+							&& <div className="mx-2">
+								<div className="text-white-50">DIV</div>
+								{getDivisionTextValue()}
 							</div>
-
-							{showDivisions
-								&& <div className="col-12 my-2 mb-4">
-									<div className="text-white-50 my-1">DIV</div>
-									{getDivisionTextValue()}
-								</div>
-							}
-						</div>
-
-						<div className="small-filter-box d-block d-md-none btn">
-							<i className="bi bi-filter-square-fill text-info h3"></i>
-						</div>
+						}
 					</div>
 				}
 				modal

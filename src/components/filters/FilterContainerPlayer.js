@@ -24,7 +24,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 			}
 
 			if (p.length > 0) {
-				return p.map((p) => <div key={p.id} className="lh-1 text-white">{p.name}</div>);
+				return p.map((p) => p.name).join(",");
 			}
 
 			return "All";
@@ -37,9 +37,9 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 		if (filters.overallMin || filters.overallMax) {
 			let text = [];
 
-			text.push(<span>{filters.overallMin || -<i className="bi bi-infinity"></i>}</span>);
+			text.push(<>{filters.overallMin || -<i className="bi bi-infinity"></i>}</>);
 			text.push(<i className="bi bi-arrow-right small mx-1"></i>);
-			text.push(<span>{filters.overallMax || <i className="bi bi-infinity"></i>}</span>);
+			text.push(<>{filters.overallMax || <i className="bi bi-infinity"></i>}</>);
 
 			return text;
 		}
@@ -51,30 +51,24 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
     <div className="FilterContainerPlayer">
     	<Popup
 				trigger={
-					<div>
-						<div className="big-filter-box flex-row bg-body d-none d-md-flex border btn border-info border-3 text-white p-2">
-							<div className="justify-content-center mx-2 h5">
-								<i className="bi bi-filter-square-fill text-info"></i>
+					<div className="big-filter-box flex-row bg-body d-flex border btn border-info border-3 text-white p-1 pe-2">
+						<div className="d-flex align-items-center mx-3 my-2 h5">
+							<i className="bi bi-filter-square-fill text-info"></i>
+						</div>
+
+						{showPositions && getPositionTextValue() !== "All"
+							&& <div className="mx-2">
+								<div className="text-white-50 lh-0">POS</div>
+								<div>{getPositionTextValue()}</div>
 							</div>
+						}
 
-							{showPositions && getOverallScoreTextValue() !== "ALL"
-								&& <div className="mx-2">
-									<div className="text-white-50 my-1">POS</div>
-									{getPositionTextValue()}
-								</div>
-							}
-
-							{showOverallScore && getOverallScoreTextValue() !== "ALL"
-								&& <div className="mx-2">
-									<div className="text-white-50 my-1">OVR</div>
-									{getOverallScoreTextValue()}
-								</div>
-							}
-						</div>
-
-						<div className="d-flex d-md-none btn">
-							<i className="bi bi-filter-square-fill text-info h3"></i>
-						</div>
+						{showOverallScore && getOverallScoreTextValue() !== "All"
+							&& <div className="mx-2">
+								<div className="text-white-50">OVR</div>
+								<div>{getOverallScoreTextValue()}</div>
+							</div>
+						}
 					</div>
 				}
 				modal

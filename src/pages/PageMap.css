@@ -3,10 +3,6 @@
     background-color: #262626 !important;
 }
 
-
-#PageMap .FilterClub .small-filter-box {
-    position: absolute;
-    top: 12px;
-    right: 12px;
+#PageMap .FilterClub-wrapper {
     z-index: 500;
 }

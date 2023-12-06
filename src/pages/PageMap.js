@@ -28,11 +28,13 @@ const PageMap: React.FC<PageMapProps> = () => {
 
   return (
     <div id="PageMap" className="position-relative w-100 h-100">
-      <FilterClub
-        filters={filters}
-        onChange={(f) => setFilters(f)}
-        showDivisions={true}
-      />
+      <div className="FilterClub-wrapper position-fixed top-0 end-0 m-4">
+        <FilterClub
+          filters={filters}
+          onChange={(f) => setFilters(f)}
+          showDivisions={true}
+        />
+      </div>
 
       <MapContainer className="bg-dark h-100 w-100" center={[49.61, 6.13]} zoom={3}>
         <TileLayer
