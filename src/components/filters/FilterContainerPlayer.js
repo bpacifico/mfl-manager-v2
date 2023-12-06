@@ -1,4 +1,4 @@
-import React, { useEffect, useSearchParams } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./FilterContainerPlayer.css";
 import Popup from "reactjs-popup";
