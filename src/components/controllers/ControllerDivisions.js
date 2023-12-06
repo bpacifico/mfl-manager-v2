@@ -30,7 +30,7 @@ const ControllerDivisions: React.FC<ControllerDivisionsProps> = ({ divisions, on
           .map((p) => (
             <button
               key={p.number}
-              className={"w-100" + (divisions.indexOf(p.number) >= 0 ? " bg-info" : "")}
+              className={"btn text-white w-100" + (divisions.indexOf(p.number) >= 0 ? " btn-info" : "")}
               onClick={() => onClick(p.number)}>
               {p.name}
             </button>

@@ -32,7 +32,7 @@ const ControllerPositions: React.FC<ControllerPositionsProps> = ({ positions, on
           .map((p) => (
             <button
               key={p.name}
-              className={positions?.indexOf(p.name) >= 0 ? "bg-info" : undefined}
+              className={"btn text-white" + (positions?.indexOf(p.name) >= 0 ? " btn-info" : "")}
               onClick={() => onClick(p.name)}>
               {p.name}
             </button>

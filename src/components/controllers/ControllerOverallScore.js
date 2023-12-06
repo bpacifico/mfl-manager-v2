@@ -31,8 +31,6 @@ const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overall
         <h3>{getOverallScoreTextValue()}</h3>
       </div>
       <div className="col">
-        <div>Minimum overall score</div>
-
     	  <input
           className="w-100"
           type="range"
@@ -43,8 +41,6 @@ const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overall
           onChange={(v) => onChange(v.target.value, overallMax)}
         >
         </input>
-
-        <div>Maximum overall score</div>
 
         <input
           className="w-100 text-primary bg-dark"

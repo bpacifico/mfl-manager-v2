@@ -95,6 +95,9 @@ const ChartLineCompetitions: React.FC<ChartLineCompetitionsProps> = ({ competiti
                   grid: {
                     color: '#333',
                   },
+                  border: {
+                    color: '#333',
+                  },
                 },
               },
             }}

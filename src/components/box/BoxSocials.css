@@ -1,4 +1,8 @@
 
+.BoxSocials {
+	width: max-content;
+}
+
 .BoxSocials > * {
 	background-color: #16191C;
 }
