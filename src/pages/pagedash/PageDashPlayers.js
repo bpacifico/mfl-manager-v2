@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Count from "components/counts/Count.js";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import ChartDoughnutPlayerScarcities from "components/charts/ChartDoughnutPlayerScarcities.js";
@@ -9,10 +10,16 @@ import { scarcity } from "utils/player.js";
 interface PageDashPlayersProps {}
 
 const PageDashPlayers: React.FC<PageDashPlayersProps> = () => {
-  const [filters, setFilters] = useState({});
+  const [searchParams] = useSearchParams();
+
   const [playerCount, setPlayerCount] = useState(null);
   const [freeAgentCount, setFreeAgentCount] = useState(null);
   const [scarcityCount, setScarcityCount] = useState(null);
+  const [filters, setFilters] = useState({
+    positions: searchParams.get("positions") ? searchParams.get("positions").split(",") : [],
+    overallMin: searchParams.get("overallMin") ? searchParams.get("overallMin") : undefined,
+    overallMax: searchParams.get("overallMax") ? searchParams.get("overallMax") : undefined,
+  });
 
   const resetData = () => {
     setPlayerCount(null);

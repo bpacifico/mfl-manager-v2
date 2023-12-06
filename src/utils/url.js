@@ -1,5 +1,5 @@
 
-export function transformDictToUrlParams(dict) {
+export function convertDictToUrlParams(dict) {
 	let args = "";
 
 	if (dict !== null) {

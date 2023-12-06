@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import LoadingBar from "components/loading/LoadingBar.js";
@@ -12,10 +13,14 @@ import { getPlayerSales } from "services/api-mfl.js";
 interface PageMercatoSalesProps {}
 
 const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => {
+  const [searchParams] = useSearchParams();
+
   const [isLoading, setIsLoading] = useState(false);
   const [sales, setSales] = useState(null);
   const [filters, setFilters] = useState({
-    positions: [],
+    positions: searchParams.get("positions") ? searchParams.get("positions").split(",") : [],
+    overallMin: searchParams.get("overallMin") ? searchParams.get("overallMin") : undefined,
+    overallMax: searchParams.get("overallMax") ? searchParams.get("overallMax") : undefined,
   });
 
   const resetData = () => {

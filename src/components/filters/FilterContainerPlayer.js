@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useSearchParams } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./FilterContainerPlayer.css";
 import Popup from "reactjs-popup";
 import ControllerPositions from "components/controllers/ControllerPositions.js";
 import ControllerOverallScore from "components/controllers/ControllerOverallScore.js";
 import { positions } from "utils/player.js";
+import { convertDictToUrlParams } from "utils/url.js";
+
 
 interface FilterContainerPlayerProps {
 	filters: dict;
@@ -14,6 +17,7 @@ interface FilterContainerPlayerProps {
 }
 
 const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, onChange, onClose, showPositions, showOverallScore }) => {
+	const navigate = useNavigate();
 
 	const getPositionTextValue = () => {
 		if (filters.positions) {
@@ -47,6 +51,19 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 		return "All";
 	}
 
+	const onPopupClose = () => {
+		navigate({ search: '?' + convertDictToUrlParams(filters) });
+
+		if (onClose) {
+			onClose();
+		}
+	}
+
+	useEffect(() => {
+    navigate({ search: '?' + convertDictToUrlParams(filters) });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="FilterContainerPlayer">
     	<Popup
@@ -73,7 +90,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 				}
 				modal
 				closeOnDocumentClick
-				onClose={onClose}
+				onClose={onPopupClose}
 				className={"slide-in"}
 			>
 				{(close) => (
