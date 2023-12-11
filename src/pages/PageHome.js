@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import BoxScrollDown from "components/box/BoxScrollDown.js";
 import BoxScrollUp from "components/box/BoxScrollUp.js";
 import BoxSocials from "components/box/BoxSocials.js";
+import BoxClubMap from "components/box/BoxClubMap.js";
 import Footer from "bars/Footer.js";
 
 interface PageHomeProps {
@@ -40,8 +41,8 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
               </div>
             </div>
 
-            <div className="row my-5">
-              <div className="col-md-12 my-5 pt-5">
+            <div className="row mb-5">
+              <div className="col-md-12 mb-5">
                 <h1 className="text-white text-end">Check at the MFL activity</h1>
               </div>
 
@@ -51,7 +52,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                     <img src="/media/images/player.svg" className="card-img-top p-4" alt="Random"></img>
                     <div className="card-body">
                       <h4 className="card-title text-white">Players</h4>
-                      <p className="card-text">On his spare time, he is even capable to generate a perfect overview of the realm of players.</p>
+                      <p className="card-text">Task the assistant to give a perfect overview of the realm of players.</p>
                     </div>
                   </div>
                 </Link>
@@ -75,7 +76,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                     <img src="/media/images/podium.svg" className="card-img-top" alt="Random"></img>
                     <div className="card-body">
                       <h4 className="card-title text-white">Competitions</h4>
-                      <p className="card-text">Check the perfect report from your assistant including the competition calendar, the participations and more.</p>
+                      <p className="card-text">Check the report including the calendar, the participations and more.</p>
                     </div>
                   </div>
                 </Link>
@@ -83,29 +84,67 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
             </div>
 
             <div className="row my-5 pt-5">
-              <div className="col-md-12 my-5">
-                <h1 className="text-white">Directors, time to step up your clubs!</h1>
+              <div className="col-md-12 my-5 pt-5">
+                <h1 className="text-white">Analyze Mercato Trends!</h1>
               </div>
 
-              <div className="offset-md-1 col-md-5 mb-2">
-                <Link to="/mercato/contracts" className="text-decoration-none">
-                  <div className="card h-100">
-                    <img src="/media/images/contract-search.svg" className="card-img-top" alt="Random"></img>
+              <div className="col-md-6 d-flex flex-fill align-items-center">
+                <div className="d-flex flex-column w-100 text-center my-5">
+                  <h4>With the 2 mercato tabs:</h4>
+
+                  <div className="text-center my-4">
+                    <Link to="/mercato/contracts" className="text-decoration-none">
+                      <div className="card-page card mb-2 mx-2 d-inline-block">
+                        <div className="card-body px-3 py-2">
+                          <p className="card-text text-info">Contracts</p>
+                        </div>
+                      </div>
+                    </Link>
+
+                    <Link to="/mercato/sales" className="text-decoration-none">
+                      <div className="card-page card mb-2 mx-1 d-inline-block">
+                        <div className="card-body px-3 py-2">
+                          <p className="card-text text-info">Sales</p>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-6 mb-2">
+                <div className="mb-2 text-center">
+                  <h6>Enhanced by a filtering system:</h6>
+                </div>
+
+                <Link to="/mercato/contracts?overallMin=85" className="text-decoration-none">
+                  <div className="card mb-2 mt-4">
                     <div className="card-body">
-                      <h4 className="card-title text-white">Optimize your contracts</h4>
-                      <p className="card-text">Have a look at the contract market and let the assistant spotting the dishonest agents.</p>
+                      <p className="card-text"><i class="bi bi-star-fill text-white me-2"></i>Examine the legendary player contracts</p>
                     </div>
                   </div>
                 </Link>
-              </div>
 
-              <div className="col-md-5 mb-2">
-                <Link to="/mercato/trades" className="text-decoration-none">
-                  <div className="card h-100">
-                    <img src="/media/images/scout.svg" className="card-img-top p-4" alt="Random"></img>
+                <Link to="/mercato/contracts?positions=CB" className="text-decoration-none">
+                  <div className="card mb-4">
                     <div className="card-body">
-                      <h4 className="card-title text-white">Keep an eye on trades</h4>
-                      <p className="card-text">A good director is nothing without his scout, isn't it?</p>
+                      <p className="card-text"><i class="bi bi-shield-shaded text-white me-2"></i>Examine the CB contracts</p>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link to="/mercato/sales?overallMax=64" className="text-decoration-none">
+                  <div className="card mb-2 mt-4">
+                    <div className="card-body">
+                      <p className="card-text"><i class="bi bi-speedometer text-white me-2"></i>Evaluate the common player sales</p>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link to="/mercato/sales?positions=LW,RW" className="text-decoration-none">
+                  <div className="card mb-2">
+                    <div className="card-body">
+                      <p className="card-text"><i class="bi bi-shield-shaded text-white me-2"></i>Evaluate the ST sales</p>
                     </div>
                   </div>
                 </Link>
@@ -113,32 +152,12 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
             </div>
 
             <div className="row my-5 py-5">
-              <div className="col-md-12 my-5">
-                <h1 className="text-white text-end">You have a business to grow, Agents!</h1>
+              <div className="col-md-12 my-5 pt-5">
+                <h1 className="text-white text-end">Tour the Global Club Scene!</h1>
               </div>
 
-              <div className="offset-md-1 col-md-5 mb-2">
-                <Link to="/mercato/contracts" className="text-decoration-none">
-                  <div className="card h-100">
-                    <img src="/media/images/increase.svg" className="card-img-top p-4" alt="Random"></img>
-                    <div className="card-body">
-                      <h4 className="card-title text-white">Increase contract profits</h4>
-                      <p className="card-text">Build strong arguments to convince the club owners to sign your best donkey.</p>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-
-              <div className="col-md-5 mb-2">
-                <Link to="/mercato/trades" className="text-decoration-none">
-                  <div className="card h-100">
-                    <img src="/media/images/exchange.svg" className="card-img-top p-4" alt="Random"></img>
-                    <div className="card-body">
-                      <h4 className="card-title text-white">Buy and sell players at best</h4>
-                      <p className="card-text">You can do it too! Get your next jewel for 26m€ and upsell it for 75m€.</p>
-                    </div>
-                  </div>
-                </Link>
+              <div className="offset-md-1 col-md-10 mb-2">
+                <BoxClubMap />
               </div>
             </div>
           </div>
