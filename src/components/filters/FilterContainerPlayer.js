@@ -68,7 +68,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
     <div className="FilterContainerPlayer">
     	<Popup
 				trigger={
-					<div className="big-filter-box flex-row bg-body d-flex border btn border-info border-3 text-white p-1 pe-2">
+					<div className="big-filter-box flex-row bg-body d-flex border btn border-info border-3 text-white p-1">
 						<div className="d-flex align-items-center mx-3 my-2 h5">
 							<i className="bi bi-filter-square-fill text-info"></i>
 						</div>
