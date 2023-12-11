@@ -43,7 +43,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
 
             <div className="row mb-5">
               <div className="col-md-12 mb-5">
-                <h1 className="text-white text-end">Check at the MFL activity</h1>
+                <h1 className="text-white text-end">Check at the MFL activity!</h1>
               </div>
 
               <div className="col-md-4 mb-2">
