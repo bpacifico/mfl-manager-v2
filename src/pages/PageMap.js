@@ -38,7 +38,7 @@ const PageMap: React.FC<PageMapProps> = () => {
       <div className="Warning-wrapper position-absolute w-auto fixed-bottom my-4 mx-4 mx-md-5">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
           <i className="bi bi-cone-striped me-2"></i>The input data is a snapshot prior to the issuance of the stone clubs
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       </div>
 
