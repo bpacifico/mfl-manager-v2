@@ -41,7 +41,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 		if (filters.overallMin || filters.overallMax) {
 			let text = [];
 
-			text.push(<>{filters.overallMin || -<i className="bi bi-infinity"></i>}</>);
+			text.push(<>{filters.overallMin || <>- <i className="bi bi-infinity"></i></>}</>);
 			text.push(<i className="bi bi-arrow-right small mx-1"></i>);
 			text.push(<>{filters.overallMax || <i className="bi bi-infinity"></i>}</>);
 

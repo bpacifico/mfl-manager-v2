@@ -12,7 +12,7 @@ const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overall
     if (overallMin || overallMax) {
       let text = [];
 
-      text.push(<span>{overallMin || -<i className="bi bi-infinity"></i>}</span>);
+      text.push(<span>{overallMin || <>- <i className="bi bi-infinity"></i></>}</span>);
       text.push(<i className="bi bi-arrow-right small mx-2"></i>);
       text.push(<span>{overallMax || <i className="bi bi-infinity"></i>}</span>);
 
