@@ -11,7 +11,7 @@ const BoxClubMap: React.FC<BoxClubMapProps> = () => {
 				<Link to="/map" className="text-decoration-none text-center">
 	        <div className="card h-100 d-flex align-items-center justify-content-center">
 	          <div className="flex-column">
-	          	<i class="bi bi-globe-central-south-asia display-1"></i>
+	          	<i className="bi bi-globe-central-south-asia display-1"></i>
 	            <h4 className="card-title">Open the map</h4>
 	          </div>
           </div>

@@ -120,7 +120,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                 <Link to="/mercato/contracts?overallMin=85" className="text-decoration-none">
                   <div className="card mb-2 mt-4">
                     <div className="card-body">
-                      <p className="card-text"><i class="bi bi-star-fill text-white me-2"></i>Examine the legendary player contracts</p>
+                      <p className="card-text"><i className="bi bi-star-fill text-white me-2"></i>Examine the legendary player contracts</p>
                     </div>
                   </div>
                 </Link>
@@ -128,7 +128,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                 <Link to="/mercato/contracts?positions=CB" className="text-decoration-none">
                   <div className="card mb-4">
                     <div className="card-body">
-                      <p className="card-text"><i class="bi bi-shield-shaded text-white me-2"></i>Examine the CB contracts</p>
+                      <p className="card-text"><i className="bi bi-shield-shaded text-white me-2"></i>Examine the CB contracts</p>
                     </div>
                   </div>
                 </Link>
@@ -136,7 +136,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                 <Link to="/mercato/sales?overallMax=64" className="text-decoration-none">
                   <div className="card mb-2 mt-4">
                     <div className="card-body">
-                      <p className="card-text"><i class="bi bi-speedometer text-white me-2"></i>Evaluate the common player sales</p>
+                      <p className="card-text"><i className="bi bi-speedometer text-white me-2"></i>Evaluate the common player sales</p>
                     </div>
                   </div>
                 </Link>
@@ -144,7 +144,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                 <Link to="/mercato/sales?positions=LW,RW" className="text-decoration-none">
                   <div className="card mb-2">
                     <div className="card-body">
-                      <p className="card-text"><i class="bi bi-shield-shaded text-white me-2"></i>Evaluate the ST sales</p>
+                      <p className="card-text"><i className="bi bi-shield-shaded text-white me-2"></i>Evaluate the ST sales</p>
                     </div>
                   </div>
                 </Link>

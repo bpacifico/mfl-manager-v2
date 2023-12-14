@@ -21,7 +21,7 @@ const BoxSocials: React.FC<BoxSocialsProps> = () => {
             viewBox="0 0 55.541065 17.780001"
             height="14"
             version="1.1"
-            class="NavMobile_logo__ws_KV"
+            className="NavMobile_logo__ws_KV"
           >
             <g transform="translate(227.49086,-63.017615)">
               <path fill="#0dcaf0" d="m -202.64966,63.017615 -3.5052,17.78 h -5.461 l 1.5748,-8.1026 -5.0038,6.5024 h -2.6416 l -2.7432,-6.4008 -1.6002,8.001 h -5.461 l 3.556,-17.78 h 4.8768 l 3.8608,9.4488 7.4422,-9.4488 z"></path>
