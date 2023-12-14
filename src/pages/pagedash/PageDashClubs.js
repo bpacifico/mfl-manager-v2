@@ -42,7 +42,6 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
       .then(response => response.json())
       .then(data => {
         setClubs(data)
-        nm.warning("The input data is a snapshot prior to the issuance of the stone clubs");
       });
   }, []);
 
@@ -65,6 +64,11 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
   return (
     <div id="PageDashClubs" className="position-relative">
       <div className="container px-4 py-5">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <i className="bi bi-cone-striped me-2"></i>The input data is a snapshot prior to the issuance of the stone clubs
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <div className="row mb-5">
           <div className="col">
             <div className="row mt-md-2 mb-5">

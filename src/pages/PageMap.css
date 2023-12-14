@@ -6,3 +6,7 @@
 #PageMap .FilterClub-wrapper {
     z-index: 500;
 }
+
+#PageMap .Warning-wrapper {
+    z-index: 500;
+}

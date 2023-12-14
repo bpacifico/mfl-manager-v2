@@ -22,7 +22,6 @@ const PageMap: React.FC<PageMapProps> = () => {
       .then(response => response.json())
       .then(data => {
         setClubs(data);
-        nm.warning("The input data is a snapshot prior to the issuance of the stone clubs");
       });
   }, []);
 
@@ -34,6 +33,13 @@ const PageMap: React.FC<PageMapProps> = () => {
           onChange={(f) => setFilters(f)}
           showDivisions={true}
         />
+      </div>
+
+      <div className="Warning-wrapper position-absolute w-auto fixed-bottom my-4 mx-4 mx-md-5">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <i className="bi bi-cone-striped me-2"></i>The input data is a snapshot prior to the issuance of the stone clubs
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
       </div>
 
       <MapContainer className="bg-dark h-100 w-100" center={[49.61, 6.13]} zoom={3}>
