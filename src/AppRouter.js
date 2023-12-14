@@ -11,7 +11,6 @@ import PageDashCompetitions from "pages/pagedash/PageDashCompetitions.js";
 import PageDashClubs from "pages/pagedash/PageDashClubs.js";
 import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
 import PageMercatoSales from "pages/pagemercato/PageMercatoSales.js";
-import BoxBeta from "components/box/BoxBeta.js";
 
 const AppRouter: React.FC = () => {
   const location = useLocation();
@@ -33,8 +32,6 @@ const AppRouter: React.FC = () => {
 
   return (
     <div id="AppRouter" className="d-flex flex-column flex-md-row vh-100">
-      <BoxBeta />
-
       <div id="AppMenu" className="order-2 order-md-1">
         <Menu />
       </div>
