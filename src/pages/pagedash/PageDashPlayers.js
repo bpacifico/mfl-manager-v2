@@ -124,7 +124,7 @@ const PageDashPlayers: React.FC<PageDashPlayersProps> = () => {
               </div>
             </div>
 
-            <div className="row">
+            <div className="row mb-4">
               <div className="col-md-6">
                 <h4 className="pb-3">Number of players per scarcity</h4>
 

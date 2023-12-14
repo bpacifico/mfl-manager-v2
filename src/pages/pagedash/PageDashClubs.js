@@ -96,7 +96,7 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
             </div>
 
             <div className="row">
-              <div className="col-sm-6 mb-5">
+              <div className="col-sm-6 mb-4">
                 <h4 className="pb-3">Number of clubs per divisions</h4>
 
                 <ChartPyramidClubDivisions
@@ -104,7 +104,7 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
                 />
               </div>
 
-              <div className="col-sm-6 mb-5">
+              <div className="col-sm-6 mb-4">
                 <h4 className="pb-3">Map visualisation</h4>
 
                 <BoxClubMap />

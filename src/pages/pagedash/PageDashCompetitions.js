@@ -50,7 +50,7 @@ const PageDashCompetitions: React.FC<PageDashCompetitionsProps> = ({ initialValu
               </div>
             </div>
 
-            <div className="row mb-5">
+            <div className="row mb-4">
               <div className="col-sm-6">
                 <h4 className="pb-3">Number of competitions per month</h4>
 
@@ -74,7 +74,7 @@ const PageDashCompetitions: React.FC<PageDashCompetitionsProps> = ({ initialValu
               </div>
             </div>
 
-            <div className="row">
+            <div className="row mb-4">
               <div className="col-sm-12">
                 <h4 className="pb-3">Calendar</h4>
 
