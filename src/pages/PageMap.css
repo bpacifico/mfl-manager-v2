@@ -3,6 +3,10 @@
     background-color: #262626 !important;
 }
 
+#PageMap .leaflet-control-zoom {
+    margin-top: 60px;
+}
+
 #PageMap .FilterClub-wrapper {
     z-index: 500;
 }

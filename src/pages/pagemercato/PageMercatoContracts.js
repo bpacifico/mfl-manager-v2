@@ -7,8 +7,8 @@ import Count from "components/counts/Count.js";
 import CountContracts from "components/counts/CountContracts.js";
 import CountContractRevenueShare from "components/counts/CountContractRevenueShare.js";
 import ChartScatterPlayerContracts from "components/charts/ChartScatterPlayerContracts.js";
-import ChartLinePlayerContractLinearRegression from "components/charts/ChartLinePlayerContractLinearRegression.js";
 import TablePlayerContractLinearRegression from "components/tables/TablePlayerContractLinearRegression.js";
+import BoxWarning from "components/box/BoxWarning.js";
 import { getUnderContractPlayers } from "services/api-mfl.js";
 
 interface PageMercatoSalesProps {}
@@ -64,7 +64,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
     if (players && playerCount) {
       if (players.length < playerCount) {
         if (players.length >= 2000) {
-          nm.warning("Stopped loading at " + players.length + " players out of " + playerCount);
+          nm.warning("Only " + players.length + " contracts out of " + playerCount + " has been loaded");
           setIsLoading(false);
         } else {
           getData(true, players.slice(-1)[0].id);
@@ -86,7 +86,18 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
 
       <div className="container px-4 py-5">
         <div className="row">
-          <div className="col-12 mb-3">
+          <div className="col-6">
+            {!isLoading && players && playerCount && players.length !== playerCount
+              && <BoxWarning
+                className={"h2 my-3"}
+                content={<>
+                  Only {players.length} contracts out of {playerCount} has been loaded
+                </>}
+              />
+            }
+          </div>
+
+          <div className="col-6 mb-3">
             <div className="float-end">
               <FilterContainerPlayer
                 filters={filters}
@@ -103,7 +114,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
             <div className="row mt-md-2 mb-5">
               <div className="offset-lg-2 col-lg-2 col-sm-4">
                 <Count
-                  label={"Total contract"}
+                  label={"Contracts"}
                   count={playerCount}
                 />
               </div>
@@ -120,18 +131,10 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
             </div>
           </div>
 
-          <div className="col-12 col-md-6 mb-md-5">
+          <div className="col-12 mb-md-5">
             <h4>Running contracts per division</h4>
 
             <ChartScatterPlayerContracts
-              players={players}
-            />
-          </div>
-
-          <div className="col-12 col-md-6 mb-md-5">
-            <h4>Estimation of revenue share per division</h4>
-
-            <ChartLinePlayerContractLinearRegression
               players={players}
             />
           </div>

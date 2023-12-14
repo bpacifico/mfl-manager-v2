@@ -8,6 +8,7 @@ import CountSaleValue from "components/counts/CountSaleValue.js";
 import ChartBarPlayerSales from "components/charts/ChartBarPlayerSales.js";
 import ChartBarPlayerSaleValue from "components/charts/ChartBarPlayerSaleValue.js";
 import ChartScatterPlayerSales from "components/charts/ChartScatterPlayerSales.js";
+import BoxWarning from "components/box/BoxWarning.js";
 import { getPlayerSales } from "services/api-mfl.js";
 
 interface PageMercatoSalesProps {}
@@ -16,6 +17,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
   const [searchParams] = useSearchParams();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isComplete, setIsComplete] = useState(true);
   const [sales, setSales] = useState(null);
   const [filters, setFilters] = useState({
     positions: searchParams.get("positions") ? searchParams.get("positions").split(",") : [],
@@ -55,13 +57,15 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
   useEffect(() => {
     if (!sales) {
       setIsLoading(true);
+      setIsComplete(true);
       getData();
     }
 
     if (sales) {
       if (sales.length >= 100) {
-        nm.warning("Stopped loading at " + sales.length + " players out of 100");
+        nm.warning("Only the " + sales.length + " latest sales out of an undefined amount has been loaded");
         setIsLoading(false);
+        setIsComplete(false);
       } else {
         getData(true, sales.slice(-1)[0].listingResourceId);
       }
@@ -78,7 +82,18 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
 
       <div className="container px-4 py-5">
         <div className="row">
-          <div className="col-12 mb-3">
+          <div className="col-6">
+            {!isComplete
+              && <BoxWarning
+                className={"h2 my-3"}
+                content={<>
+                  Only the 100 latest sales out of an undefined amount has been loaded
+                </>}
+              />
+            }
+          </div>
+
+          <div className="col-6 mb-3">
             <div className="float-end">
               <FilterContainerPlayer
                 filters={filters}
@@ -93,7 +108,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
 
           <div className="col-12">
             <div className="row mt-md-2 mb-5">
-              <div className="offset-0 offset-sm-2 col-lg-3 col-sm-4">
+              <div className="position-relative offset-0 offset-sm-2 col-lg-3 col-sm-4">
                 <CountSales
                   sales={sales}
                 />
@@ -106,7 +121,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
             </div>
           </div>
 
-          <div className="col-12 col-xl-6">
+          <div className="col-12 col-lg-6">
             <h4>Number of sales per day</h4>
 
             <ChartBarPlayerSales
@@ -114,7 +129,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
             />
           </div>
 
-          <div className="col-12 col-xl-6">
+          <div className="col-12 col-lg-6">
             <h4>Value of sales per day</h4>
 
             <ChartBarPlayerSaleValue

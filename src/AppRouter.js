@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Menu from "bars/Menu";
+import PageSearch from "pages/PageSearch";
 import PageHome from "pages/PageHome";
 import PageDash from "pages/PageDash";
 import PageMercato from "pages/PageMercato";
@@ -51,6 +52,10 @@ const AppRouter: React.FC = () => {
               element={<PageHome
                 yScrollPosition={yScrollPosition}
               />}
+            />
+            <Route
+              path="/search"
+              element={<PageSearch />}
             />
             <Route
               path="dash"

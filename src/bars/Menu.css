@@ -18,6 +18,17 @@
   transform: rotate(-180deg);
 }
 
+#Menu .nav-link-search {
+  font-size: 16px;
+  background-color: #0B0C0D;
+  border-bottom-right-radius: 10px;
+  z-index: 1000;
+}
+
+#Menu .nav-link-search:hover {
+  color: #0dcaf0;
+}
+
 @media (max-width: 768px) {
   #Menu {
     height: auto;
@@ -31,6 +42,12 @@
   #Menu .nav-link span {
     transform: none;
   }
+
+  #Menu .nav-link-search {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -41,6 +58,12 @@
 
   #Menu .nav-link span {
     writing-mode: vertical-rl;
+  }
+
+  #Menu .nav-link-search {
+    position: fixed;
+    top: 0px;
+    left: 72px;
   }
 }
 

@@ -21,6 +21,17 @@ const Menu: React.FC<MenuProps> = (props) => {
 
   return (
     <nav id="Menu" className="navbar h-100 justify-content-center px-3 px-md-4 py-2">
+      {!location.pathname.startsWith("/search")
+        && <Link
+          to="/search"
+          className={"nav-link nav-link-search py-2 px-3"}
+        >
+          <div className="py-md-1 px-md-1">
+            <i className="bi bi-search"></i>
+          </div>
+        </Link>
+      }
+
       <ul className="navbar-nav flex-row flex-md-column h4">
         <li className="nav-item">
           <Link

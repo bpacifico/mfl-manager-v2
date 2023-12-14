@@ -89,7 +89,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
               </div>
 
               <div className="col-md-6 d-flex flex-fill align-items-center">
-                <div className="d-flex flex-column w-100 text-center my-5">
+                <div className="d-flex flex-column w-100 text-center mt-5 mb-4">
                   <h4>With the 2 mercato tabs:</h4>
 
                   <div className="text-center my-4">
