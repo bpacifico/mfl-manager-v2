@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Gantt, ViewMode } from 'gantt-task-react';
 import LoadingSquare from "components/loading/LoadingSquare";
 import "gantt-task-react/dist/index.css";
+import { unixTimestampToDayString } from "utils/date.js";
 
 interface Competition {
   id: number;
@@ -12,6 +13,7 @@ interface ChartGanttCompetitionsProps {
 }
 
 const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competitions }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const computeData = () => {
     return competitions
@@ -21,16 +23,26 @@ const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competi
         type: c.type,
       }))
       .reduce((accumulator, current) => {
-        if (!accumulator.find((item) => item.name === current.name && item.startingDate === current.startingDate)) {
-          accumulator.push(current);
+        if (isExpanded) {
+          if (!accumulator.find((item) => item.name === current.name && item.startingDate === current.startingDate)) {
+            accumulator.push(current);
+          }
+        } else {
+          if (!accumulator.find((item) => item.type === current.type
+            && (item.startingDate === current.startingDate
+              || (current.type === "LEAGUE" &&
+                unixTimestampToDayString(item.startingDate) === unixTimestampToDayString(current.startingDate))))) {
+            accumulator.push(current);
+          }
         }
         return accumulator;
       }, [])
+      .sort((a, b) => a.startingDate > b.startingDate ? 1 : -1)
       .map((c, i) => ({
         id: i,
-        name: c.name,
+        name: isExpanded || c.type === "CUP" ? c.name : c.type,
         start: new Date(c.startingDate),
-        end: new Date(c.startingDate + 500000000),
+        end: new Date(c.startingDate + 100000000),
         styles: {
           backgroundColor: c.type === "CUP" ? "#0dcaf0" : "#adb5bd",
         }
@@ -44,19 +56,35 @@ const ChartGanttCompetitions: React.FC<ChartGanttCompetitionsProps> = ({ competi
 
   return (
     <div className="mb-4 py-2 px-1 px-md-3">
-      <div className="w-100 border border-body">
+      <div/>
+      <div className="w-100">
         {!competitions
           ? <div className="ratio ratio-16x9">
             <LoadingSquare />
           </div>
-          : <Gantt
-          	tasks={computeData()}
-          	config={config}
-          	viewMode={ViewMode.Week}
-          	listCellWidth={""}
-            allowSorting={true}
-            {...config}
-          />
+          : <div>
+            <div className="text-end">
+              <small>
+                Expand all
+                <input
+                  type="checkbox"
+                  className="ms-1"
+                  value={isExpanded}
+                  onChange={() => setIsExpanded(!isExpanded)}
+                />
+              </small>
+            </div>
+            <div className="border border-body">
+              <Gantt
+              	tasks={computeData()}
+              	config={config}
+              	viewMode={ViewMode.Week}
+              	listCellWidth={""}
+                allowSorting={true}
+                {...config}
+              />
+            </div>
+          </div>
         }
       </div>
   	</div>
