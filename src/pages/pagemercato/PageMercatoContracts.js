@@ -131,7 +131,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
             </div>
           </div>
 
-          <div className="col-12 mb-md-5">
+          <div className="col-12 mb-md-4">
             <h4>Running contracts per division</h4>
 
             <ChartScatterPlayerContracts
@@ -139,7 +139,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
             />
           </div>
 
-          <div className="col-12 mb-md-5">
+          <div className="col-12 mb-md-4">
             <h4>Estimation of revenue share</h4>
 
             <TablePlayerContractLinearRegression

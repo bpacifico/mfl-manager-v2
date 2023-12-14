@@ -105,9 +105,11 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
               />
             </div>
           </div>
+        </div>
 
+        <div className="row mb-5">
           <div className="col-12">
-            <div className="row mt-md-2 mb-5">
+            <div className="row mt-md-2">
               <div className="position-relative offset-0 offset-sm-2 col-lg-3 col-sm-4">
                 <CountSales
                   sales={sales}
@@ -120,7 +122,9 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
               </div>
             </div>
           </div>
+        </div>
 
+        <div className="row mb-4">
           <div className="col-12 col-lg-6">
             <h4>Number of sales per day</h4>
 
@@ -136,7 +140,9 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
               sales={sales}
             />
           </div>
+        </div>
 
+        <div className="row mb-4">
           <div className="col-12">
             <h4>Sale prices per overall score</h4>
 
