@@ -4,6 +4,7 @@ import "./FilterContainerPlayer.css";
 import Popup from "reactjs-popup";
 import ControllerPositions from "components/controllers/ControllerPositions.js";
 import ControllerOverallScore from "components/controllers/ControllerOverallScore.js";
+import ControllerAge from "components/controllers/ControllerAge.js";
 import { positions } from "utils/player.js";
 import { convertDictToUrlParams } from "utils/url.js";
 
@@ -14,9 +15,10 @@ interface FilterContainerPlayerProps {
 	onClose?: func;
   showPositions?: boolean;
   showOverallScore?: boolean;
+  showAge?: boolean;
 }
 
-const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, onChange, onClose, showPositions, showOverallScore }) => {
+const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, onChange, onClose, showPositions, showOverallScore, showAge }) => {
 	const navigate = useNavigate();
 
 	const getPositionTextValue = () => {
@@ -51,6 +53,20 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 		return "All";
 	}
 
+	const getAgeTextValue = () => {
+    if (filters.ageAtMintMin || filters.ageAtMintMax) {
+      let text = [];
+
+      text.push(<span>{filters.ageAtMintMin || <>- <i className="bi bi-infinity"></i></>}</span>);
+      text.push(<i className="bi bi-arrow-right small mx-2"></i>);
+      text.push(<span>{filters.ageAtMintMax || <i className="bi bi-infinity"></i>}</span>);
+
+      return text;
+    }
+
+    return "All";
+  }
+
 	const onPopupClose = () => {
 		navigate({ search: '?' + convertDictToUrlParams(filters) });
 
@@ -84,6 +100,13 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 							&& <div className="mx-2">
 								<div className="text-white-50">OVR</div>
 								<div>{getOverallScoreTextValue()}</div>
+							</div>
+						}
+
+						{showAge && getAgeTextValue() !== "All"
+							&& <div className="mx-2">
+								<div className="text-white-50">AGE</div>
+								<div>{getAgeTextValue()}</div>
 							</div>
 						}
 					</div>
@@ -127,6 +150,18 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 										...filters,
 										overallMin: min,
 										overallMax: max,
+									})}
+								/>}
+			    		</div>
+
+			    		<div className="col-md-12 mb-4">
+				    		{showAge && <ControllerAge
+				    			ageAtMintMin={filters.ageAtMintMin}
+				    			ageAtMintMax={filters.ageAtMintMax}
+									onChange={(min, max) => onChange({
+										...filters,
+										ageAtMintMin: min,
+										ageAtMintMax: max,
 									})}
 								/>}
 			    		</div>

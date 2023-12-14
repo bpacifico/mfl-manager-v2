@@ -94,6 +94,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
                 onClose={() => resetData()}
                 showPositions={true}
                 showOverallScore={true}
+                showAge={true}
               />
             </div>
           </div>

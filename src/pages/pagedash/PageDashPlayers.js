@@ -97,6 +97,7 @@ const PageDashPlayers: React.FC<PageDashPlayersProps> = () => {
                 onClose={() => resetData()}
                 showPositions={true}
                 showOverallScore={true}
+                showAge={true}
               />
             </div>
           </div>
