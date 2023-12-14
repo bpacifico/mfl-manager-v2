@@ -1,6 +1,8 @@
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
+import { enUS } from 'date-fns/locale';
 import { Scatter } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
 import { getDivisionColor } from "utils/division.js";
@@ -20,7 +22,7 @@ const ChartScatterClubSales: React.FC<ChartScatterClubSalesProps> = ({ sales }) 
 
     for (let i = 0; i < sales.length; i++) {
       data.push({
-        x: sales[i].purchaseDateTime,
+        x: new Date(sales[i].purchaseDateTime),
         y: sales[i].price,
       });
     }
@@ -60,13 +62,15 @@ const ChartScatterClubSales: React.FC<ChartScatterClubSalesProps> = ({ sales }) 
                   ticks: {
                     color: "#AAA",
                   },
-                  /* type: "time",
+                  type: "time",
     		          time: {
     		            unit: "day",
-                    displayFormats: {
-                      day: 'D MMM',
+    		          },
+                  adapters: { 
+                    date: {
+                      locale: enUS, 
                     },
-    		          }, */
+                  }, 
                   position: 'bottom',
                   title: {
                     display: true,
