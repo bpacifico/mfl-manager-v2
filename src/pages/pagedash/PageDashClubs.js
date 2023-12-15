@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { NotificationManager as nm } from "react-notifications";
 import Count from "components/counts/Count.js";
 import ChartPyramidClubDivisions from "components/charts/ChartPyramidClubDivisions.js";
 import ChartScatterClubSales from "components/charts/ChartScatterClubSales.js";

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./PageMap.css";
 import "statics/leaflet.css";
-import { NotificationManager as nm } from "react-notifications";
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import FilterClub from "components/filters/FilterClub.js";
