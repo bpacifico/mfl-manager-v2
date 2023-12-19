@@ -2,6 +2,8 @@ import { get } from "utils/request.js";
 import { getApiEndpoint } from "utils/env.js";
 import { convertDictToUrlParams } from "utils/url.js";
 
+/* COMPETITIONS */
+
 export const getPastCompetitions = (handleSuccess, handleError) => get(
   getApiEndpoint() + "competitions?past=true",
   handleSuccess,
@@ -10,6 +12,16 @@ export const getPastCompetitions = (handleSuccess, handleError) => get(
 
 export const getUpcomingCompetitions = (handleSuccess, handleError) => get(
   getApiEndpoint() + "competitions?upcoming=true",
+  handleSuccess,
+  handleError,
+);
+
+/* PLAYERS */
+
+export const getPlayers = (handleSuccess, handleError, params) => get(
+  getApiEndpoint()
+    + "players?limit=400&withCount=true&"
+    + convertDictToUrlParams(params),
   handleSuccess,
   handleError,
 );
@@ -38,10 +50,20 @@ export const getPlayerSales = (handleSuccess, handleError, params) => get(
   handleError,
 );
 
+/* LISTINGS */
+
 export const getClubSales = (handleSuccess, handleError, params) => get(
   getApiEndpoint()
     + "listings?limit=25&type=CLUB&status=BOUGHT&"
     + convertDictToUrlParams(params),
+  handleSuccess,
+  handleError,
+);
+
+/* USERS */
+
+export const getUsers = (handleSuccess, handleError, search) => get(
+  getApiEndpoint() + "users/search?search=" + search,
   handleSuccess,
   handleError,
 );
