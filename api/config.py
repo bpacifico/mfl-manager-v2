@@ -17,6 +17,7 @@ def _getenv(key, default=None, mandatory=True):
 
 ORIGINS = [
     "http://127.0.0.1",
+    "http://127.0.0.1:3000",
     "http://127.0.0.1:5000",
 ]
 

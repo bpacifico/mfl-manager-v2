@@ -108,7 +108,9 @@ const Router: React.FC = (props) => {
             </Route>
             <Route
               path="notification"
-              element={<PageNotification />}
+              element={<PageNotification
+                {...props}
+              />}
             />
 
             {/* 404 */}

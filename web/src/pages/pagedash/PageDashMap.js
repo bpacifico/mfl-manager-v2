@@ -26,7 +26,7 @@ const PageDashMap: React.FC<PageDashMapProps> = () => {
 
   return (
     <div id="PageDashMap" className="position-relative w-100 h-100">
-      <div className="FilterClub-wrapper position-fixed top-0 end-0 m-4">
+      <div className="FilterClub-wrapper position-absolute top-0 end-0 m-4">
         <FilterClub
           filters={filters}
           onChange={(f) => setFilters(f)}

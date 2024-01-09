@@ -2,7 +2,8 @@ from graphene import ObjectType, String, Int, Field, List
 
 class UserType(ObjectType):
     id = Int()
-    name = String()
+    address = String()
+    email = String()
     notification_scopes = List(lambda: NotificationScopeType)
 
 class NotificationScopeType(ObjectType):

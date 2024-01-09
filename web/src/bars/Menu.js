@@ -1,20 +1,12 @@
 import React from 'react';
 import "./Menu.css";
 import { Link, useLocation } from 'react-router-dom';
-import * as fcl from "@onflow/fcl";
+import ButtonLogin from "components/buttons/ButtonLogin.js";
 
 interface MenuProps {}
 
 const Menu: React.FC<MenuProps> = (props) => {
   const location = useLocation();
-
-  const logIn = () => {
-    fcl.authenticate();
-  };
-
-  const logOut = () => {
-    fcl.unauthenticate();
-  };
 
   const getMenuLabel = (text, cl) => {
     return <span
@@ -125,33 +117,10 @@ const Menu: React.FC<MenuProps> = (props) => {
 
       <div className="flex-grow-0">
         <div className="nav-item align-content-center">
-          <Link
+          <ButtonLogin
             className={"nav-link nav-link-login"}
-            onClick={props.user?.loggedIn ? logOut : logIn}
-          >
-            <div className="ps-3 pe-2 px-md-2 py-md-2 px-md-0">
-              {props.user?.loggedIn
-                ? <div
-                  className="Menu-logout d-inline-block align-items-center text-center"
-                  title="Logout"
-                >
-                  <div className="text-center">
-                    <i className="bi bi-person-fill-x lh-1"></i>
-                    <div className="d-block w-100 lh-1">LOGOUT</div>
-                  </div>
-                </div>
-                : <div
-                  className="Menu-login d-inline-block align-items-center text-center"
-                  title="Login"
-                >
-                  <div className="text-center">
-                    <i className="bi bi-person-fill-check lh-1"></i>
-                    <div className="d-block w-100 lh-1">LOGIN</div>
-                  </div>
-                </div>
-              }
-            </div>
-          </Link>
+            user={props.user}
+          />
         </div>
       </div>
     </nav>

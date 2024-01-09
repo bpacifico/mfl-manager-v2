@@ -9,13 +9,19 @@ interface PageDashProps {
 
 const PageDash: React.FC<PageDashProps> = ({ yScrollPosition }) => {
   return (
-    <div id="PageDash">
+    <div id="PageDash" className="w-100 h-100">
       {yScrollPosition > 100
         && <BoxScrollUp />
       }
 
-      <MenuPageDash />
-      <Outlet />
+      <div className="d-flex flex-column w-100 h-100">
+        <div className="flex-grow-0">
+          <MenuPageDash />
+        </div>
+        <div className="flex-grow-1">
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 };
