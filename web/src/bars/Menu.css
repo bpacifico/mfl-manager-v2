@@ -29,6 +29,29 @@
   color: #0dcaf0;
 }
 
+#Menu .Menu-login i,
+#Menu .Menu-logout i {
+  font-size: 18px;
+}
+
+#Menu .Menu-login div,
+#Menu .Menu-logout div {
+  font-size: 8px;
+}
+
+#Menu .Menu-login:hover {
+  color: #0dcaf0;
+}
+
+#Menu .Menu-logout {
+  color: #0dcaf0;
+}
+
+#Menu .Menu-logout:hover i,
+#Menu .Menu-logout:hover div {
+  color: #dc3545 !important;
+}
+
 @media (max-width: 768px) {
   #Menu {
     height: auto;
@@ -48,6 +71,10 @@
     top: 0px;
     left: 0px;
   }
+
+  #Menu .nav-link-login {
+    border-left: 2px solid #adb5bd;
+  }
 }
 
 @media (min-width: 768px) {
@@ -63,7 +90,11 @@
   #Menu .nav-link-search {
     position: fixed;
     top: 0px;
-    left: 72px;
+    left: 64px;
+  }
+
+  #Menu .nav-link-login {
+    border-top: 2px solid #adb5bd;
   }
 }
 

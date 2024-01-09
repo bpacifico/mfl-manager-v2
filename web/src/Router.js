@@ -5,15 +5,16 @@ import PageSearch from "pages/PageSearch";
 import PageHome from "pages/PageHome";
 import PageDash from "pages/PageDash";
 import PageMercato from "pages/PageMercato";
-import PageMap from "pages/PageMap.js";
+import PageNotification from "pages/PageNotification.js";
 import Page404 from "pages/Page404";
 import PageDashPlayers from "pages/pagedash/PageDashPlayers.js";
 import PageDashCompetitions from "pages/pagedash/PageDashCompetitions.js";
 import PageDashClubs from "pages/pagedash/PageDashClubs.js";
+import PageDashMap from "pages/pagedash/PageDashMap.js";
 import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
 import PageMercatoSales from "pages/pagemercato/PageMercatoSales.js";
 
-const AppRouter: React.FC = () => {
+const Router: React.FC = (props) => {
   const location = useLocation();
   const [yScrollPosition, setYScrollPosition] = useState(0);
 
@@ -32,9 +33,11 @@ const AppRouter: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <div id="AppRouter" className="d-flex flex-column flex-md-row vh-100">
+    <div id="Router" className="d-flex flex-column flex-md-row vh-100">
       <div id="AppMenu" className="order-2 order-md-1">
-        <Menu />
+        <Menu
+          {...props}
+        />
       </div>
 
       <div
@@ -79,6 +82,10 @@ const AppRouter: React.FC = () => {
                 path="competitions"
                 element={<PageDashCompetitions />}
               />
+              <Route
+                path="map"
+                element={<PageDashMap />}
+              />
             </Route>
             <Route
               path="mercato"
@@ -100,8 +107,8 @@ const AppRouter: React.FC = () => {
               />
             </Route>
             <Route
-              path="map"
-              element={<PageMap />}
+              path="notification"
+              element={<PageNotification />}
             />
 
             {/* 404 */}
@@ -115,4 +122,4 @@ const AppRouter: React.FC = () => {
   );
 };
 
-export default AppRouter;
+export default Router;

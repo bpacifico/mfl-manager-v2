@@ -1,0 +1,52 @@
+version: "3.8"
+name: mfl-assistant_dev
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: mfl-assistant
+    ports:
+      - "27017:27017"
+
+  api:
+    image: mfl-assistant_api:local
+    build:
+      context: ../api
+      dockerfile: Dockerfile
+    environment:
+      - MONGO_URI:mongodb://root:password@127.0.0.1:27017/mfl-assistant
+    ports:
+      - "5000:5000"
+    expose:
+      - "5000"
+    depends_on:
+      - mongodb
+    volumes:
+      - ../api:/app
+
+  web:
+    image: mfl-assistant_web:local
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - ../web:/app
+      - /app/node_modules
+    command: npm start
+    environment:
+       - CHOKIDAR_USEPOLLING=true
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+
+  smtp:
+    image: reachfive/fake-smtp-server
+    ports:
+      - "1025:1025"
+      - "1080:1080"

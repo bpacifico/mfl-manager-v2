@@ -1,17 +1,17 @@
 import { get } from "utils/request.js";
-import { getApiEndpoint } from "utils/env.js";
+import { getMflApiEndpoint } from "utils/env.js";
 import { convertDictToUrlParams } from "utils/url.js";
 
 /* COMPETITIONS */
 
 export const getPastCompetitions = (handleSuccess, handleError) => get(
-  getApiEndpoint() + "competitions?past=true",
+  getMflApiEndpoint() + "competitions?past=true",
   handleSuccess,
   handleError,
 );
 
 export const getUpcomingCompetitions = (handleSuccess, handleError) => get(
-  getApiEndpoint() + "competitions?upcoming=true",
+  getMflApiEndpoint() + "competitions?upcoming=true",
   handleSuccess,
   handleError,
 );
@@ -19,7 +19,7 @@ export const getUpcomingCompetitions = (handleSuccess, handleError) => get(
 /* PLAYERS */
 
 export const getPlayers = (handleSuccess, handleError, params) => get(
-  getApiEndpoint()
+  getMflApiEndpoint()
     + "players?limit=400&withCount=true&"
     + convertDictToUrlParams(params),
   handleSuccess,
@@ -27,7 +27,7 @@ export const getPlayers = (handleSuccess, handleError, params) => get(
 );
 
 export const getPlayerCount = (handleSuccess, handleError, params) => get(
-  getApiEndpoint()
+  getMflApiEndpoint()
     + "players?limit=1&withCount=true&excludingMflOwned=true&"
     + convertDictToUrlParams(params),
   handleSuccess,
@@ -35,7 +35,7 @@ export const getPlayerCount = (handleSuccess, handleError, params) => get(
 );
 
 export const getUnderContractPlayers = (handleSuccess, handleError, params) => get(
-  getApiEndpoint()
+  getMflApiEndpoint()
     + "players?limit=400&withCount=true&sorts=metadata.overall&sortsOrders=ASC&excludingMflOwned=true&isFreeAgent=false&"
     + convertDictToUrlParams(params),
   handleSuccess,
@@ -43,7 +43,7 @@ export const getUnderContractPlayers = (handleSuccess, handleError, params) => g
 );
 
 export const getPlayerSales = (handleSuccess, handleError, params) => get(
-  getApiEndpoint()
+  getMflApiEndpoint()
     + "listings?limit=25&type=PLAYER&status=BOUGHT&"
     + convertDictToUrlParams(params),
   handleSuccess,
@@ -53,7 +53,7 @@ export const getPlayerSales = (handleSuccess, handleError, params) => get(
 /* LISTINGS */
 
 export const getClubSales = (handleSuccess, handleError, params) => get(
-  getApiEndpoint()
+  getMflApiEndpoint()
     + "listings?limit=25&type=CLUB&status=BOUGHT&"
     + convertDictToUrlParams(params),
   handleSuccess,
@@ -63,7 +63,7 @@ export const getClubSales = (handleSuccess, handleError, params) => get(
 /* USERS */
 
 export const getUsers = (handleSuccess, handleError, search) => get(
-  getApiEndpoint() + "users/search?search=" + search,
+  getMflApiEndpoint() + "users/search?search=" + search,
   handleSuccess,
   handleError,
 );

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import "./PageMap.css";
+import "./PageDashMap.css";
 import "statics/leaflet.css";
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import FilterClub from "components/filters/FilterClub.js";
 
-interface PageMapProps {}
+interface PageDashMapProps {}
 
-const PageMap: React.FC<PageMapProps> = () => {
+const PageDashMap: React.FC<PageDashMapProps> = () => {
   const [clubs, setClubs] = useState(null);
   const [filters, setFilters] = useState({ divisions: [1] });
 
@@ -25,7 +25,7 @@ const PageMap: React.FC<PageMapProps> = () => {
   }, []);
 
   return (
-    <div id="PageMap" className="position-relative w-100 h-100">
+    <div id="PageDashMap" className="position-relative w-100 h-100">
       <div className="FilterClub-wrapper position-fixed top-0 end-0 m-4">
         <FilterClub
           filters={filters}
@@ -65,4 +65,4 @@ const PageMap: React.FC<PageMapProps> = () => {
   );
 };
 
-export default PageMap;
+export default PageDashMap;

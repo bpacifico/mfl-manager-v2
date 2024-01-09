@@ -1,8 +1,9 @@
 {
-  "name": "typescript-test",
+  "name": "mfl-assistant.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@onflow/fcl": "^1.9.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -34,7 +35,7 @@
     "source-map-explorer": "^2.5.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "WATCHPACK_POLLING=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
