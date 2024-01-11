@@ -99,7 +99,7 @@ const Menu: React.FC<MenuProps> = (props) => {
               className={"nav-link" + (location.pathname.startsWith("/notification") ? " active" : "")}
             >
               {location.pathname.startsWith("/notification")
-                && getMenuLabel("Notif.", "d-none d-md-inline")
+                && getMenuLabel("Notification", "d-none d-md-inline")
               }
               <div className="px-2 px-md-0">
                 {location.pathname.startsWith("/notification")
@@ -108,7 +108,7 @@ const Menu: React.FC<MenuProps> = (props) => {
                 }
               </div>
               {location.pathname.startsWith("/notification")
-                && getMenuLabel("Notif.", "d-inline d-md-none")
+                && getMenuLabel("Notification", "d-inline d-md-none")
               }
             </Link>
           </li>

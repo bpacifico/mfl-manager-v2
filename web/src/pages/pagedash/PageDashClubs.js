@@ -7,7 +7,7 @@ import { getClubSales } from "services/api-mfl.js";
 
 interface PageDashClubsProps {}
 
-const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
+const PageDashClubs: React.FC < PageDashClubsProps > = ({ initialValue }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [clubs, setClubs] = useState(null);
   const [sales, setSales] = useState(null);
@@ -20,17 +20,16 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
     getClubSales(
       (v) => {
         if (v.length > 0) {
-          const p = sales
-            ? sales.concat(v)
-            : v;
-          
+          const p = sales ?
+            sales.concat(v) :
+            v;
+
           setSales(p);
         } else {
           setIsLoading(false);
         }
       },
-      (e) => console.log(e),
-      {
+      (e) => console.log(e), {
         beforeListingId,
       },
     );
@@ -57,15 +56,15 @@ const PageDashClubs: React.FC<PageDashClubsProps> = ({ initialValue }) => {
         getData(true, sales.slice(-1)[0].listingResourceId);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sales]);
 
   return (
     <div id="PageDashClubs" className="position-relative">
       <div className="container px-4 py-5">
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <div className="alert alert-warning alert-dismissible fade show" role="alert">
           <i className="bi bi-cone-striped me-2"></i>The input data is a snapshot prior to the issuance of the stone clubs
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
         <div className="row mb-5">

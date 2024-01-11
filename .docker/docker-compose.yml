@@ -11,6 +11,8 @@ services:
       MONGO_INITDB_DATABASE: mfl-assistant
     ports:
       - "27017:27017"
+    expose:
+      - "27017"
 
   api:
     image: mfl-assistant_api:local
@@ -18,7 +20,12 @@ services:
       context: ../api
       dockerfile: Dockerfile
     environment:
-      - MONGO_URI:mongodb://root:password@127.0.0.1:27017/mfl-assistant
+      DB_HOSTNAME: "mongodb"
+      DB_NAME: "mfl-assistant"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "password"
+      DB_PORT: "27017"
+      DB_DRIVER: "mongodb"
     ports:
       - "5000:5000"
     expose:
@@ -50,3 +57,7 @@ services:
     ports:
       - "1025:1025"
       - "1080:1080"
+
+networks:
+  default:
+    name: mfl-assistant

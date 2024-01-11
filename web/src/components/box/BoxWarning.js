@@ -12,7 +12,7 @@ const BoxWarning: React.FC<BoxWarningProps> = ({ content, className }) => {
     <div className={"BoxWarning " + className}>
     	<Popup
 				trigger={
-					<i class="bi bi-cone-striped text-warning"></i>
+					<i className="bi bi-cone-striped text-warning"></i>
 				}
 				modal
 				closeOnDocumentClick
@@ -22,7 +22,7 @@ const BoxWarning: React.FC<BoxWarningProps> = ({ content, className }) => {
 					<div className="BoxWarning-content container bg-dark border border-warning border-3 rounded-3 p-4">
 						<div className="row mb-4">
 							<div className="col">
-						  	<i class="bi bi-cone-striped text-warning h2"></i>
+						  	<i className="bi bi-cone-striped text-warning h2"></i>
 						  </div>
 				      <div className="col-auto">
 				        <button

@@ -7,17 +7,14 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
+from graph.mutation import Mutation
 import config
 import secrets
 
 
 # FastAPI setup
+
 app = FastAPI()
-
-# Plugins
-db = AsyncIOMotorClient(config.MONGO_DB_URL)["mfl-assistant"]
-mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.ORIGINS,
@@ -26,15 +23,26 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_route(
-    "/graphql",
-    GraphQLApp(
-        schema=Schema(query=Query),
-        on_get=make_graphiql_handler()
-    )
+# Plugins
+
+db = AsyncIOMotorClient(config.DB_URL)[config.DB_CONFIG["database"]]
+mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
+graphql = GraphQLApp(
+    schema=Schema(query=Query, mutation=Mutation),
+    on_get=make_graphiql_handler(),
+    context_value={"db": db},
 )
 
+app.add_route("/graphql", graphql)
+
 @app.get("/api/generate_nonce")
+def generate_nonce():
+    nonce = secrets.token_bytes(32)
+    nonce_hex = str(nonce.hex())
+    print(type(nonce_hex))
+    return JSONResponse(content={ "nonce": nonce_hex })
+
+@app.get("/api/send_confirmation_mail")
 def generate_nonce():
     nonce = secrets.token_bytes(32)
     nonce_hex = str(nonce.hex())

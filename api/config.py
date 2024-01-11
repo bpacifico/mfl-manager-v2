@@ -23,17 +23,19 @@ ORIGINS = [
 
 # DATABASE
 
-MONGO_DB_URL = "mongodb://root:password@127.0.0.1:27017"
 
 DB_CONFIG = {
-    'drivername':   _getenv('DB_DRIVER',    default='mysql+pymysql'),
+    'drivername':   _getenv('DB_DRIVER',    default='mongodb'),
     'host':         _getenv('DB_HOSTNAME',  default='localhost'),
-    'port':         _getenv('DB_PORT',      default='3306'),
-    'database':     _getenv('DB_NAME',      default='OPENXECO'),
-    'username':     _getenv('DB_USERNAME',  default='openxeco'),
+    'port':         _getenv('DB_PORT',      default='27017'),
+    'database':     _getenv('DB_NAME',      default='mfl-assistant'),
+    'username':     _getenv('DB_USERNAME',  default='root'),
     'password':     _getenv('DB_PASSWORD',  default='password'),
     'query':        {'charset': _getenv('DB_CHARSET', default='utf8mb4')},
 }
+DB_URL = f"{DB_CONFIG['drivername']}://{DB_CONFIG['username']}:{DB_CONFIG['password']}" \
+         f"@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}" \
+         f"?authSource=admin"
 
 # EMAIL
 

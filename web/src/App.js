@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { NotificationManager as nm } from "react-notifications";
 import "App.css";
 import "statics/css/bootstrap.min.css";
 import "statics/bootstrap-icons.css";
@@ -8,34 +9,49 @@ import { BrowserRouter } from "react-router-dom";
 import Router from "Router";
 import * as fcl from "@onflow/fcl";
 import { getApiEndpoint } from "utils/env.js";
+import { getGenerateNonce, getUsers, addUser, updateUser } from "services/api-assistant.js";
 
 interface AppProps {}
 
 const App: React.FC<AppProps> = (props) => {
   const [user, setUser] = useState();
+  const [assistantUser, setAssistantUser] = useState();
   const [accountProof, setAccountProof] = useState();
 
   const accountProofDataResolver = async () => {
-    const response = await fetch(
-      getApiEndpoint() + "api/generate_nonce",
-      /* {
-        method: "GET",
-        headers: new Headers({
-          "Access-Control-Allow-Origin": "*",
-        }),
-        credentials: undefined,
-      } */
-    );
-    console.log(response);
-    const content = await response.json();
-    console.log({
-      appIdentifier: "mfl-assistant",
-    });
-    return {
-      appIdentifier: "mfl-assistant",
-      nonce: content.nonce,
-    };
+    getGenerateNonce(
+      (v) => ({
+        appIdentifier: "mfl-assistant",
+        nonce: v.nonce,
+      }),
+      (e) => console.log(e)
+    )
   };
+
+  const getAssistantUser = () => {
+    getUsers(
+      (v) => {
+        if (v.data.getUsers.length === 0) {
+          nm.warning("An error happened while retrieve the user");
+        } else {
+          setAssistantUser(v.data.getUsers[0])
+        }
+      },
+      (e) => console.log(e),
+      { address: user?.addr }
+    );
+  }
+
+  const updateAssistantUser = (email) => {
+    updateUser(
+      (v) => getAssistantUser(),
+      (e) => console.log(e),
+      {
+        address: user?.addr,
+        email,
+      }
+    );
+  }
 
   useEffect(() => {
     fcl.currentUser().subscribe(setUser);
@@ -50,12 +66,24 @@ const App: React.FC<AppProps> = (props) => {
     });
   }, []);
 
+  useEffect(() => {
+    console.log(user)
+    if (user?.addr) {
+      addUser(
+        (v) => { getAssistantUser() },
+        (e) => console.log(e),
+        { address: user?.addr }
+      );
+    }
+  }, [user]);
+
   return (
     <div id="App">
       <BrowserRouter>
         <Router
           user={user}
-          setUser={setUser}
+          assistantUser={assistantUser}
+          updateAssistantUser={updateAssistantUser}
           {...props}
         />
         <NotificationContainer />

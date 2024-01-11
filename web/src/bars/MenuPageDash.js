@@ -25,7 +25,7 @@ const MenuPageDash: React.FC<MenuPageDashProps> = (props) => {
             to="clubs"
             className={"nav-link" + (location.pathname === "/dash/clubs" ? " active" : "")}
           >
-            <i class="bi bi-buildings mx-1"></i>
+            <i className="bi bi-buildings mx-1"></i>
             <span className="d-none d-md-inline ms-1">Clubs</span>
           </Link>
         </li>

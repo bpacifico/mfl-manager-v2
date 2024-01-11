@@ -16,7 +16,7 @@ const MenuPageMercato: React.FC<MenuPageMercatoProps> = (props) => {
             className={"nav-link"
               + (["/mercato", "/mercato/", "/mercato/contracts"].indexOf(location.pathname) >= 0 ? " active" : "")}
           >
-            <i class="bi bi-file-earmark-medical mx-1"></i>
+            <i className="bi bi-file-earmark-medical mx-1"></i>
             <span className="d-none d-md-inline ms-1">Contracts</span>
           </Link>
         </li>

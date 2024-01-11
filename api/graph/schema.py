@@ -1,16 +1,19 @@
-from graphene import ObjectType, String, Int, Field, List
+from graphene import ObjectType, String, Int, Field, List, ID
 
 class UserType(ObjectType):
-    id = Int()
+    id = ID()
     address = String()
     email = String()
+    is_email_confirmed = bool()
     notification_scopes = List(lambda: NotificationScopeType)
 
 class NotificationScopeType(ObjectType):
-    id = Int()
+    id = ID()
     user = Field(UserType)
     notifications = List(lambda: NotificationType)
     positions = List(lambda: String())
+    min_price = Int()
+    max_price = Int()
     min_age = Int()
     max_age = Int()
     min_ovr = Int()
@@ -29,7 +32,7 @@ class NotificationScopeType(ObjectType):
     max_phy = Int()
 
 class NotificationType(ObjectType):
-    id = Int()
+    id = ID()
     user = Field(UserType)
     notification_scope = Field(NotificationScopeType)
     content = String()
