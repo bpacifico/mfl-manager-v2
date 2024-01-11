@@ -65,7 +65,7 @@ export const updateUser = (handleSuccess, handleError, params) => post(
   handleError,
 );
 
-/* GRAPHQL */
+/* Notification */
 
 export const getNotificationScopesAndNotifications = (handleSuccess, handleError) => post(
   getGraphQLEndpoint(),
@@ -82,5 +82,23 @@ export const getNotificationScopesAndNotifications = (handleSuccess, handleError
     ,
   }),
   (v) => handleSuccess(v),
+  handleError,
+);
+
+export const addNotificationScope = (handleSuccess, handleError, params) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `
+      mutation {
+        addUser(address: "${params.address}") {
+          user {
+            address,
+            email
+          }
+        }
+      }
+    `,
+  }),
+  handleSuccess,
   handleError,
 );

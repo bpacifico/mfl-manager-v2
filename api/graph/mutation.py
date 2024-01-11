@@ -57,7 +57,7 @@ class AddNotificationScope(Mutation):
         min_ovr = Int()
         max_ovr = Int()
 
-    notification_scope = Field(lambda: NotificationPriceType)
+    notification_scope = Field(lambda: NotificationScopeType)
 
     async def mutate(self, info, **kwargs):
         notification_scope = NotificationPriceType(kwargs)

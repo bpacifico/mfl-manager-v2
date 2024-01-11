@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NotificationManager as nm } from "react-notifications";
 import Popup from "reactjs-popup";
 import { addNotificationScope } from "services/api-assistant.js";
@@ -9,6 +9,12 @@ interface PopupAddNotificationScopeProps {
 }
 
 const PopupAddNotificationScope: React.FC<PopupAddNotificationScopeProps> = ({ trigger, onClose }) => {
+	const [showAttributeDetail, setShowAttributeDetail] = useState(false);
+
+	const [minPrice, setMinPrice] = useState(null);
+	const [maxPrice, setMaxPrice] = useState(null);
+	const [minOvr, setMinOvr] = useState(null);
+	const [maxOvr, setMaxOvr] = useState(null);
 
 	const confirm = () => {
 		addNotificationScope(
@@ -19,6 +25,19 @@ const PopupAddNotificationScope: React.FC<PopupAddNotificationScopeProps> = ({ t
       (e) => console.log(e),
       {}
     );
+	}
+
+	const getField = (value, setValue) => {
+		return <input
+			className="form-control w-auto flex-grow-0"
+			value={value}
+			onChange={(v) => setValue(v)}
+			type="number"
+			name="min_price"
+			min="1"
+			max="99"
+			step="1"
+		/>
 	}
 
   return (
@@ -44,6 +63,53 @@ const PopupAddNotificationScope: React.FC<PopupAddNotificationScopeProps> = ({ t
 								</button>
 							</div>
 						</div>
+
+						<div className="d-flex flex-direction-row mb-1">
+							<div className="flex-grow-1">Price:</div>
+							{getField(minPrice, setMinPrice)}
+							{getField(maxPrice, setMaxPrice)}
+						</div>
+
+						<div className="d-flex flex-direction-row mb-1">
+							<div className="flex-grow-1">Age:</div>
+							{getField(minPrice, setMinPrice)}
+							{getField(maxPrice, setMaxPrice)}
+						</div>
+
+						<div className="d-flex flex-direction-row mb-1">
+							<div className="flex-grow-1">Overall:</div>
+							{getField(minOvr, setMinOvr)}
+							{getField(maxOvr, setMaxOvr)}
+						</div>
+
+						<div className="d-flex mb-1">
+							<div className="float-end">
+								<button
+		              className="btn btn-sm text-info"
+		              onClick={() => setShowAttributeDetail(!showAttributeDetail)}
+		             >
+		              {showAttributeDetail
+		              	? <span><i className="bi bi-dash"></i> Hide attributes</span>
+		              	: <span><i className="bi bi-plus"></i> Show attributes</span>
+		              }
+		            </button>
+		          </div>
+	          </div>
+
+						{showAttributeDetail
+							&& <div className="mb-1">
+								<div className="d-flex flex-direction-row">
+									<div className="flex-grow-1">Price:</div>
+									{getField(minPrice, setMinPrice)}
+									{getField(maxPrice, setMaxPrice)}
+								</div>
+								<div className="d-flex flex-direction-row">
+									<div className="flex-grow-1">Price:</div>
+									{getField(minPrice, setMinPrice)}
+									{getField(maxPrice, setMaxPrice)}
+								</div>
+							</div>
+						}
 
 			      <div className="row">
 							<div className="col-md-12">
