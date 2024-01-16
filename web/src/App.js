@@ -67,7 +67,6 @@ const App: React.FC<AppProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(user)
     if (user?.addr) {
       addUser(
         (v) => { getAssistantUser() },

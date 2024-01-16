@@ -41,7 +41,6 @@ const PageSearch: React.FC<PageSearchProps> = () => {
       ]
 
       Promise.all(promises).then((values) => {
-        console.log(values);
         setPlayers(values[0]);
         /* setUsers(values[1]); */
         setIsLoading(false);
@@ -69,7 +68,7 @@ const PageSearch: React.FC<PageSearchProps> = () => {
           <div className="col flex-grow-1">
             <input
               type="text"
-              className="form-control w-100 text-white"
+              className="form-control w-100"
               value={fieldValue}
               onChange={(v) => setFieldValue(v.target.value)}
               placeholder={"Search player..."}

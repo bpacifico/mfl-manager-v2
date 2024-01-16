@@ -70,6 +70,11 @@ a .card:hover {
   background-color: rgba(0, 0, 0, .8);
 }
 
+.popup-md-content {
+  width: 500px;
+  max-width: 100%;
+}
+
 /* GANTT */
 
 svg .calendar rect,
@@ -128,6 +133,19 @@ a {
   background-color: transparent !important
 }
 
+input, select {
+  color: white !important;
+}
+
 input[type='range'] {
   accent-color: #0dcaf0;
+}
+
+input::placeholder {
+  opacity: .4 !important;
+}
+
+input:focus,
+select:focus {
+  border-color: #0dcaf0 !important;
 }

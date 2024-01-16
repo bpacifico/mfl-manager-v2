@@ -1,4 +1,10 @@
-from graphene import ObjectType, String, Int, Field, List, ID
+from graphene import ObjectType, String, Int, Field, List, Enum, ID, Date
+import enum
+
+class NotificationScopeTypeEnum(enum.Enum):
+    LISTING = "listing"
+    CONTRACT = "contract"
+    SALE = "sale"
 
 class UserType(ObjectType):
     id = ID()
@@ -9,8 +15,7 @@ class UserType(ObjectType):
 
 class NotificationScopeType(ObjectType):
     id = ID()
-    user = Field(UserType)
-    notifications = List(lambda: NotificationType)
+    type = String() # Enum.from_enum(NotificationScopeTypeEnum)
     positions = List(lambda: String())
     min_price = Int()
     max_price = Int()
@@ -30,9 +35,13 @@ class NotificationScopeType(ObjectType):
     max_def = Int()
     min_phy = Int()
     max_phy = Int()
+    creation_date = Date()
+    last_computation_date = Date()
+    user = Field(UserType)
+    notifications = List(lambda: NotificationType)
 
 class NotificationType(ObjectType):
     id = ID()
-    user = Field(UserType)
     notification_scope = Field(NotificationScopeType)
     content = String()
+    user = Field(UserType)

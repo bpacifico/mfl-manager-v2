@@ -1,5 +1,6 @@
 import { get, post } from "utils/request.js";
 import { getApiEndpoint, getGraphQLEndpoint } from "utils/env.js";
+import { jsonToParams } from "utils/graphql.js";
 
 /* NONCE */
 
@@ -73,7 +74,8 @@ export const getNotificationScopesAndNotifications = (handleSuccess, handleError
     query: 
       `{
         getNotificationScopes {
-          id
+          id,
+          type
         },
         getNotifications {
           id
@@ -90,10 +92,10 @@ export const addNotificationScope = (handleSuccess, handleError, params) => post
   JSON.stringify({
     query: `
       mutation {
-        addUser(address: "${params.address}") {
-          user {
-            address,
-            email
+        addNotificationScope(${jsonToParams(params)}) {
+          notificationScope {
+            id,
+            type
           }
         }
       }

@@ -4,6 +4,7 @@ import LoadingSquare from "components/loading/LoadingSquare.js";
 import BoxMessage from "components/box/BoxMessage.js";
 import UtilConditionalRender from "components/utils/UtilConditionalRender.js";
 import PopupAddNotificationScope from "components/popups/PopupAddNotificationScope.js";
+import ItemNotificationScope from "components/items/ItemNotificationScope.js";
 import { getNotificationScopesAndNotifications } from "services/api-assistant.js";
 import { validateEmail } from "utils/re.js";
 
@@ -96,7 +97,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                         className="d-block btn btn-info btn-sm text-white mb-1"
                         onClick={() => props.updateAssistantUser(null)}
                       >
-                        <i className="bi bi-envelope-arrow-up-fill"></i> Send new confirmation mail
+                        <i className="bi bi-envelope-arrow-up-fill"></i> Send new confirmation link
                       </button>
                     }
                     <button
@@ -113,29 +114,50 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
           </div>
 
           <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
-            <h4>Notification scopes</h4>
+            <div className="d-flex flex-row">
+              <h4 className="flex-grow-1">Notification scopes</h4>
+
+              {notificationScopes?.length > 0
+                && <PopupAddNotificationScope
+                  trigger={
+                    <button
+                      className="btn btn-info btn-sm text-white">
+                      <i className="bi bi-plus"></i>
+                    </button>
+                  }
+                />
+              }
+            </div>
 
             <div className="d-flex flex-fill">
               <UtilConditionalRender
                 value={notificationScopes}
-                undefinedRender={<LoadingSquare />}
-                emptyRender={<BoxMessage
-                  content={
-                    <div>
-                      <div>No scope found</div>
-                      <PopupAddNotificationScope
-                        trigger={
-                          <button
-                            className="btn btn-info btn-sm text-white">
-                            <i className="bi bi-plus"></i> Add scope
-                          </button>
-                        }
+                renderUndefined={() => <LoadingSquare />}
+                renderEmpty={
+                  () => <BoxMessage
+                    content={
+                      <div>
+                        <div>No scope found</div>
+                        <PopupAddNotificationScope
+                          trigger={
+                            <button
+                              className="btn btn-info btn-sm text-white">
+                              <i className="bi bi-plus"></i> Add scope
+                            </button>
+                          }
+                        />
+                      </div>
+                    }
+                  />
+                }
+                renderOk={
+                  () => <div className="w-100">
+                    {notificationScopes.map((s) => (
+                      <ItemNotificationScope
+                        {...s}
                       />
-                    </div>
-                  }
-                />}
-                okRender={
-                  <div>ll</div>
+                    ))}
+                  </div>
                 }
               />
             </div>
@@ -149,10 +171,14 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
             <div className="d-flex flex-fill">
               <UtilConditionalRender
                 value={notifications}
-                undefinedRender={<LoadingSquare />}
-                emptyRender={<BoxMessage content={"No notification found"} />}
-                okRender={
-                  <div>ll</div>
+                renderUndefined={
+                  () => <LoadingSquare />
+                }
+                renderEmpty={
+                  () => <BoxMessage content={"No notification found"} />
+                }
+                renderOk={
+                  () => <div>ll</div>
                 }
               />
             </div>
@@ -164,10 +190,14 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
             <div className="d-flex flex-fill">
               <UtilConditionalRender
                 value={players}
-                undefinedRender={<BoxMessage content={"No notification selected"} />}
-                emptyRender={<BoxMessage content={"No player to display"} />}
-                okRender={
-                  <div>ll</div>
+                renderUndefined={
+                  () => <BoxMessage content={"No notification selected"} />
+                }
+                renderEmpty={
+                  () => <BoxMessage content={"No player to display"} />
+                }
+                renderOk={
+                  () => <div>ll</div>
                 }
               />
             </div>

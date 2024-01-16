@@ -2,21 +2,21 @@ import React from 'react';
 
 interface UtilConditionalRenderProps {
 	value: Object;
-	okRender: Object;
-	emptyRender: Object;
-	undefinedRender: Object;
+	renderOk: Object;
+	renderEmpty: Object;
+	renderUndefined: Object;
 }
 
-const UtilConditionalRender: React.FC<UtilConditionalRenderProps> = ({ value, okRender, emptyRender, undefinedRender }) => {
+const UtilConditionalRender: React.FC<UtilConditionalRenderProps> = ({ value, renderOk, renderEmpty, renderUndefined }) => {
   if (value) {
   	if (value.length === 0) {
-  		return emptyRender;
+  		return renderEmpty();
   	}
 
-  	return okRender;
+  	return renderOk();
   }
 
-  return undefinedRender;
+  return renderUndefined();
 };
 
 export default UtilConditionalRender;

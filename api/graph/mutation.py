@@ -1,5 +1,5 @@
-from graphene import Mutation, ObjectType, InputObjectType, String, Argument, Int, Schema, Field, List
-from graph.schema import UserType, NotificationScopeType, NotificationType
+from graphene import Mutation, ObjectType, InputObjectType, String, Argument, Int, Schema, Field, List, Enum
+from graph.schema import UserType, NotificationScopeType, NotificationType, NotificationScopeTypeEnum
 
 def build_error(code):
     return {
@@ -50,21 +50,35 @@ class UpdateUser(Mutation):
 
 class AddNotificationScope(Mutation):
     class Arguments:
+        type = String(required=True) # Enum.from_enum(NotificationScopeTypeEnum)(required=True)
         min_price = Int()
         max_price = Int()
         min_age = Int()
         max_age = Int()
         min_ovr = Int()
         max_ovr = Int()
+        min_pac = Int()
+        max_pac = Int()
+        min_dri = Int()
+        max_dri = Int()
+        min_pas = Int()
+        max_pas = Int()
+        min_sho = Int()
+        max_sho = Int()
+        min_def = Int()
+        max_def = Int()
+        min_phy = Int()
+        max_phy = Int()
 
     notification_scope = Field(lambda: NotificationScopeType)
 
     async def mutate(self, info, **kwargs):
-        notification_scope = NotificationPriceType(kwargs)
+        notification_scope = kwargs
         notification_scope["user"] = "MUUSER"
+        print(notification_scope)
 
-        user = info.context["db"].notification_scopes.insert_one({"address": address})
-        return AddNotificationScope(user=notification_scope)
+        user = info.context["db"].notification_scopes.insert_one(notification_scope)
+        return AddNotificationScope(notification_scope=notification_scope)
 
 
 class Mutation(ObjectType):
