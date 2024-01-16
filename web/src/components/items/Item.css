@@ -1,0 +1,13 @@
+
+.Item:hover {
+	background-color: rgba(13, 202, 240, .1);
+	cursor: pointer;
+}
+
+.Item {
+	font-size: 14px;
+}
+
+.Item.selected {
+	background-color: rgba(13, 202, 240, .3);
+}

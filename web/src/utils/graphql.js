@@ -1,22 +1,30 @@
 
 export function jsonToParams(params) {
-	var paramString = "";
+  var paramString = "";
 
   Object.keys(params).forEach((k) => {
-  	if (params[k]) {
-	  	if (paramString.length > 0) {
-	  		paramString += ",";
-	  	}
+    if (params[k]) {
+      if (paramString.length > 0) {
+        paramString += ",";
+      }
 
-	  	paramString += `${k}: `;
+      paramString += `${k}: `;
 
-	  	if (typeof params[k] === "number") {
-	  		paramString += params[k];
-	  	} else {
-	  		paramString += `"${params[k]}"`;
-	  	}
-	  }
+      if (typeof params[k] === "number") {
+        paramString += params[k];
+      } else {
+        paramString += `"${params[k]}"`;
+      }
+    }
   })
 
   return paramString;
+}
+
+export function prettifyId(id) {
+  if (id && id.length === 24) {
+    return id.slice(0, 2) + "..." + id.slice(-5);
+  }
+
+  return "None";
 }

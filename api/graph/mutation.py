@@ -1,5 +1,7 @@
-from graphene import Mutation, ObjectType, InputObjectType, String, Argument, Int, Schema, Field, List, Enum
+from graphene import Mutation, ObjectType, InputObjectType, String, Argument, Int, Schema, Field, List, Enum, ID
 from graph.schema import UserType, NotificationScopeType, NotificationType, NotificationScopeTypeEnum
+import datetime
+from bson import ObjectId
 
 def build_error(code):
     return {
@@ -75,14 +77,34 @@ class AddNotificationScope(Mutation):
     async def mutate(self, info, **kwargs):
         notification_scope = kwargs
         notification_scope["user"] = "MUUSER"
-        print(notification_scope)
+        notification_scope["creation_date"] = datetime.datetime.now()
 
         user = info.context["db"].notification_scopes.insert_one(notification_scope)
         return AddNotificationScope(notification_scope=notification_scope)
 
+class AddNotification(Mutation):
+    class Arguments:
+        notification_scope_id = ID(required=True)
+
+    notification = Field(lambda: NotificationType)
+
+    async def mutate(self, info, notification_scope_id, **kwargs):
+        scope = await info.context["db"].notification_scopes.find_one({"_id": ObjectId(notification_scope_id)})
+        print(scope)
+
+        if scope:
+            notification = kwargs
+            notification["notification_scope"] = scope["_id"]
+
+            notification = await info.context["db"].notifications.insert_one(notification)
+            return AddNotification(notification=notification)
+        else:
+            raise Exception("Notification scope not found")
 
 class Mutation(ObjectType):
     add_user = AddUser.Field()
     update_user = UpdateUser.Field()
 
     add_notification_scope = AddNotificationScope.Field()
+
+    add_notification = AddNotification.Field()

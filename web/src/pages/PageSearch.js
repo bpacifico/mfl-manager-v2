@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import LoadingSquare from "components/loading/LoadingSquare";
+import ButtonMflPlayerInfo from "components/buttons/ButtonMflPlayerInfo.js";
+import ButtonMflPlayer from "components/buttons/ButtonMflPlayer.js";
 import { getPlayers /*, getUsers */ } from "services/api-mfl.js";
 
 interface PageSearchProps {
@@ -128,19 +130,20 @@ const PageSearch: React.FC<PageSearchProps> = () => {
 
             {players?.items.map((p) => (
               <div className="col-12">
-                <div className="row">
-                  <div className="col flex-grow-1">
+                <div className="d-flex flex-direction-row">
+                  <div className="d-flex flex-grow-1">
                     {p.metadata.firstName} {p.metadata.lastName} - {p.metadata.nationalities.join("/")} - {p.metadata.overall}
                   </div>
 
-                  <div className="col flex-shrink-1">
-                    <a
-                      href={"https://mflplayer.info/player/" + p.id}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      See on MFL Player Info
-                    </a>
+                  <div className="d-flex flex-grow-0 px-1">
+                    <ButtonMflPlayerInfo
+                      playerId={p.id}
+                    />
+                  </div>
+                  <div className="d-flex flex-grow-0 px-1">
+                    <ButtonMflPlayer
+                      playerId={p.id}
+                    />
                   </div>
                 </div>
               </div>

@@ -32,12 +32,12 @@ const App: React.FC<AppProps> = (props) => {
     getUsers(
       (v) => {
         if (v.data.getUsers.length === 0) {
-          nm.warning("An error happened while retrieve the user");
+          nm.warning("User not found");
         } else {
           setAssistantUser(v.data.getUsers[0])
         }
       },
-      (e) => console.log(e),
+      () => nm.error("Error while retrieving the user"),
       { address: user?.addr }
     );
   }
@@ -64,6 +64,10 @@ const App: React.FC<AppProps> = (props) => {
       "discovery.authn.include": ["0xead892083b3e2c6c"],
       "fcl.accountProof.resolver": accountProofDataResolver,
     });
+
+    if (user) {
+      getAssistantUser();
+    }
   }, []);
 
   useEffect(() => {

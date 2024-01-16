@@ -75,10 +75,53 @@ export const getNotificationScopesAndNotifications = (handleSuccess, handleError
       `{
         getNotificationScopes {
           id,
-          type
+          type,
+          positions,
+          nationalities,
+          minPrice,
+          maxPrice,
+          minAge,
+          maxAge,
+          minOvr,
+          maxOvr,
+          minPac,
+          maxPac,
+          minDri,
+          maxDri,
+          minPas,
+          maxPas,
+          minSho,
+          maxSho,
+          minDef,
+          maxDef,
+          minPhy,
+          maxPhy
         },
         getNotifications {
-          id
+          id,
+          playerIds,
+          notificationScope {
+            id
+          }
+        }
+      }`
+    ,
+  }),
+  (v) => handleSuccess(v),
+  handleError,
+);
+
+export const getNotificationsOfNotificationScope = (handleSuccess, handleError, id) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: 
+      `{
+        getNotifications(notificationScope: "${id}") {
+          id,
+          playerIds,
+          notificationScope {
+            id
+          }
         }
       }`
     ,

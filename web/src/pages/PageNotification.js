@@ -3,9 +3,12 @@ import ButtonLogin from "components/buttons/ButtonLogin.js";
 import LoadingSquare from "components/loading/LoadingSquare.js";
 import BoxMessage from "components/box/BoxMessage.js";
 import UtilConditionalRender from "components/utils/UtilConditionalRender.js";
-import PopupAddNotificationScope from "components/popups/PopupAddNotificationScope.js";
+import PopupNotificationScope from "components/popups/PopupNotificationScope.js";
 import ItemNotificationScope from "components/items/ItemNotificationScope.js";
-import { getNotificationScopesAndNotifications } from "services/api-assistant.js";
+import ItemNotification from "components/items/ItemNotification.js";
+import ButtonMflPlayerInfo from "components/buttons/ButtonMflPlayerInfo.js";
+import ButtonMflPlayer from "components/buttons/ButtonMflPlayer.js";
+import { getNotificationScopesAndNotifications, getNotificationsOfNotificationScope } from "services/api-assistant.js";
 import { validateEmail } from "utils/re.js";
 
 interface PageNotificationProps {
@@ -14,11 +17,11 @@ interface PageNotificationProps {
 const PageNotification: React.FC<PageNotificationProps> = (props) => {
   const [notificationScopes, setNotificationScopes] = useState(null);
   const [notifications, setNotifications] = useState(null);
+  const [selectedNotificationScope, setSelectedNotificationScope] = useState(null);
   const [selectedNotification, setSelectedNotification] = useState(null);
-  const [players, setPlayers] = useState(null);
   const [emailValue, setEmailValue] = useState("");
 
-  useEffect(() => {
+  const fetchNotificationScopesAndNotifications = () => {
     getNotificationScopesAndNotifications(
       (v) => {
         setNotificationScopes(v.data.getNotificationScopes);
@@ -26,7 +29,23 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
       },
       (e) => console.log(e)
     );
+  }
+
+  useEffect(() => {
+    fetchNotificationScopesAndNotifications();
   }, [props.assistantUser]);
+
+  useEffect(() => {
+    if (selectedNotificationScope?.id) {
+      getNotificationsOfNotificationScope(
+        (v) => {
+          setNotifications(v.data.getNotifications);
+        },
+        (e) => console.log(e),
+        selectedNotificationScope.id
+      );
+    }
+  }, [selectedNotificationScope]);
 
   const getContent = () => {
     if (!props.user?.loggedIn) {
@@ -73,7 +92,9 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
       <div className="d-flex flex-column h-100 w-100 fade-in">
         <div className="d-flex flex-column flex-md-row flex-md-grow-0 flex-basis-300">
           <div className="card c d-flex flex-column flex-md-grow-0 flex-basis-300 m-2 p-3 pt-2">
-            <h4>Email information</h4>
+            <div>
+              <h4>Email information</h4>
+            </div>
 
             <div className="d-flex flex-fill">
               {props.user?.loggedIn && props.assistantUser
@@ -114,17 +135,18 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
           </div>
 
           <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
-            <div className="d-flex flex-row">
+            <div className="d-flex flex-row mb-2">
               <h4 className="flex-grow-1">Notification scopes</h4>
 
               {notificationScopes?.length > 0
-                && <PopupAddNotificationScope
+                && <PopupNotificationScope
                   trigger={
                     <button
                       className="btn btn-info btn-sm text-white">
                       <i className="bi bi-plus"></i>
                     </button>
                   }
+                  onClose={fetchNotificationScopesAndNotifications}
                 />
               }
             </div>
@@ -138,13 +160,14 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                     content={
                       <div>
                         <div>No scope found</div>
-                        <PopupAddNotificationScope
+                        <PopupNotificationScope
                           trigger={
                             <button
                               className="btn btn-info btn-sm text-white">
                               <i className="bi bi-plus"></i> Add scope
                             </button>
                           }
+                          onClose={fetchNotificationScopesAndNotifications}
                         />
                       </div>
                     }
@@ -154,7 +177,9 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                   () => <div className="w-100">
                     {notificationScopes.map((s) => (
                       <ItemNotificationScope
-                        {...s}
+                        item={s}
+                        isSelected={selectedNotificationScope?.id === s.id}
+                        onSelect={(s) => setSelectedNotificationScope(s)}
                       />
                     ))}
                   </div>
@@ -166,38 +191,58 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
 
         <div className="d-flex flex-column flex-md-row flex-md-grow-1">
           <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
-            <div className="h4">Notifications</div>
+            <div className="h4 mb-2">Notifications</div>
 
             <div className="d-flex flex-fill">
               <UtilConditionalRender
                 value={notifications}
-                renderUndefined={
-                  () => <LoadingSquare />
-                }
-                renderEmpty={
-                  () => <BoxMessage content={"No notification found"} />
-                }
+                renderUndefined={() => <LoadingSquare />}
+                renderEmpty={() => <BoxMessage content={"No notification found"} />}
                 renderOk={
-                  () => <div>ll</div>
+                  () => <div className="w-100">
+                    {notifications.map((n) => (
+                      <ItemNotification
+                        item={n}
+                        isSelected={selectedNotification?.id === n.id}
+                        onSelect={(s) => setSelectedNotification(n)}
+                      />
+                    ))}
+                  </div>
                 }
               />
             </div>
           </div>
 
           <div className="card d-flex flex-column flex-md-grow-0 flex-basis-200 m-2 p-3 pt-2">
-            <h4>Players</h4>
+            <h4 className="mb-2">Players</h4>
 
             <div className="d-flex flex-fill">
               <UtilConditionalRender
-                value={players}
-                renderUndefined={
-                  () => <BoxMessage content={"No notification selected"} />
-                }
-                renderEmpty={
-                  () => <BoxMessage content={"No player to display"} />
-                }
+                value={selectedNotification?.playerIds}
+                renderUndefined={() => <BoxMessage content={"No notification selected"} />}
+                renderEmpty={() => <BoxMessage content={"No player to display"} />}
                 renderOk={
-                  () => <div>ll</div>
+                  () => <div className="w-100">
+                    {selectedNotification.playerIds.map((id) => (
+                      <div className="d-flex flex-column">
+                        <div className="d-flex align-self-center mb-1">
+                          <img
+                            className="w-100 px-2"
+                            src={"https://d13e14gtps4iwl.cloudfront.net/players/" + id + "/card_512.png"}
+                            alt={"Player " + id}
+                          />
+                        </div>
+                        <div className="d-flex align-self-center">
+                          <ButtonMflPlayer
+                            playerId={id}
+                          />
+                          <ButtonMflPlayerInfo
+                            playerId={id}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 }
               />
             </div>

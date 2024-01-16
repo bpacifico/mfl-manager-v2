@@ -1,5 +1,6 @@
-from graphene import ObjectType, String, Int, Schema, Field, List
+from graphene import ObjectType, String, Int, Schema, Field, List, ID
 from graph.schema import UserType, NotificationScopeType, NotificationType
+from bson import ObjectId
 
 class Query(ObjectType):
 
@@ -16,8 +17,9 @@ class Query(ObjectType):
         notification_scopes = await info.context["db"].notification_scopes.find().to_list(length=None)
         return notification_scopes
 
-    get_notifications = List(NotificationType)
+    get_notifications = List(NotificationType, notification_scope=String())
 
-    async def resolve_get_notifications(self, info):
-        notifications = await info.context["db"].notifications.find().to_list(length=None)
+    async def resolve_get_notifications(self, info, notification_scope=None):
+        filters = {"notification_scope": ObjectId(notification_scope)} if notification_scope else None
+        notifications = await info.context["db"].notifications.find(filters).to_list(length=None)
         return notifications
