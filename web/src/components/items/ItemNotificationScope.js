@@ -24,18 +24,17 @@ const ItemNotificationScope: React.FC<ItemNotificationScopeProps> = ({ item, isS
   return (
     <div
       className={
-        "Item ItemNotificationScope d-flex flex-direction-row w-100 "
+        "Item ItemNotificationScope d-flex flex-column flex-sm-row w-100 "
         + (isSelected ? "selected" : "")
       }
       onClick={() => onSelect(item)}
     >
       <div className="d-flex flex-grow-0 px-1">
-        <i className="bi bi-square-fill"></i>
+        <i className="bi bi-square-fill pe-1"></i> {prettifyId(item.id)}
       </div>
-      <div className="d-flex flex-grow-0 pe-1">{prettifyId(item.id)}</div>
-      <div className="d-flex flex-grow-1 pe-1">{item.type}</div>
-      <div className="d-flex flex-grow-1 pe-1">{getParamCount()}</div>
-      <div className="d-flex flex-grow-0 pe-1 text-info">
+      <div className="d-flex flex-grow-1 px-1">Type: {item.type}</div>
+      <div className="d-flex flex-grow-1 px-1">{getParamCount()}</div>
+      <div className="d-flex flex-grow-0 px-1 text-info">
         <PopupNotificationScope
           item={item}
           trigger={

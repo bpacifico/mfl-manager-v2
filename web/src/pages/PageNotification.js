@@ -95,8 +95,8 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
       <div className="d-flex flex-column h-100 w-100 fade-in">
         <div className="d-flex flex-column flex-md-row flex-md-grow-0 flex-basis-300">
           <div className="card c d-flex flex-column flex-md-grow-0 flex-basis-300 m-2 p-3 pt-2">
-            <div>
-              <h4>Email information</h4>
+            <div className="d-flex flex-row mb-2">
+              <h4 className="flex-grow-1">Email information</h4>
             </div>
 
             <div className="d-flex flex-fill">
@@ -198,7 +198,9 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
 
         <div className="d-flex flex-column flex-md-row flex-md-grow-1">
           <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
-            <div className="h4 mb-2">Notifications</div>
+            <div className="d-flex flex-row mb-2">
+              <h4 className="flex-grow-1">Notifications</h4>
+            </div>
 
             <div className="d-flex flex-fill">
               <UtilConditionalRender
@@ -225,7 +227,9 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
           </div>
 
           <div className="card d-flex flex-column flex-md-grow-0 flex-basis-200 m-2 p-3 pt-2">
-            <h4 className="mb-2">Players</h4>
+            <div className="d-flex flex-row mb-2">
+              <h4 className="flex-grow-1">Players</h4>
+            </div>
 
             <div className="d-flex flex-fill">
               <UtilConditionalRender
@@ -235,7 +239,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                 renderOk={
                   () => <div className="w-100">
                     {selectedNotification.playerIds.map((id) => (
-                      <div className="d-flex flex-column">
+                      <div className="d-flex flex-column mb-2">
                         <div className="d-flex align-self-center mb-1">
                           <img
                             className="w-100 px-2"
@@ -244,12 +248,16 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                           />
                         </div>
                         <div className="d-flex align-self-center">
-                          <ButtonMflPlayer
-                            playerId={id}
-                          />
-                          <ButtonMflPlayerInfo
-                            playerId={id}
-                          />
+                          <div className="me-1">
+                            <ButtonMflPlayer
+                              playerId={id}
+                            />
+                          </div>
+                          <div>
+                            <ButtonMflPlayerInfo
+                              playerId={id}
+                            />
+                          </div>
                         </div>
                       </div>
                     ))}
