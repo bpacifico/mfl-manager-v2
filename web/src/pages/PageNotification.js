@@ -102,11 +102,11 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
             <div className="d-flex flex-fill">
               {props.user?.loggedIn && props.assistantUser
                 ? <div>
-                  <div className="my-2">
+                  <div className="mb-2">
                     <div className="lh-1">Address:</div>
                     <div className="text-white">{props.assistantUser.email}</div>
                   </div>
-                  <div className="my-2">
+                  <div className="mb-2">
                     <div className="lh-1">Status:</div>
                     <div className="text-white">
                       {props.assistantUser.is_email_confirmed
