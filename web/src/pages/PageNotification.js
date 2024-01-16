@@ -36,6 +36,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
   }, [props.assistantUser]);
 
   useEffect(() => {
+    setNotifications(null);
     if (selectedNotificationScope?.id) {
       getNotificationsOfNotificationScope(
         (v) => {
@@ -44,6 +45,8 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
         (e) => console.log(e),
         selectedNotificationScope.id
       );
+    } else {
+      setNotifications([]);
     }
   }, [selectedNotificationScope]);
 
@@ -179,7 +182,11 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                       <ItemNotificationScope
                         item={s}
                         isSelected={selectedNotificationScope?.id === s.id}
-                        onSelect={(s) => setSelectedNotificationScope(s)}
+                        onSelect={(s) => {
+                          setSelectedNotificationScope(
+                            selectedNotificationScope?.id !== s.id ? s : null
+                          );
+                        }}
                       />
                     ))}
                   </div>
@@ -204,7 +211,11 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                       <ItemNotification
                         item={n}
                         isSelected={selectedNotification?.id === n.id}
-                        onSelect={(s) => setSelectedNotification(n)}
+                        onSelect={(n) => {
+                          setSelectedNotification(
+                            selectedNotification?.id !== n.id ? n : null
+                          );
+                        }}
                       />
                     ))}
                   </div>

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi_mail import ConnectionConfig, FastMail
-from fastapi.responses import JSONResponse
+from apscheduler.schedulers.background import BackgroundScheduler
 from graphene import Schema
 from starlette_graphene3 import GraphQLApp, make_graphiql_handler
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,7 +9,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
 from graph.mutation import Mutation
 import config
-import secrets
+import threading
+from cron.compute_notifications import compute_notifications
+from endpoint.generate_nonce import generate_nonce
 
 
 # FastAPI setup
@@ -30,24 +32,20 @@ mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
 graphql = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
     on_get=make_graphiql_handler(),
-    context_value={"db": db},
+    context_value={"db": db, "mail": mail},
 )
 
+# Manage routes
+
 app.add_route("/graphql", graphql)
+app.add_route("/api/generate_nonce", generate_nonce)
 
-@app.get("/api/generate_nonce")
-def generate_nonce():
-    nonce = secrets.token_bytes(32)
-    nonce_hex = str(nonce.hex())
-    print(type(nonce_hex))
-    return JSONResponse(content={ "nonce": nonce_hex })
+# Manage crons
 
-@app.get("/api/send_confirmation_mail")
-def generate_nonce():
-    nonce = secrets.token_bytes(32)
-    nonce_hex = str(nonce.hex())
-    print(type(nonce_hex))
-    return JSONResponse(content={ "nonce": nonce_hex })
+scheduler = BackgroundScheduler()
+scheduler.add_job(compute_notifications, 'cron',  args=[db, mail], minute='*/1')
+scheduler.start()
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
