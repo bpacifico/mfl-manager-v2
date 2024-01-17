@@ -104,7 +104,5 @@ class AddNotification(Mutation):
 class Mutation(ObjectType):
     add_user = AddUser.Field()
     update_user = UpdateUser.Field()
-
     add_notification_scope = AddNotificationScope.Field()
-
     add_notification = AddNotification.Field()

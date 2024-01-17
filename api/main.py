@@ -34,16 +34,22 @@ graphql = GraphQLApp(
     on_get=make_graphiql_handler(),
     context_value={"db": db, "mail": mail},
 )
+graphql_admin = GraphQLApp(
+    schema=Schema(query=Query, mutation=Mutation),
+    on_get=make_graphiql_handler(),
+    context_value={"db": db, "mail": mail},
+)
 
 # Manage routes
 
 app.add_route("/graphql", graphql)
+app.add_route("/graphql/admin", graphql_admin)
 app.add_route("/api/generate_nonce", generate_nonce)
 
 # Manage crons
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(compute_notifications, 'cron',  args=[db, mail], minute='*/1')
+scheduler.add_job(compute_notifications, 'cron',  args=[app, db, mail], minute='*/1')
 scheduler.start()
 
 

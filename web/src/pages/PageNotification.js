@@ -6,8 +6,7 @@ import UtilConditionalRender from "components/utils/UtilConditionalRender.js";
 import PopupNotificationScope from "components/popups/PopupNotificationScope.js";
 import ItemNotificationScope from "components/items/ItemNotificationScope.js";
 import ItemNotification from "components/items/ItemNotification.js";
-import ButtonMflPlayerInfo from "components/buttons/ButtonMflPlayerInfo.js";
-import ButtonMflPlayer from "components/buttons/ButtonMflPlayer.js";
+import ItemPlayer from "components/items/ItemPlayer.js";
 import { getNotificationScopesAndNotifications, getNotificationsOfNotificationScope } from "services/api-assistant.js";
 import { validateEmail } from "utils/re.js";
 
@@ -97,7 +96,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
               <h4 className="flex-grow-1">Email information</h4>
             </div>
 
-            <div className="d-flex flex-fill">
+            <div className="d-flex overflow-auto">
               {props.user?.loggedIn && props.assistantUser
                 ? <div>
                   <div className="mb-2">
@@ -135,7 +134,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
             </div>
           </div>
 
-          <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
+          <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2 max-height-md-300">
             <div className="d-flex flex-row mb-2">
               <h4 className="flex-grow-1">Notification scopes</h4>
 
@@ -152,7 +151,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
               }
             </div>
 
-            <div className="d-flex flex-fill">
+            <div className="d-flex overflow-auto">
               <UtilConditionalRender
                 value={notificationScopes}
                 renderUndefined={() => <LoadingSquare />}
@@ -200,7 +199,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
               <h4 className="flex-grow-1">Notifications</h4>
             </div>
 
-            <div className="d-flex flex-fill">
+            <div className="d-flex overflow-auto">
               <UtilConditionalRender
                 value={notifications}
                 renderUndefined={() => <LoadingSquare />}
@@ -229,7 +228,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
               <h4 className="flex-grow-1">Players</h4>
             </div>
 
-            <div className="d-flex flex-fill">
+            <div className="d-flex overflow-auto">
               <UtilConditionalRender
                 value={selectedNotification?.playerIds}
                 renderUndefined={() => <BoxMessage content={"No notification selected"} />}
@@ -237,27 +236,9 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                 renderOk={
                   () => <div className="w-100">
                     {selectedNotification.playerIds.map((id) => (
-                      <div className="d-flex flex-column mb-2">
-                        <div className="d-flex align-self-center mb-1">
-                          <img
-                            className="w-100 px-2"
-                            src={"https://d13e14gtps4iwl.cloudfront.net/players/" + id + "/card_512.png"}
-                            alt={"Player " + id}
-                          />
-                        </div>
-                        <div className="d-flex align-self-center">
-                          <div className="me-1">
-                            <ButtonMflPlayer
-                              playerId={id}
-                            />
-                          </div>
-                          <div>
-                            <ButtonMflPlayerInfo
-                              playerId={id}
-                            />
-                          </div>
-                        </div>
-                      </div>
+                      <ItemPlayer
+                        id={id}
+                      />
                     ))}
                   </div>
                 }

@@ -149,3 +149,9 @@ input:focus,
 select:focus {
   border-color: #0dcaf0 !important;
 }
+
+@media (min-width: 768px) {
+  .max-height-md-300 {
+    max-height: 300px;
+  }
+}

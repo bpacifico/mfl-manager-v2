@@ -1,10 +1,12 @@
 from fastapi_mail import MessageSchema
 
 
-def compute_notifications(db, mail):
+def compute_notifications(app, db, mail):
     _send_email()
     print("yyee")
 
+def get_users_and_notification_scopes():
+        pass
 
 async def _send_email():
     message = MessageSchema(
