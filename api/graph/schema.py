@@ -59,6 +59,7 @@ class NotificationScopeType(ObjectType):
 
 class NotificationType(ObjectType):
     id = ID(source='_id')
+    status = String()
     player_ids = List(lambda: Int())
     creation_date = DateTime()
     sending_date = DateTime()
