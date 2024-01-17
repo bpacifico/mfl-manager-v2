@@ -35,6 +35,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
   }, [props.assistantUser]);
 
   useEffect(() => {
+    setNotifications(null);
     if (selectedNotificationScope?.id) {
       getNotificationsOfNotificationScope({
         handleSuccess: (v) => {
@@ -42,6 +43,8 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
         },
         id: selectedNotificationScope.id
       });
+    } else {
+      setNotifications([]);
     }
   }, [selectedNotificationScope]);
 
@@ -90,18 +93,18 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
       <div className="d-flex flex-column h-100 w-100 fade-in">
         <div className="d-flex flex-column flex-md-row flex-md-grow-0 flex-basis-300">
           <div className="card c d-flex flex-column flex-md-grow-0 flex-basis-300 m-2 p-3 pt-2">
-            <div>
-              <h4>Email information</h4>
+            <div className="d-flex flex-row mb-2">
+              <h4 className="flex-grow-1">Email information</h4>
             </div>
 
             <div className="d-flex flex-fill">
               {props.user?.loggedIn && props.assistantUser
                 ? <div>
-                  <div className="my-2">
+                  <div className="mb-2">
                     <div className="lh-1">Address:</div>
                     <div className="text-white">{props.assistantUser.email}</div>
                   </div>
-                  <div className="my-2">
+                  <div className="mb-2">
                     <div className="lh-1">Status:</div>
                     <div className="text-white">
                       {props.assistantUser.is_email_confirmed
@@ -177,7 +180,11 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                       <ItemNotificationScope
                         item={s}
                         isSelected={selectedNotificationScope?.id === s.id}
-                        onSelect={(s) => setSelectedNotificationScope(s)}
+                        onSelect={(s) => {
+                          setSelectedNotificationScope(
+                            selectedNotificationScope?.id !== s.id ? s : null
+                          );
+                        }}
                       />
                     ))}
                   </div>
@@ -189,7 +196,9 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
 
         <div className="d-flex flex-column flex-md-row flex-md-grow-1">
           <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
-            <div className="h4 mb-2">Notifications</div>
+            <div className="d-flex flex-row mb-2">
+              <h4 className="flex-grow-1">Notifications</h4>
+            </div>
 
             <div className="d-flex flex-fill">
               <UtilConditionalRender
@@ -202,7 +211,11 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                       <ItemNotification
                         item={n}
                         isSelected={selectedNotification?.id === n.id}
-                        onSelect={(s) => setSelectedNotification(n)}
+                        onSelect={(n) => {
+                          setSelectedNotification(
+                            selectedNotification?.id !== n.id ? n : null
+                          );
+                        }}
                       />
                     ))}
                   </div>
@@ -212,7 +225,9 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
           </div>
 
           <div className="card d-flex flex-column flex-md-grow-0 flex-basis-200 m-2 p-3 pt-2">
-            <h4 className="mb-2">Players</h4>
+            <div className="d-flex flex-row mb-2">
+              <h4 className="flex-grow-1">Players</h4>
+            </div>
 
             <div className="d-flex flex-fill">
               <UtilConditionalRender
@@ -222,7 +237,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                 renderOk={
                   () => <div className="w-100">
                     {selectedNotification.playerIds.map((id) => (
-                      <div className="d-flex flex-column">
+                      <div className="d-flex flex-column mb-2">
                         <div className="d-flex align-self-center mb-1">
                           <img
                             className="w-100 px-2"
@@ -231,12 +246,16 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                           />
                         </div>
                         <div className="d-flex align-self-center">
-                          <ButtonMflPlayer
-                            playerId={id}
-                          />
-                          <ButtonMflPlayerInfo
-                            playerId={id}
-                          />
+                          <div className="me-1">
+                            <ButtonMflPlayer
+                              playerId={id}
+                            />
+                          </div>
+                          <div>
+                            <ButtonMflPlayerInfo
+                              playerId={id}
+                            />
+                          </div>
                         </div>
                       </div>
                     ))}

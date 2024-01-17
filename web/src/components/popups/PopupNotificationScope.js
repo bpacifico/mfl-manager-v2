@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NotificationManager as nm } from "react-notifications";
 import Popup from "reactjs-popup";
 import { addNotificationScope } from "services/api-assistant.js";
+import { prettifyId } from "utils/graphql.js";
 
 interface PopupNotificationScopeProps {
 	trigger: Object;
@@ -105,11 +106,11 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 			>
 				{(close) => (
 					<div className="container bg-dark border border-info border-3 rounded-3 p-4">
-						<div className="d-flex flex-direction-row mb-3">
+						<div className="d-flex flex-row mb-3">
 							<div className="flex-grow-1">
 						  	<h2 className="text-white">
 						  		{readOnly
-						  			? "Scope " + item.id
+						  			? "Scope " + prettifyId(item.id)
 						  			: "Add a new scope"
 						  		}
 						  	</h2>
@@ -123,7 +124,7 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 							</div>
 						</div>
 
-						<div className="d-flex flex-direction-row m-1 mb-3">
+						<div className="d-flex flex-row m-1 mb-3">
 							<div className="flex-grow-1 align-self-center">Type of notification:</div>
 							<div className="flex-grow-1 me-1">
 								<select
@@ -142,19 +143,19 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 							</div>
 						</div>
 
-						<div className="d-flex flex-direction-row m-1">
+						<div className="d-flex flex-row m-1">
 							<div className="flex-grow-1 align-self-center">Price:</div>
 							{getField(minPrice, setMinPrice, "min")}
 							{getField(maxPrice, setMaxPrice, "max")}
 						</div>
 
-						<div className="d-flex flex-direction-row m-1">
+						<div className="d-flex flex-row m-1">
 							<div className="flex-grow-1 align-self-center">Age:</div>
 							{getField(minAge, setMinAge, "min")}
 							{getField(maxAge, setMaxAge, "max")}
 						</div>
 
-						<div className="d-flex flex-direction-row m-1">
+						<div className="d-flex flex-row m-1">
 							<div className="flex-grow-1 align-self-center">Overall:</div>
 							{getField(minOvr, setMinOvr, "min")}
 							{getField(maxOvr, setMaxOvr, "max")}
@@ -176,32 +177,32 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 
 						{showAttributeDetail
 							&& <div className="mb-1">
-								<div className="d-flex flex-direction-row m-1">
+								<div className="d-flex flex-row m-1">
 									<div className="flex-grow-1 align-self-center">PAC:</div>
 									{getField(minPac, setMinPac, "min")}
 									{getField(maxPac, setMaxPac, "max")}
 								</div>
-								<div className="d-flex flex-direction-row m-1">
+								<div className="d-flex flex-row m-1">
 									<div className="flex-grow-1 align-self-center">DRI:</div>
 									{getField(minDri, setMinDri, "min")}
 									{getField(maxDri, setMaxDri, "max")}
 								</div>
-								<div className="d-flex flex-direction-row m-1">
+								<div className="d-flex flex-row m-1">
 									<div className="flex-grow-1 align-self-center">PAS:</div>
 									{getField(minPas, setMinPas, "min")}
 									{getField(maxPas, setMaxPas, "max")}
 								</div>
-								<div className="d-flex flex-direction-row m-1">
+								<div className="d-flex flex-row m-1">
 									<div className="flex-grow-1 align-self-center">SHO:</div>
 									{getField(minSho, setMinSho, "min")}
 									{getField(maxSho, setMaxSho, "max")}
 								</div>
-								<div className="d-flex flex-direction-row m-1">
+								<div className="d-flex flex-row m-1">
 									<div className="flex-grow-1 align-self-center">DEF:</div>
 									{getField(minDef, setMinDef, "min")}
 									{getField(maxDef, setMaxDef, "max")}
 								</div>
-								<div className="d-flex flex-direction-row m-1">
+								<div className="d-flex flex-row m-1">
 									<div className="flex-grow-1 align-self-center">PHY:</div>
 									{getField(minPhy, setMinPhy, "min")}
 									{getField(maxPhy, setMaxPhy, "max")}
@@ -209,7 +210,7 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 							</div>
 						}
 
-			      <div className="d-flex flex-direction-row justify-content-end mt-3">
+			      <div className="d-flex flex-row justify-content-end mt-3">
 							<div>
 								{readOnly
 									? <button

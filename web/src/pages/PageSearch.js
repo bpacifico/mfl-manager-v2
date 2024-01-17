@@ -130,7 +130,7 @@ const PageSearch: React.FC<PageSearchProps> = () => {
 
             {players?.items.map((p) => (
               <div className="col-12">
-                <div className="d-flex flex-direction-row">
+                <div className="d-flex flex-row">
                   <div className="d-flex flex-grow-1">
                     {p.metadata.firstName} {p.metadata.lastName} - {p.metadata.nationalities.join("/")} - {p.metadata.overall}
                   </div>
