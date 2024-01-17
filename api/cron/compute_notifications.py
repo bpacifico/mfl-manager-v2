@@ -4,12 +4,25 @@ import datetime
 
 
 def compute_notifications(app, db, mail):
-    users = _get_users_and_notification_scopes()
-    scopes = _get_users_and_notification_scopes()
+    users = _get_users()
+    user_ids = [ObjectId(u["id"]) for u in users]
+    scopes = _get_notification_scopes(user_ids)
 
     for scope in scopes:
         _add_notification_in_db(db)
         _send_email()
+
+        pipeline = [
+            {"$match": {"user_id": {"$in": object_ids}}},
+            {"$sort": {"user_id": 1, "record_date": -1}},
+            {"$group": {
+                "_id": "$user_id",
+                "records": {"$push": "$$ROOT"}
+            }},
+            {"$project": {
+                "latest_records": {"$slice": ["$records", num_records]}
+            }}
+        ]
     
 
 def _get_users():
@@ -22,7 +35,7 @@ def _get_users():
 
 def _get_notification_scopes(user_ids):
     filters = {
-        "user": 
+        "user": {"$in": object_ids}
     }
     
     return await db.notification_scopes.find(filters).to_list(length=None)
