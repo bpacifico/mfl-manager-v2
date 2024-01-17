@@ -35,6 +35,8 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
 
   useEffect(() => {
     setNotifications(null);
+    setSelectedNotification(null);
+
     if (selectedNotificationScope?.id) {
       getNotificationsOfNotificationScope({
         handleSuccess: (v) => {
@@ -199,7 +201,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
               <h4 className="flex-grow-1">Notifications</h4>
             </div>
 
-            <div className="d-flex overflow-auto">
+            <div className="d-flex flex-fill overflow-auto">
               <UtilConditionalRender
                 value={notifications}
                 renderUndefined={() => <LoadingSquare />}
@@ -228,13 +230,13 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
               <h4 className="flex-grow-1">Players</h4>
             </div>
 
-            <div className="d-flex overflow-auto">
+            <div className="d-flex flex-fill overflow-auto justify-content-center">
               <UtilConditionalRender
                 value={selectedNotification?.playerIds}
                 renderUndefined={() => <BoxMessage content={"No notification selected"} />}
                 renderEmpty={() => <BoxMessage content={"No player to display"} />}
                 renderOk={
-                  () => <div className="w-100">
+                  () => <div className="d-flex flex-column height-md-0">
                     {selectedNotification.playerIds.map((id) => (
                       <ItemPlayer
                         id={id}

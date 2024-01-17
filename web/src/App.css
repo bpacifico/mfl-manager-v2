@@ -154,4 +154,8 @@ select:focus {
   .max-height-md-300 {
     max-height: 300px;
   }
+
+  .height-md-0 {
+    height: 0px;
+  }
 }
