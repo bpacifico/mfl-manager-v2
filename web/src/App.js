@@ -19,38 +19,36 @@ const App: React.FC<AppProps> = (props) => {
   const [accountProof, setAccountProof] = useState();
 
   const accountProofDataResolver = async () => {
-    getGenerateNonce(
-      (v) => ({
+    getGenerateNonce({
+      handleSuccess: (v) => ({
         appIdentifier: "mfl-assistant",
         nonce: v.nonce,
       }),
-      (e) => console.log(e)
-    )
+    });
   };
 
   const getAssistantUser = () => {
-    getUsers(
-      (v) => {
+    getUsers({
+      handleSuccess: (v) => {
         if (v.data.getUsers.length === 0) {
           nm.warning("User not found");
         } else {
           setAssistantUser(v.data.getUsers[0])
         }
       },
-      () => nm.error("Error while retrieving the user"),
-      { address: user?.addr }
-    );
+      handleError: () => nm.error("Error while retrieving the user"),
+      params: { address: user?.addr }
+    });
   }
 
   const updateAssistantUser = (email) => {
-    updateUser(
-      (v) => getAssistantUser(),
-      (e) => console.log(e),
-      {
+    updateUser({
+      handleSuccess: (v) => getAssistantUser(),
+      params: {
         address: user?.addr,
         email,
       }
-    );
+    });
   }
 
   useEffect(() => {
@@ -72,11 +70,10 @@ const App: React.FC<AppProps> = (props) => {
 
   useEffect(() => {
     if (user?.addr) {
-      addUser(
-        (v) => { getAssistantUser() },
-        (e) => console.log(e),
-        { address: user?.addr }
-      );
+      addUser({
+        handleSuccess: (v) => { getAssistantUser() },
+        params: { address: user?.addr }
+      });
     }
   }, [user]);
 

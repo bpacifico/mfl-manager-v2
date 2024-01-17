@@ -29,7 +29,8 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({ initialValue }) => {
           setIsLoading(false);
         }
       },
-      (e) => console.log(e), {
+      (e) => console.log(e),
+      {
         beforeListingId,
       },
     );

@@ -1,20 +1,35 @@
+import { NotificationManager as nm } from "react-notifications";
 import { get, post } from "utils/request.js";
 import { getApiEndpoint, getGraphQLEndpoint } from "utils/env.js";
 import { jsonToParams } from "utils/graphql.js";
 
+const defaultHandleSuccess = (h, v) => {
+  if (h) {
+    h(v);
+  }
+}
+
+const defaultHandleError = (h, e) => {
+  if (h) {
+    h(e);
+  } else {
+    nm.warning("An error happened while requesting the API");
+  }
+}
+
 /* NONCE */
 
-export const getGenerateNonce = (handleSuccess, handleError) => get(
+export const getGenerateNonce = ({ handleSuccess=null, handleError=null }) => get(
   getApiEndpoint() + "api/generate_nonce",
-  handleSuccess,
-  handleError,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
 );
 
 /* GRAPHQL */
 
 /* User */
 
-export const getUsers = (handleSuccess, handleError, params) => post(
+export const getUsers = ({ handleSuccess=null, handleError=null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -26,11 +41,11 @@ export const getUsers = (handleSuccess, handleError, params) => post(
       }
     `,
   }),
-  handleSuccess,
-  handleError,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
 );
 
-export const addUser = (handleSuccess, handleError, params) => post(
+export const addUser = ({ handleSuccess=null, handleError=null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -44,11 +59,11 @@ export const addUser = (handleSuccess, handleError, params) => post(
       }
     `,
   }),
-  handleSuccess,
-  handleError,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
 );
 
-export const updateUser = (handleSuccess, handleError, params) => post(
+export const updateUser = ({ handleSuccess=null, handleError=null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -62,13 +77,13 @@ export const updateUser = (handleSuccess, handleError, params) => post(
       }
     `,
   }),
-  handleSuccess,
-  handleError,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
 );
 
 /* Notification */
 
-export const getNotificationScopesAndNotifications = (handleSuccess, handleError) => post(
+export const getNotificationScopesAndNotifications = ({ handleSuccess=null, handleError=null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: 
@@ -107,11 +122,11 @@ export const getNotificationScopesAndNotifications = (handleSuccess, handleError
       }`
     ,
   }),
-  (v) => handleSuccess(v),
-  handleError,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
 );
 
-export const getNotificationsOfNotificationScope = (handleSuccess, handleError, id) => post(
+export const getNotificationsOfNotificationScope = ({ handleSuccess=null, handleError=null, id }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: 
@@ -126,11 +141,11 @@ export const getNotificationsOfNotificationScope = (handleSuccess, handleError, 
       }`
     ,
   }),
-  (v) => handleSuccess(v),
-  handleError,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
 );
 
-export const addNotificationScope = (handleSuccess, handleError, params) => post(
+export const addNotificationScope = ({ handleSuccess=null, handleError=null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -144,6 +159,6 @@ export const addNotificationScope = (handleSuccess, handleError, params) => post
       }
     `,
   }),
-  handleSuccess,
-  handleError,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
 );

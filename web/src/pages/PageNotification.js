@@ -22,13 +22,12 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
   const [emailValue, setEmailValue] = useState("");
 
   const fetchNotificationScopesAndNotifications = () => {
-    getNotificationScopesAndNotifications(
-      (v) => {
+    getNotificationScopesAndNotifications({
+      handleSuccess: (v) => {
         setNotificationScopes(v.data.getNotificationScopes);
         setNotifications(v.data.getNotifications);
       },
-      (e) => console.log(e)
-    );
+    });
   }
 
   useEffect(() => {
@@ -37,13 +36,12 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
 
   useEffect(() => {
     if (selectedNotificationScope?.id) {
-      getNotificationsOfNotificationScope(
-        (v) => {
+      getNotificationsOfNotificationScope({
+        handleSuccess: (v) => {
           setNotifications(v.data.getNotifications);
         },
-        (e) => console.log(e),
-        selectedNotificationScope.id
-      );
+        id: selectedNotificationScope.id
+      });
     }
   }, [selectedNotificationScope]);
 
@@ -254,7 +252,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
 
   return (
     <div id="PageNotification" className="h-100 w-100">
-      <div className="container h-100 w-100 px-4 py-5">
+      <div className="container-md h-100 w-100 px-4 py-5">
         {getContent()}
       </div>
     </div>
