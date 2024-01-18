@@ -29,11 +29,15 @@ const ItemNotificationScope: React.FC<ItemNotificationScopeProps> = ({ item, isS
       }
       onClick={() => onSelect(item)}
     >
-      <div className="d-flex flex-grow-0 px-1">
+      <div className="d-flex flex-grow-0 px-1" style={{ width: 150 }}>
         <i className="bi bi-square-fill pe-1"></i> {prettifyId(item.id)}
       </div>
-      <div className="d-flex flex-grow-1 px-1">Type: {item.type}</div>
-      <div className="d-flex flex-grow-1 px-1">{getParamCount()}</div>
+      <div className="d-flex flex-grow-0 px-1" style={{ width: 100 }}>
+        Type: {item.type}
+      </div>
+      <div className="d-flex flex-grow-1 justify-content-md-center px-1">
+        {getParamCount()}
+      </div>
       <div className="d-flex flex-grow-0 px-1 text-info">
         <PopupNotificationScope
           item={item}

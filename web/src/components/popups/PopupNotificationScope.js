@@ -136,7 +136,7 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 								>
 									{typeValues
 										.map((v) => (
-										<option value={v}>
+										<option value={v} key={v}>
 											{v.charAt(0).toUpperCase() + v.slice(1)}
 										</option>
 									))}

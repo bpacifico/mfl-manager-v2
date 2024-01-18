@@ -221,7 +221,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                 renderUndefined={() => <LoadingSquare />}
                 renderEmpty={() => <BoxMessage content={"No notification found"} />}
                 renderOk={
-                  () => <div className="w-100">
+                  () => <div className="d-flex flex-column flex-fill height-md-0">
                     {notifications.map((n) => (
                       <ItemNotification
                         key={n.id}

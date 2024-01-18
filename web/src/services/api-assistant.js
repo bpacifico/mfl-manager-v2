@@ -116,7 +116,10 @@ export const getNotificationScopesAndNotifications = ({ handleSuccess=null, hand
         },
         getNotifications {
           id,
+          status,
           playerIds,
+          creationDate,
+          sendingDate,
           notificationScope {
             id
           }
@@ -135,7 +138,10 @@ export const getNotificationsOfNotificationScope = ({ handleSuccess=null, handle
       `{
         getNotifications(notificationScope: "${id}") {
           id,
+          status,
           playerIds,
+          creationDate,
+          sendingDate,
           notificationScope {
             id
           }
