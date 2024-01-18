@@ -51,10 +51,12 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
     if (!props.user?.loggedIn) {
       return (
         <div className="d-flex h-100 justify-content-center align-items-center">
-          <ButtonLogin
-            className="PageNotification-ButtonLogin fade-in h4"
-            user={props.user}
-          />
+          <div className="card">
+            <ButtonLogin
+              className="PageNotification-ButtonLogin fade-in h4 mx-3 my-2"
+              user={props.user}
+            />
+          </div>
         </div>
       )
     }
@@ -63,25 +65,31 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
       return (
         <div className="d-flex h-100 justify-content-center align-items-center">
           <div className="fade-in">
-            <div>Please provide your email:</div>
+            <div className="card px-4 py-2">
+              <div className="my-1">
+                Please provide your email:
+              </div>
 
-            <div>
-              <input
-                type="email"
-                className="form-control w-100 text-white"
-                value={emailValue}
-                onChange={(v) => setEmailValue(v.target.value)}
-                placeholder={"email@example.com..."}
-                autoFocus
-              />
+              <div className="my-1">
+                <input
+                  type="email"
+                  className="form-control w-100 text-white"
+                  value={emailValue}
+                  onChange={(v) => setEmailValue(v.target.value)}
+                  placeholder={"email@example.com..."}
+                  autoFocus
+                />
+              </div>
 
-              <button
-                className="btn btn-info btn-small text-white"
-                onClick={() => props.updateAssistantUser(emailValue)}
-                disabled={!validateEmail(emailValue)}
-              >
-                Confirm
-              </button>
+              <div className="d-flex justify-content-end my-1">
+                <button
+                  className="btn btn-info btn-small text-white"
+                  onClick={() => props.updateAssistantUser(emailValue)}
+                  disabled={!validateEmail(emailValue)}
+                >
+                  Confirm
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ import "react-notifications/lib/notifications.css";
 import { BrowserRouter } from "react-router-dom";
 import Router from "Router";
 import * as fcl from "@onflow/fcl";
-import { getGenerateNonce, getUsers, addUser, updateUser } from "services/api-assistant.js";
+import { getUsers, addUser, updateUser } from "services/api-assistant.js";
 import { getApiEndpoint } from "utils/env.js";
 
 interface AppProps {}
@@ -33,7 +33,7 @@ const App: React.FC<AppProps> = (props) => {
         if (v.data.getUsers.length === 0) {
           nm.warning("User not found");
         } else {
-          setAssistantUser(v.data.getUsers[0])
+          setAssistantUser(v.data.getUsers[0]);
         }
       },
       handleError: () => nm.error("Error while retrieving the user"),
@@ -58,7 +58,7 @@ const App: React.FC<AppProps> = (props) => {
       "app.detail.title": "mfl-assistant",
       "accessNode.api": "https://rest-mainnet.onflow.org",
       "discovery.wallet": "https://fcl-discovery.onflow.org/authn",
-      // "discovery.authn.endpoint": "https://fcl-discovery.onflow.org/api/authn",
+      "discovery.authn.endpoint": "https://fcl-discovery.onflow.org/api/authn",
       "discovery.authn.include": ["0xead892083b3e2c6c"],
       "fcl.accountProof.resolver": accountProofDataResolver,
     });

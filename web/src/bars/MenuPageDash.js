@@ -38,7 +38,7 @@ const MenuPageDash: React.FC<MenuPageDashProps> = (props) => {
             <span className="d-none d-md-inline ms-1">Competitions</span>
           </Link>
         </li>
-        <li className="nav-item align-self-end lh-1 px-2">
+        {/* <li className="nav-item align-self-end lh-1 px-2">
           <Link
             to="map"
             className={"nav-link" + (location.pathname === "/dash/map" ? " active" : "")}
@@ -46,7 +46,7 @@ const MenuPageDash: React.FC<MenuPageDashProps> = (props) => {
             <i className="bi bi-globe-americas mx-1"></i>
             <span className="d-none d-md-inline ms-1">Map</span>
           </Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );
