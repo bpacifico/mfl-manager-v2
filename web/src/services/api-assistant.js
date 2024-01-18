@@ -35,6 +35,7 @@ export const getUsers = ({ handleSuccess=null, handleError=null, params }) => po
     query: `
       {
         getUsers(address: "${params.address}") {
+          id,
           address,
           email
         }
@@ -52,6 +53,7 @@ export const addUser = ({ handleSuccess=null, handleError=null, params }) => pos
       mutation {
         addUser(address: "${params.address}") {
           user {
+            id,
             address,
             email
           }
@@ -83,12 +85,12 @@ export const updateUser = ({ handleSuccess=null, handleError=null, params }) => 
 
 /* Notification */
 
-export const getNotificationScopesAndNotifications = ({ handleSuccess=null, handleError=null }) => post(
+export const getNotificationScopesAndNotifications = ({ handleSuccess=null, handleError=null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: 
       `{
-        getNotificationScopes {
+        getNotificationScopes(user: "${params.user}") {
           id,
           type,
           positions,

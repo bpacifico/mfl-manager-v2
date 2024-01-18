@@ -52,6 +52,7 @@ class UpdateUser(Mutation):
 
 class AddNotificationScope(Mutation):
     class Arguments:
+        user = String(required=True)
         type = String(required=True) # Enum.from_enum(NotificationScopeTypeEnum)(required=True)
         min_price = Int()
         max_price = Int()
@@ -75,12 +76,19 @@ class AddNotificationScope(Mutation):
     notification_scope = Field(lambda: NotificationScopeType)
 
     async def mutate(self, info, **kwargs):
-        notification_scope = kwargs
-        notification_scope["user"] = "MUUSER"
-        notification_scope["creation_date"] = datetime.datetime.now()
+        user = await info.context["db"].users.find_one({"address": kwargs["user"]})
 
-        user = info.context["db"].notification_scopes.insert_one(notification_scope)
-        return AddNotificationScope(notification_scope=notification_scope)
+        if user:
+            notification_scope = kwargs
+            notification_scope["status"] = "active"
+            notification_scope["user"] = user["_id"]
+            notification_scope["creation_date"] = datetime.datetime.now()
+
+            user = info.context["db"].notification_scopes.insert_one(notification_scope)
+            return AddNotificationScope(notification_scope=notification_scope)
+        else:
+            raise Exception("User not found")
+
 
 class AddNotification(Mutation):
     class Arguments:
@@ -100,6 +108,7 @@ class AddNotification(Mutation):
             return AddNotification(notification=notification)
         else:
             raise Exception("Notification scope not found")
+
 
 class Mutation(ObjectType):
     add_user = AddUser.Field()

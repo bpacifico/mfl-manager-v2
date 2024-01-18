@@ -1,31 +1,51 @@
 from fastapi_mail import MessageSchema
 from bson import ObjectId
 import datetime
+import requests
 
 
-def compute_notifications(app, db, mail):
-    users = _get_users()
-    user_ids = [ObjectId(u["id"]) for u in users]
-    scopes = _get_notification_scopes(user_ids)
+base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/"
+list_url = base_url + "listings?limit=25&type=PLAYER"
+sale_url = base_url + "listings?limit=25&type=PLAYER&status=BOUGHT"
 
-    for scope in scopes:
-        _add_notification_in_db(db)
-        _send_email()
 
-        pipeline = [
-            {"$match": {"user_id": {"$in": object_ids}}},
-            {"$sort": {"user_id": 1, "record_date": -1}},
-            {"$group": {
-                "_id": "$user_id",
-                "records": {"$push": "$$ROOT"}
-            }},
-            {"$project": {
-                "latest_records": {"$slice": ["$records", num_records]}
-            }}
-        ]
+async def main(app, db, mail):
+    users = await _get_users(db)
+    user_ids = [u["_id"] for u in users]
     
+    scopes = await _get_notification_scopes(db, user_ids)
+    listing_scopes = [s for s in scopes if s["type"] == "listing"]
+    sale_scopes = [s for s in scopes if s["type"] == "sale"]
 
-def _get_users():
+    print("scopes", len(scopes))
+    print("listing_scopes", len(listing_scopes))
+    print("sale_scopes", len(sale_scopes))
+
+    # Treat listing scopes
+
+    # listings = requests.get(url=list_url).json()
+
+    for s in listing_scopes:
+        print("treatment", s)
+        player_ids = await _find_players(db, s)
+
+        if len(player_ids) > 0:
+            await _add_notification_in_db(db, s["_id"], [153, 1593])
+            await _send_email(db, mail)
+
+    # Treat listing scopes
+
+    # sales = requests.get(url=sale_url).json()
+
+    for s in listing_scopes:
+        player_ids = await _find_players(db, s)
+
+        if len(player_ids) > 0:
+            await _add_notification_in_db(db, s["_id"], [2222, 22222])
+            await _send_email(db, mail)
+
+
+async def _get_users(db):
     filters = {
         "email": {"$regex": r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'},
         "is_email_confirmed": True,
@@ -33,20 +53,27 @@ def _get_users():
     
     return await db.users.find(filters).to_list(length=None)
 
-def _get_notification_scopes(user_ids):
+
+async def _get_notification_scopes(db, user_ids):
     filters = {
-        "user": {"$in": object_ids}
+        "user": {"$in": user_ids},
+        "status": "active",
     }
     
     return await db.notification_scopes.find(filters).to_list(length=None)
 
 
-def _add_notification_in_db(db, notification_scope_id, player_ids):
+async def _find_players(db, scope):
+    # TODO
+    return [153, 1593] if scope["type"] == "listing" else [222]
+
+
+async def _add_notification_in_db(db, notification_scope_id, player_ids):
     notification = {
         "status": "await",
         "player_ids": player_ids,
         "creation_date": datetime.datetime.now(),
-        "notification_scope": ObjectId(notification_scope_id),
+        "notification_scope": notification_scope_id,
     }
     
     return await db.notifications.insert_one(notification)
@@ -74,14 +101,3 @@ async def _send_email(db, notification_id):
         return {"message": "Email sent successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
-
-
-"""
-
-    id = ID(source='_id')
-    status = String()
-    player_ids = List(lambda: Int())
-    creation_date = DateTime()
-    sending_date = DateTime()
-    notification_scope = Field(NotificationScopeType)
-"""

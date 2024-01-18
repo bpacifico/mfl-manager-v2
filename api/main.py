@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi_mail import ConnectionConfig, FastMail
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler 
 from graphene import Schema
 from starlette_graphene3 import GraphQLApp, make_graphiql_handler
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -10,8 +10,9 @@ from graph.query import Query
 from graph.mutation import Mutation
 import config
 import threading
-from cron.compute_notifications import compute_notifications
+from cron import compute_notifications
 from endpoint.generate_nonce import generate_nonce
+from endpoint.confirm_email import confirm_email
 
 
 # FastAPI setup
@@ -45,13 +46,14 @@ graphql_admin = GraphQLApp(
 app.add_route("/graphql", graphql)
 app.add_route("/graphql/admin", graphql_admin)
 app.add_route("/api/generate_nonce", generate_nonce)
+app.add_route("/api/confirm_email", confirm_email)
 
 # Manage crons
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(compute_notifications, 'cron',  args=[app, db, mail], minute='*/1')
+scheduler = AsyncIOScheduler()
+scheduler.add_job(compute_notifications.main, 'interval',  args=[app, db, mail], seconds=10)
 scheduler.start()
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=config.PORT)

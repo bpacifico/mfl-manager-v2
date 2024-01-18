@@ -159,3 +159,8 @@ select:focus {
     height: 0px;
   }
 }
+
+button.btn-xs {
+  font-size: 0.75rem;
+  padding: .1rem .25rem !important;
+}

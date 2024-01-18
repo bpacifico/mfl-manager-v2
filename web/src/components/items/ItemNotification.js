@@ -25,7 +25,9 @@ const ItemNotification: React.FC<ItemNotificationProps> = ({ item, isSelected, o
       <div className="d-flex flex-grow-1 px-1">
         {item.playerIds.length + " player" + (item.playerIds.length > 1 ? "s" : "")}
       </div>
-      <div className="d-flex flex-grow-0 px-1">{item.sending_date}</div>
+      <div className="d-flex flex-grow-0 px-1">
+        {item.sending_date ? item.sending_date : "Not sent"}
+      </div>
     </div>
   );
 };

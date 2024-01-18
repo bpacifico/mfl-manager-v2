@@ -7,11 +7,12 @@ import { prettifyId } from "utils/graphql.js";
 interface PopupNotificationScopeProps {
 	trigger: Object;
 	item?: Object;
+	assistantUser?: Object;
 	onClose?: func;
 	onDelete?: func;
 }
 
-const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger, item, onClose, onDelete }) => {
+const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger, item, assistantUser, onClose, onDelete }) => {
 	const readOnly = typeof item?.id !== "undefined";
 
 	const [showAttributeDetail, setShowAttributeDetail] = useState(false);
@@ -43,8 +44,8 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 	const [maxPhy, setMaxPhy] = useState("");
 
 	const confirm = (close) => {
-		addNotificationScope(
-      (v) => {
+		addNotificationScope({
+      handleSuccess: (v) => {
       	if (v.errors) {
       		nm.warning("Error while adding the scope");
       		return;
@@ -54,8 +55,8 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
       	if (onClose) onClose();
       	close();
       },
-      (e) => nm.error("Error while adding the scope"),
-      {
+      params: {
+      	user: assistantUser?.address,
       	type,
       	positions,
       	nationalities,
@@ -77,8 +78,8 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
       	maxDef,
       	minPhy,
       	maxPhy,
-      }
-    );
+      },
+    });
 	}
 
 	const getField = (value, setValue, placeholder="") => {

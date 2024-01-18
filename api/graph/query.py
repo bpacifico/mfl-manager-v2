@@ -11,10 +11,11 @@ class Query(ObjectType):
         users = await info.context["db"].users.find(filters).to_list(length=None)
         return users
 
-    get_notification_scopes = List(NotificationScopeType)
+    get_notification_scopes = List(NotificationScopeType, user=String())
 
-    async def resolve_get_notification_scopes(self, info):
-        notification_scopes = await info.context["db"].notification_scopes.find().to_list(length=None)
+    async def resolve_get_notification_scopes(self, info, user):
+        filters = {"user": ObjectId(user)} if user else None
+        notification_scopes = await info.context["db"].notification_scopes.find(filters).to_list(length=None)
         return notification_scopes
 
     get_notifications = List(NotificationType, notification_scope=String())

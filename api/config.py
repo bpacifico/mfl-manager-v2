@@ -15,6 +15,7 @@ def _getenv(key, default=None, mandatory=True):
 
 # WEB SERVER
 
+PORT =              _getenv('PORT',    default=5000)
 ORIGINS = [
     "http://127.0.0.1",
     "http://127.0.0.1:3000",
