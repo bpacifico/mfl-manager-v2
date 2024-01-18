@@ -2,7 +2,6 @@
 export const dateToTimezonedString = (date) => {
   const d = new Date(date + "Z");
   let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  console.log(userTimeZone)
   let options = { timeZone: userTimeZone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
   return d.toLocaleString('en-GB', options);
 }

@@ -5,8 +5,11 @@ import requests
 
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/"
-list_url = base_url + "listings?limit=25&type=PLAYER"
+list_url = base_url + "listings?limit=25&type=PLAYER&status=AVAILABLE"
 sale_url = base_url + "listings?limit=25&type=PLAYER&status=BOUGHT"
+
+last_list_var = "last_treated_listing_id"
+last_sale_var = "last_treated_sale_datetime"
 
 
 async def main(app, db, mail):
@@ -17,32 +20,35 @@ async def main(app, db, mail):
     listing_scopes = [s for s in scopes if s["type"] == "listing"]
     sale_scopes = [s for s in scopes if s["type"] == "sale"]
 
-    print("scopes", len(scopes))
-    print("listing_scopes", len(listing_scopes))
-    print("sale_scopes", len(sale_scopes))
-
     # Treat listing scopes
 
-    # listings = requests.get(url=list_url).json()
+    listings = await _get_listings_to_treat(db)
 
-    for s in listing_scopes:
-        print("treatment", s)
-        player_ids = await _find_players(db, s)
+    if len(listings) > 0:
+        await _update_vars(db, last_list_var, listings[0]["listingResourceId"])
 
-        if len(player_ids) > 0:
-            await _add_notification_in_db(db, s["_id"], [153, 1593])
-            await _send_email(db, mail)
+        for scope in listing_scopes:
+            filtered_listings = await _filter_listings_per_scope(db, scope, listings)
+            player_ids = [l["player"]["id"] for l in filtered_listings]
 
-    # Treat listing scopes
+            if len(player_ids) > 0:
+                notification = await _add_notification_in_db(db, scope["_id"], player_ids)
+                await _send_email(db, mail, notification.inserted_id)
 
-    # sales = requests.get(url=sale_url).json()
+    # Treat sale scopes
 
-    for s in listing_scopes:
-        player_ids = await _find_players(db, s)
+    sales = await _get_sales_to_treat(db)
 
-        if len(player_ids) > 0:
-            await _add_notification_in_db(db, s["_id"], [2222, 22222])
-            await _send_email(db, mail)
+    if len(sales) > 0:
+        await _update_vars(db, last_sale_var, sales[0]["listingResourceId"])
+
+        for scope in sale_scopes:
+            filtered_sales = await _filter_sales_per_scope(db, scope, sales)
+            player_ids = [l["player"]["id"] for l in filtered_sales]
+
+            if len(player_ids) > 0:
+                notification = await _add_notification_in_db(db, scope["_id"], player_ids)
+                await _send_email(db, mail, notification.inserted_id)
 
 
 async def _get_users(db):
@@ -63,9 +69,53 @@ async def _get_notification_scopes(db, user_ids):
     return await db.notification_scopes.find(filters).to_list(length=None)
 
 
-async def _find_players(db, scope):
+async def _get_listings_to_treat(db):
+    listings = requests.get(url=list_url).json()
+
+    last_listing_var_record = await db.vars.find_one({"var": last_list_var})
+
+    if last_listing_var_record:
+        listings = [l for l in listings if l["listingResourceId"] > last_listing_var_record["value"]]
+
+    return listings
+
+
+async def _get_sales_to_treat(db):
+    sales = requests.get(url=sale_url).json()
+
+    last_sale_var_record = await db.vars.find_one({"var": last_sale_var})
+
+    if last_sale_var_record:
+        sales = [l for l in sales if l["listingResourceId"] > last_sale_var_record["value"]]
+
+    return sales
+
+
+async def _filter_listings_per_scope(db, scope, listings):
     # TODO
-    return [153, 1593] if scope["type"] == "listing" else [222]
+    return listings
+
+
+async def _filter_sales_per_scope(db, scope, sales):
+    # TODO
+    return sales
+
+
+async def _update_vars(db, var, value):
+    var_record = await db.vars.find_one({"var": var})
+
+    if var_record:
+        filters = {"_id": ObjectId(var_record["_id"])}
+        update_data = {
+            "value": value,
+        }
+
+        await db.vars.update_one(filters, {"$set": update_data})
+    else:
+        await db.vars.insert_one({
+            "var": var,
+            "value": value
+        })
 
 
 async def _add_notification_in_db(db, notification_scope_id, player_ids):
@@ -79,7 +129,7 @@ async def _add_notification_in_db(db, notification_scope_id, player_ids):
     return await db.notifications.insert_one(notification)
 
 
-async def _send_email(db, notification_id):
+async def _send_email(db, mail, notification_id):
     message = MessageSchema(
         subject="[MFL-A] New notification",
         recipients=["test@test.com"],
@@ -96,8 +146,8 @@ async def _send_email(db, notification_id):
             "sending_date": datetime.datetime.now(),
         }
 
-        result = await db.notifications.update_one(filters, {"$set": update_data})
+        await db.notifications.update_one(filters, {"$set": update_data})
 
         return {"message": "Email sent successfully"}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+        raise

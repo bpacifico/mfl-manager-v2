@@ -114,7 +114,7 @@ export const getNotificationScopesAndNotifications = ({ handleSuccess=null, hand
           minPhy,
           maxPhy
         },
-        getNotifications {
+        getNotifications(order: -1) {
           id,
           status,
           playerIds,
@@ -131,12 +131,12 @@ export const getNotificationScopesAndNotifications = ({ handleSuccess=null, hand
   (e) => defaultHandleError(handleError, e),
 );
 
-export const getNotificationsOfNotificationScope = ({ handleSuccess=null, handleError=null, id }) => post(
+export const getNotificationsOfNotificationScope = ({ handleSuccess=null, handleError=null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: 
       `{
-        getNotifications(notificationScope: "${id}") {
+        getNotifications(${jsonToParams(params)}) {
           id,
           status,
           playerIds,

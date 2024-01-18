@@ -30,6 +30,26 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
     });
   }
 
+  const fetchNotificationsOfNotificationScope = () => {
+    if (selectedNotificationScope) {
+      getNotificationsOfNotificationScope({
+        handleSuccess: (v) => {
+          if (notifications) {
+            setNotifications(notifications.concat(v.data.getNotifications));
+          } else {
+            setNotifications(v.data.getNotifications);
+          }
+        },
+        params: {
+          notificationScope: selectedNotificationScope.id,
+          skip: notifications?.length,
+          limit: 10,
+          order: -1,
+        }
+      });
+    }
+  }
+
   useEffect(() => {
     if (props.assistantUser) {
       fetchNotificationScopesAndNotifications();
@@ -39,18 +59,17 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
   useEffect(() => {
     setNotifications(null);
     setSelectedNotification(null);
-
-    if (selectedNotificationScope?.id) {
-      getNotificationsOfNotificationScope({
-        handleSuccess: (v) => {
-          setNotifications(v.data.getNotifications);
-        },
-        id: selectedNotificationScope.id
-      });
-    } else {
-      setNotifications([]);
-    }
   }, [selectedNotificationScope]);
+
+  useEffect(() => {
+    if (notifications === null) {
+      if (selectedNotificationScope?.id) {
+        fetchNotificationsOfNotificationScope();
+      } else {
+        setNotifications([])
+      }
+    }
+  }, [notifications]);
 
   const getContent = () => {
     if (!props.user?.loggedIn) {
@@ -234,6 +253,19 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                         }}
                       />
                     ))}
+
+                    {selectedNotificationScope && notifications
+                      && <div
+                        className="d-flex justify-content-start"
+                      >
+                        <button
+                          className="btn btn-sm btn-link"
+                          onClick={fetchNotificationsOfNotificationScope}
+                        >
+                          Load more
+                        </button>
+                      </div>
+                    }
                   </div>
                 }
               />

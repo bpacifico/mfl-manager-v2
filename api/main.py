@@ -51,7 +51,7 @@ app.add_route("/api/confirm_email", confirm_email)
 # Manage crons
 
 scheduler = AsyncIOScheduler()
-scheduler.add_job(compute_notifications.main, 'interval',  args=[app, db, mail], seconds=10)
+scheduler.add_job(compute_notifications.main, 'interval',  args=[app, db, mail], seconds=60)
 scheduler.start()
 
 

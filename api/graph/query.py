@@ -18,9 +18,15 @@ class Query(ObjectType):
         notification_scopes = await info.context["db"].notification_scopes.find(filters).to_list(length=None)
         return notification_scopes
 
-    get_notifications = List(NotificationType, notification_scope=String())
+    get_notifications = List(NotificationType, notification_scope=String(), skip=Int(), limit=Int(), sort=String(), order=Int())
 
-    async def resolve_get_notifications(self, info, notification_scope=None):
+    async def resolve_get_notifications(self, info, notification_scope=None, skip=0, limit=10, sort="_id", order=1):
         filters = {"notification_scope": ObjectId(notification_scope)} if notification_scope else None
-        notifications = await info.context["db"].notifications.find(filters).to_list(length=None)
+
+        notifications = await info.context["db"].notifications.find(filters) \
+            .sort(sort, -1 if order < 0 else 1) \
+            .skip(skip) \
+            .limit(limit) \
+            .to_list(length=None)
+
         return notifications

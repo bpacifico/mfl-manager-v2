@@ -164,3 +164,13 @@ button.btn-xs {
   font-size: 0.75rem;
   padding: .1rem .25rem !important;
 }
+
+button.btn-link {
+  color: #0dcaf0 !important;
+  text-decoration: none;
+}
+
+button.btn-link:hover {
+  color: #0dcaf0 !important;
+  text-decoration: underline !important;
+}
