@@ -9,7 +9,10 @@ interface ItemPlayerProps {
 
 const ItemPlayer: React.FC<ItemPlayerProps> = ({ id }) => {
   return (
-    <div className="d-flex flex-column mb-2">
+    <div 
+    	className="ItemPlayer d-flex flex-column mb-2"
+    	style={{ maxWidth: 160 }}
+    >
 	    <div className="d-flex align-self-center mb-1">
 	      <img
 	        className="w-100 px-2"
