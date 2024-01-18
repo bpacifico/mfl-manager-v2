@@ -14,6 +14,12 @@ services:
     expose:
       - "27017"
 
+  smtp:
+    image: reachfive/fake-smtp-server
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+
   api:
     image: mfl-assistant_api:local
     build:
@@ -26,12 +32,18 @@ services:
       DB_PASSWORD: "password"
       DB_PORT: "27017"
       DB_DRIVER: "mongodb"
+      MAIL_SERVER: "smtp"
+      MAIL_STARTTLS: false
+      MAIL_SSL_TLS: false
+      MAIL_USE_CREDENTIALS: false
+      MAIL_VALIDATE_CERTS: false
     ports:
       - "5000:5000"
     expose:
       - "5000"
     depends_on:
       - mongodb
+      - smtp
     volumes:
       - ../api:/app
 
@@ -51,12 +63,6 @@ services:
       - "3000:3000"
     expose:
       - "3000"
-
-  smtp:
-    image: reachfive/fake-smtp-server
-    ports:
-      - "1025:1025"
-      - "1080:1080"
 
 networks:
   default:

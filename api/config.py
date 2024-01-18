@@ -24,7 +24,6 @@ ORIGINS = [
 
 # DATABASE
 
-
 DB_CONFIG = {
     'drivername':   _getenv('DB_DRIVER',    default='mongodb'),
     'host':         _getenv('DB_HOSTNAME',  default='localhost'),
@@ -41,13 +40,13 @@ DB_URL = f"{DB_CONFIG['drivername']}://{DB_CONFIG['username']}:{DB_CONFIG['passw
 # EMAIL
 
 MAIL_CONFIG = {
-	'MAIL_USERNAME': 	_getenv('MAIL_USERNAME',  default='localhost'),
-	'MAIL_PASSWORD': 	_getenv('MAIL_PASSWORD',  default=''),
-	'MAIL_SERVER': 		_getenv('MAIL_SERVER',    default='localhost'),
-	'MAIL_PORT': 		_getenv('MAIL_PORT',  	  default='1025'),
-	'MAIL_FROM': 		_getenv('MAIL_FROM',  	  default='test@email.com'),
-	'MAIL_STARTTLS': 	False,
-	'MAIL_SSL_TLS': 	True,
-	'USE_CREDENTIALS': 	True,
-	'VALIDATE_CERTS': 	True,
+	'MAIL_USERNAME': 	_getenv('MAIL_USERNAME',        default=''),
+	'MAIL_PASSWORD': 	_getenv('MAIL_PASSWORD',        default=''),
+	'MAIL_SERVER': 		_getenv('MAIL_SERVER',          default='127.0.0.1'),
+	'MAIL_PORT': 		_getenv('MAIL_PORT',  	        default='1025'),
+	'MAIL_FROM': 		_getenv('MAIL_FROM',  	        default='test@example.com'),
+	'MAIL_STARTTLS': 	_getenv('MAIL_STARTTLS',        default=True),
+	'MAIL_SSL_TLS': 	_getenv('MAIL_SSL_TLS',         default=True),
+	'USE_CREDENTIALS': 	_getenv('MAIL_USE_CREDENTIALS', default=True),
+	'VALIDATE_CERTS': 	_getenv('MAIL_VALIDATE_CERTS',  default=True),
 }
