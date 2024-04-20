@@ -2,6 +2,7 @@ from graphene import ObjectType, String, Int, Schema, Field, List, ID
 from graph.schema import UserType, NotificationScopeType, NotificationType
 from bson import ObjectId
 
+
 class Query(ObjectType):
 
     get_users = List(UserType, address=String())

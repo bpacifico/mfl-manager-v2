@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Request
 from fastapi_mail import ConnectionConfig, FastMail
 from apscheduler.schedulers.asyncio import AsyncIOScheduler 
 from graphene import Schema
@@ -9,7 +9,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
 from graph.mutation import Mutation
 import config
-import threading
 from cron import compute_notifications
 from endpoint.generate_nonce import generate_nonce
 from endpoint.confirm_email import confirm_email
@@ -41,14 +40,37 @@ graphql_admin = GraphQLApp(
     context_value={"db": db, "mail": mail},
 )
 
+# To move in right file later
+
+from fastapi.responses import HTMLResponse
+
+
+async def confirm_mail(request: Request):
+    confirmation_code = request.query_params.get('confirmation_code')
+
+    if confirmation_code is not None:
+
+        user = await db.users.find_one({"confirmation_code": {"$eq": confirmation_code}})
+
+        if user:
+            user["confirmation_code"] = None
+            user["is_email_confirmed"] = True
+            db.users.update_one({"confirmation_code": confirmation_code}, {"$set": user})
+
+            return HTMLResponse(content="<p>The email has been confirmed</p>")
+
+    return HTMLResponse(content="<p>Unknown confirmation code</p>")
+
+
 # Manage routes
 
 app.add_route("/graphql", graphql)
 app.add_route("/graphql/admin", graphql_admin)
 app.add_route("/api/generate_nonce", generate_nonce)
 app.add_route("/api/confirm_email", confirm_email)
+app.add_route("/api/confirm_mail", confirm_mail)
 
-# Manage crons
+# Manage cron
 
 scheduler = AsyncIOScheduler()
 scheduler.add_job(compute_notifications.main, 'interval',  args=[app, db, mail], seconds=60)

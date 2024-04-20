@@ -1,7 +1,10 @@
-from graphene import Mutation, ObjectType, InputObjectType, String, Argument, Int, Schema, Field, List, Enum, ID
+from graphene import Mutation, ObjectType, String, Int, Field, ID
 from graph.schema import UserType, NotificationScopeType, NotificationType, NotificationScopeTypeEnum
 import datetime
+import secrets
 from bson import ObjectId
+from mail.mail_manager import send_confirmation_mail
+
 
 def build_error(code):
     return {
@@ -21,13 +24,13 @@ class AddUser(Mutation):
     user = Field(lambda: UserType)
 
     async def mutate(self, info, address):
-        cursor = info.context["db"].users.find({"address": { "$eq": address }})
+        cursor = info.context["db"].users.find({"address": {"$eq": address}})
         users = await cursor.to_list(length=1)
 
         if len(users) > 0:
             return build_error(502)
 
-        user = info.context["db"].users.insert_one({"address": address})
+        info.context["db"].users.insert_one({"address": address})
         user = UserType({"address": address})
         return AddUser(user=user)
 
@@ -40,14 +43,42 @@ class UpdateUser(Mutation):
     user = Field(lambda: UserType)
 
     async def mutate(self, info, address, email):
-        user = await info.context["db"].users.find_one({"address": { "$eq": address }})
+        user = await info.context["db"].users.find_one({"address": {"$eq": address}})
 
         if user:
-            user["email"] = email if email != "null" else None
+            user["email"] = email.lower() if email != "null" else None
+            user["confirmation_code"] = secrets.token_hex(32) if user["email"] is not None else None
+            user["is_email_confirmed"] = False
+
             info.context["db"].users.update_one({"address": address}, {"$set": user})
+
+            if user["email"] is not None:
+                await send_confirmation_mail(info.context["mail"], user["email"], user["confirmation_code"])
+
             return UpdateUser(user=user)
 
         return UpdateUser(user=None)
+
+
+class SendConfirmationEmail(Mutation):
+    class Arguments:
+        address = String(required=True)
+        email = String(required=True)
+
+    user = Field(lambda: UserType)
+
+    async def mutate(self, info, address, email):
+        user = await info.context["db"].users.find_one({"address": {"$eq": address}})
+
+        if user and user["email"] is not None:
+            user["confirmation_code"] = secrets.token_hex(32) if email != "null" else None
+
+            info.context["db"].users.update_one({"address": address}, {"$set": user})
+            await send_confirmation_mail(info.context["mail"], user["email"], user["confirmation_code"])
+
+            return SendConfirmationEmail(user=user)
+
+        return SendConfirmationEmail(user=None)
 
 
 class AddNotificationScope(Mutation):
@@ -115,3 +146,4 @@ class Mutation(ObjectType):
     update_user = UpdateUser.Field()
     add_notification_scope = AddNotificationScope.Field()
     add_notification = AddNotification.Field()
+    send_confirmation_mail = SendConfirmationEmail.Field()

@@ -37,7 +37,8 @@ export const getUsers = ({ handleSuccess=null, handleError=null, params }) => po
         getUsers(address: "${params.address}") {
           id,
           address,
-          email
+          email,
+          isEmailConfirmed
         }
       }
     `,
@@ -71,6 +72,24 @@ export const updateUser = ({ handleSuccess=null, handleError=null, params }) => 
     query: `
       mutation {
         updateUser(address: "${params.address}", email: "${params.email}") {
+          user {
+            address,
+            email
+          }
+        }
+      }
+    `,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
+export const sendConfirmationMail = ({ handleSuccess=null, handleError=null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `
+      mutation {
+        sendConfirmationMail(address: "${params.address}", email: "${params.email}") {
           user {
             address,
             email

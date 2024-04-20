@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NotificationManager as nm } from "react-notifications";
 import ButtonLogin from "components/buttons/ButtonLogin.js";
 import LoadingSquare from "components/loading/LoadingSquare.js";
 import BoxMessage from "components/box/BoxMessage.js";
@@ -7,7 +8,11 @@ import PopupNotificationScope from "components/popups/PopupNotificationScope.js"
 import ItemNotificationScope from "components/items/ItemNotificationScope.js";
 import ItemNotification from "components/items/ItemNotification.js";
 import ItemPlayer from "components/items/ItemPlayer.js";
-import { getNotificationScopesAndNotifications, getNotificationsOfNotificationScope } from "services/api-assistant.js";
+import {
+  getNotificationScopesAndNotifications,
+  getNotificationsOfNotificationScope,
+  sendConfirmationMail,
+} from "services/api-assistant.js";
 import { validateEmail } from "utils/re.js";
 
 interface PageNotificationProps {
@@ -138,17 +143,23 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                   <div className="mb-2">
                     <div className="lh-1">Status:</div>
                     <div className="text-white">
-                      {props.assistantUser.is_email_confirmed
+                      {props.assistantUser.isEmailConfirmed
                         ? <div className="text-info">Confirmed</div>
                         : <div className="text-warning">Waiting for confirmation</div>
                       }
                     </div>
                   </div>
                   <div className="my-2">
-                    {!props.assistantUser.is_email_confirmed
+                    {!props.assistantUser.isEmailConfirmed
                       && <button
                         className="d-block btn btn-info btn-sm text-white mb-1"
-                        onClick={() => props.updateAssistantUser(null)}
+                        onClick={() => sendConfirmationMail({
+                          handleSuccess: (v) => nm.info("The link has been sent"),
+                          params: {
+                            address: props.assistantUser.address,
+                            email: props.assistantUser.email,
+                          }
+                        })}
                       >
                         <i className="bi bi-envelope-arrow-up-fill"></i> Send new confirmation link
                       </button>

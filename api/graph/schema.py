@@ -1,22 +1,26 @@
-from graphene import ObjectType, String, Int, Field, List, Enum, ID, DateTime
+from graphene import ObjectType, String, Int, Boolean, Field, List, ID, DateTime
 import enum
-import uuid
 from bson import ObjectId
+
 
 class DefaultStatusEnum(enum.Enum):
     ACTIVE = "active"
     DELETED = "deleted"
+
 
 class NotificationScopeTypeEnum(enum.Enum):
     LISTING = "listing"
     CONTRACT = "contract"
     SALE = "sale"
 
+
 class UserType(ObjectType):
     id = ID(source='_id')
     address = String()
     email = String()
-    is_email_confirmed = bool()
+    confirmation_code = String()
+    is_email_confirmed = Boolean()
+
 
 class NotificationScopeType(ObjectType):
     id = ID(source='_id')
@@ -56,6 +60,7 @@ class NotificationScopeType(ObjectType):
     async def resolve_user(self, info):
         user = await info.context["db"].users.find_one({"_id": self["user"]})
         return user
+
 
 class NotificationType(ObjectType):
     id = ID(source='_id')

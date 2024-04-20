@@ -6,13 +6,14 @@ import requests
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/"
 list_url = base_url + "listings?limit=25&type=PLAYER&status=AVAILABLE"
-sale_url = base_url + "listings?limit=25&type=PLAYER&status=BOUGHT"
+sale_url = base_url + "listings?limit=25&type=PLAYER&status=BOUGHT&sorts=listing.purchaseDateTime&sortsOrders=DESC"
 
 last_list_var = "last_treated_listing_id"
 last_sale_var = "last_treated_sale_datetime"
 
 
 async def main(app, db, mail):
+    print("aaa")
     users = await _get_users(db)
     user_ids = [u["_id"] for u in users]
     
@@ -20,16 +21,20 @@ async def main(app, db, mail):
     listing_scopes = [s for s in scopes if s["type"] == "listing"]
     sale_scopes = [s for s in scopes if s["type"] == "sale"]
 
+    print(users, scopes, listing_scopes, sale_scopes)
+
     # Treat listing scopes
 
     listings = await _get_listings_to_treat(db)
+
+    print("listing to treat", listings)
 
     if len(listings) > 0:
         await _update_vars(db, last_list_var, listings[0]["listingResourceId"])
 
         for scope in listing_scopes:
             filtered_listings = await _filter_listings_per_scope(db, scope, listings)
-            player_ids = [l["player"]["id"] for l in filtered_listings]
+            player_ids = [listing["player"]["id"] for listing in filtered_listings]
 
             if len(player_ids) > 0:
                 notification = await _add_notification_in_db(db, scope["_id"], player_ids)
@@ -39,12 +44,14 @@ async def main(app, db, mail):
 
     sales = await _get_sales_to_treat(db)
 
+    print("sales to treat", sales)
+
     if len(sales) > 0:
         await _update_vars(db, last_sale_var, sales[0]["listingResourceId"])
 
         for scope in sale_scopes:
             filtered_sales = await _filter_sales_per_scope(db, scope, sales)
-            player_ids = [l["player"]["id"] for l in filtered_sales]
+            player_ids = [sale["player"]["id"] for sale in filtered_sales]
 
             if len(player_ids) > 0:
                 notification = await _add_notification_in_db(db, scope["_id"], player_ids)
@@ -75,7 +82,7 @@ async def _get_listings_to_treat(db):
     last_listing_var_record = await db.vars.find_one({"var": last_list_var})
 
     if last_listing_var_record:
-        listings = [l for l in listings if l["listingResourceId"] > last_listing_var_record["value"]]
+        listings = [listing for listing in listings if listing["listingResourceId"] > last_listing_var_record["value"]]
 
     return listings
 
@@ -86,7 +93,7 @@ async def _get_sales_to_treat(db):
     last_sale_var_record = await db.vars.find_one({"var": last_sale_var})
 
     if last_sale_var_record:
-        sales = [l for l in sales if l["listingResourceId"] > last_sale_var_record["value"]]
+        sales = [sale for sale in sales if sale["listingResourceId"] > last_sale_var_record["value"]]
 
     return sales
 
