@@ -1,5 +1,5 @@
-version: '3.8'
-name: mfl-assistant_dev
+version: "3.8"
+name: mfl-assistant_prod
 
 services:
   mongodb:
@@ -11,6 +11,48 @@ services:
       MONGO_INITDB_DATABASE: mfl-assistant
     ports:
       - "27017:27017"
+    expose:
+      - "27017"
+    volumes:
+      - /var/www/mfl-assistant/data:/data
+
+  mailserver:
+    image: docker.io/mailserver/docker-mailserver:latest
+    container_name: mailserver
+    hostname: mail
+    domainname: mfl-assistant.com
+    env_file: mailserver.env
+    ports:
+      - "25:25"    # SMTP  (explicit TLS => STARTTLS)
+      - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
+      - "465:465"  # ESMTP (implicit TLS)
+      - "587:587"  # ESMTP (explicit TLS => STARTTLS)
+      - "993:993"  # IMAP4 (implicit TLS)
+    volumes:
+      - ./data/dms/mail-data/:/var/mail/
+      - ./data/dms/mail-state/:/var/mail-state/
+      - ./data/dms/mail-logs/:/var/log/mail/
+      - ./data/dms/config/:/tmp/docker-mailserver/
+      - ./data/letsencrypt:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    stop_grace_period: 1m
+    cap_add:
+      - NET_ADMIN
+    healthcheck:
+      test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
+      timeout: 3s
+      retries: 0
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    ports:
+      - "80:80"
+    volumes: 
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/logs:/var/log/letsencrypt/
+    command: certonly --standalone --force-renewal --email <mail> -d mail.<domain> --agree-tos
 
   api:
     image: mfl-assistant_api:local
@@ -18,13 +60,24 @@ services:
       context: ../api
       dockerfile: Dockerfile
     environment:
-      - MONGO_URI:mongodb://root:password@127.0.0.1:27017/mfl-assistant
+      DB_HOSTNAME: "mongodb"
+      DB_NAME: "mfl-assistant"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "password"
+      DB_PORT: "27017"
+      DB_DRIVER: "mongodb"
+      MAIL_SERVER: "smtp"
+      MAIL_STARTTLS: false
+      MAIL_SSL_TLS: false
+      MAIL_USE_CREDENTIALS: false
+      MAIL_VALIDATE_CERTS: false
     ports:
       - "5000:5000"
     expose:
       - "5000"
     depends_on:
       - mongodb
+      - smtp
     volumes:
       - ../api:/app
 
@@ -34,17 +87,12 @@ services:
       context: ../web
       dockerfile: Dockerfile
     tty: true
-    volumes:
-      - ../web:/app
-      - /app/node_modules
     command: npm start
     ports:
       - "3000:3000"
     expose:
       - "3000"
 
-  smtp:
-    image: reachfive/fake-smtp-server
-    ports:
-      - "1025:1025"
-      - "1080:1080"
+networks:
+  default:
+    name: mfl-assistant
