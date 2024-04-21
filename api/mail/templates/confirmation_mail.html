@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Email Template</title>
-</head>
-<body>
-    <h1>Hello!</h1>
-    <p>This is a test email template.</p>
-    <a
-            href="http://127.0.0.1:5000/api/confirm_mail?confirmation_code={confirmation_code}"
-            target="_blank"
-    >
-        Confirm email address
-    </a>
-</body>
-</html>
+<h1>Hi!</h1>
+<p>Please click the link to confirm you email address:</p>
+<a
+        href="http://127.0.0.1:5000/api/confirm_mail?confirmation_code={confirmation_code}"
+        target="_blank"
+>
+    Confirm email address
+</a>
+<p>If you haven't requested for a confiormation link, please ignore this message.</p>

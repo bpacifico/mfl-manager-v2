@@ -43,7 +43,10 @@ const App: React.FC<AppProps> = (props) => {
 
   const updateAssistantUser = (email) => {
     updateUser({
-      handleSuccess: (v) => getAssistantUser(),
+      handleSuccess: (v) => {
+        getAssistantUser();
+        nm.info("The confirmation link has been sent via email");
+      },
       params: {
         address: user?.addr,
         email,

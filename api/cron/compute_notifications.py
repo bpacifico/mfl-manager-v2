@@ -8,12 +8,11 @@ base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/"
 list_url = base_url + "listings?limit=25&type=PLAYER&status=AVAILABLE"
 sale_url = base_url + "listings?limit=25&type=PLAYER&status=BOUGHT&sorts=listing.purchaseDateTime&sortsOrders=DESC"
 
-last_list_var = "last_treated_listing_id"
+last_list_var = "last_treated_listing_datetime"
 last_sale_var = "last_treated_sale_datetime"
 
 
-async def main(app, db, mail):
-    print("aaa")
+async def main(db, mail):
     users = await _get_users(db)
     user_ids = [u["_id"] for u in users]
     
@@ -21,16 +20,12 @@ async def main(app, db, mail):
     listing_scopes = [s for s in scopes if s["type"] == "listing"]
     sale_scopes = [s for s in scopes if s["type"] == "sale"]
 
-    print(users, scopes, listing_scopes, sale_scopes)
-
     # Treat listing scopes
 
     listings = await _get_listings_to_treat(db)
 
-    print("listing to treat", listings)
-
     if len(listings) > 0:
-        await _update_vars(db, last_list_var, listings[0]["listingResourceId"])
+        await _update_vars(db, last_list_var, listings[0]["createdDateTime"])
 
         for scope in listing_scopes:
             filtered_listings = await _filter_listings_per_scope(db, scope, listings)
@@ -43,8 +38,6 @@ async def main(app, db, mail):
     # Treat sale scopes
 
     sales = await _get_sales_to_treat(db)
-
-    print("sales to treat", sales)
 
     if len(sales) > 0:
         await _update_vars(db, last_sale_var, sales[0]["listingResourceId"])

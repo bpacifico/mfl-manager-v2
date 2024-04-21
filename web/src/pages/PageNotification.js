@@ -154,7 +154,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                       && <button
                         className="d-block btn btn-info btn-sm text-white mb-1"
                         onClick={() => sendConfirmationMail({
-                          handleSuccess: (v) => nm.info("The link has been sent"),
+                          handleSuccess: (v) => nm.info("The confirmation link has been sent via email"),
                           params: {
                             address: props.assistantUser.address,
                             email: props.assistantUser.email,
