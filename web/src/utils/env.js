@@ -9,7 +9,7 @@ export const getApiEndpoint = () => {
 		|| window.location.hostname === "") {
 		return "http://127.0.0.1:5000/";
 	}
-	return "https://api." + window.location.hostname.replace("www.", "").split(".").slice(1).join(".") + "/";
+	return "https://api." + window.location.hostname.replace("www.", "") + "/";
 }
 
 export const getGraphQLEndpoint = () => {
