@@ -8,6 +8,6 @@ COPY ./package.json .
 
 RUN npm install
 
-COPY --chown=node:node . .
+COPY . .
 
-CMD npm start
+CMD npm start.prod
