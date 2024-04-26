@@ -60,6 +60,7 @@ services:
       context: ../api
       dockerfile: Dockerfile
     environment:
+      ORIGINS: "https://api.mfl-assistant.com"
       DB_HOSTNAME: "mailserver"
       DB_NAME: "mfl-assistant"
       DB_USERNAME: "root"
