@@ -4,7 +4,12 @@ export const getMflApiEndpoint = () => {
 }
 
 export const getApiEndpoint = () => {
-	return "http://127.0.0.1:5000/";
+	if (window.location.hostname === "localhost"
+		|| window.location.hostname === "127.0.0.1"
+		|| window.location.hostname === "") {
+		return "http://127.0.0.1:5000/";
+	}
+	return "https://api." + window.location.hostname.replace("www.", "").split(".").slice(1).join(".") + "/";
 }
 
 export const getGraphQLEndpoint = () => {
