@@ -14,26 +14,26 @@ services:
     expose:
       - "27017"
     volumes:
-      - /var/www/mfl-assistant/data:/data
+      - /var/www/mfl-assistant/database/data:/data
 
   mailserver:
     image: docker.io/mailserver/docker-mailserver:latest
     container_name: mailserver
     hostname: mail
     domainname: mfl-assistant.com
-    env_file: mailserver.env
+    env_file: mail-server.env
     ports:
-      - "25:25"    # SMTP  (explicit TLS => STARTTLS)
-      - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
-      - "465:465"  # ESMTP (implicit TLS)
-      - "587:587"  # ESMTP (explicit TLS => STARTTLS)
-      - "993:993"  # IMAP4 (implicit TLS)
+      - "25:25"
+      - "143:143"
+      - "465:465"
+      - "587:587"
+      - "993:993"
     volumes:
-      - ./data/dms/mail-data/:/var/mail/
-      - ./data/dms/mail-state/:/var/mail-state/
-      - ./data/dms/mail-logs/:/var/log/mail/
-      - ./data/dms/config/:/tmp/docker-mailserver/
-      - ./data/letsencrypt:/etc/letsencrypt
+      - /var/www/mfl-assistant/mail/dms/mail-data/:/var/mail/
+      - /var/www/mfl-assistant/mail/dms/mail-state/:/var/mail-state/
+      - /var/www/mfl-assistant/mail/dms/mail-logs/:/var/log/mail/
+      - /var/www/mfl-assistant/mail/dms/config/:/tmp/docker-mailserver/
+      - /var/www/mfl-assistant/mail/letsencrypt:/etc/letsencrypt
       - /etc/localtime:/etc/localtime:ro
     restart: always
     stop_grace_period: 1m
@@ -50,9 +50,9 @@ services:
     ports:
       - "80:80"
     volumes: 
-      - ./data/letsencrypt:/etc/letsencrypt
-      - ./data/certbot/logs:/var/log/letsencrypt/
-    command: certonly --standalone --force-renewal --email <mail> -d mail.<domain> --agree-tos
+      - /var/www/mfl-assistant/mail/letsencrypt:/etc/letsencrypt
+      - /var/www/mfl-assistant/certbot/logs:/var/log/letsencrypt/
+    command: certonly --standalone --force-renewal --email team@mfl-assistant.com -d mail.mfl-assistant.com --agree-tos
 
   api:
     image: mfl-assistant_api:local
@@ -60,7 +60,7 @@ services:
       context: ../api
       dockerfile: Dockerfile
     environment:
-      DB_HOSTNAME: "mongodb"
+      DB_HOSTNAME: "mailserver"
       DB_NAME: "mfl-assistant"
       DB_USERNAME: "root"
       DB_PASSWORD: "password"
@@ -77,9 +77,7 @@ services:
       - "5000"
     depends_on:
       - mongodb
-      - smtp
-    volumes:
-      - ../api:/app
+      - mailserver
 
   web:
     image: mfl-assistant_web:local
