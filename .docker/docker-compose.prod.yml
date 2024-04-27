@@ -61,7 +61,7 @@ services:
       dockerfile: Dockerfile
     environment:
       ORIGINS: "https://mfl-assistant.com,https://www.mfl-assistant.com"
-      DB_HOSTNAME: "mailserver"
+      DB_HOSTNAME: "mongodb"
       DB_NAME: "mfl-assistant"
       DB_USERNAME: "root"
       DB_PASSWORD: "password"
