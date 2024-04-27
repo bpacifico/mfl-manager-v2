@@ -68,6 +68,7 @@ services:
       DB_PORT: "27017"
       DB_DRIVER: "mongodb"
       MAIL_SERVER: "smtp"
+      MAIL_PORT: "25"
       MAIL_STARTTLS: false
       MAIL_SSL_TLS: false
       MAIL_USE_CREDENTIALS: false
