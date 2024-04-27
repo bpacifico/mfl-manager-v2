@@ -1,7 +1,18 @@
+import { getApiEndpoint } from "utils/env.js";
 
 export const get = async (target, handleSuccess, handleError) => {
   try {
-    const response = await fetch(target);
+    const response = await fetch(
+      target,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": getApiEndpoint(),
+          "Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",
+        },
+      },
+    );
     const jsonData = await response.json();
     handleSuccess(jsonData);
   } catch (error) {
@@ -18,6 +29,8 @@ export const post = async (target, body, handleSuccess, handleError) => {
         body: body,
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": getApiEndpoint(),
+          "Access-Control-Allow-Methods": "POST,OPTIONS,HEAD",
         },
       },
     );
