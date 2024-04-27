@@ -13,8 +13,14 @@ export const get = async (target, handleSuccess, handleError) => {
         },
       },
     );
+
     const jsonData = await response.json();
-    handleSuccess(jsonData);
+
+    if (jsonData.errors) {
+      handleError(jsonData.errors);
+    } else {
+      handleSuccess(jsonData);
+    }
   } catch (error) {
     handleError(error);
   }
@@ -34,7 +40,14 @@ export const post = async (target, body, handleSuccess, handleError) => {
         },
       },
     );
-    handleSuccess(await response.json());
+
+    const jsonData = await response.json();
+
+    if (jsonData.errors) {
+      handleError(jsonData);
+    } else {
+      handleSuccess(jsonData);
+    }
   } catch (error) {
     handleError(error);
   }

@@ -70,7 +70,8 @@ services:
       DB_DRIVER: "mongodb"
       MAIL_SERVER: "mailserver"
       MAIL_PORT: "25"
-      MAIL_STARTTLS: false
+      MAIL_FROM: "team@mfl-assistant.com"
+      MAIL_STARTTLS: true
       MAIL_SSL_TLS: false
       MAIL_USE_CREDENTIALS: false
       MAIL_VALIDATE_CERTS: false
