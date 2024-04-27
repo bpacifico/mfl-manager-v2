@@ -48,7 +48,7 @@ services:
     image: certbot/certbot
     container_name: certbot
     ports:
-      - "81:80"
+      - "80:80"
     volumes: 
       - /var/www/mfl-assistant/mail/letsencrypt:/etc/letsencrypt
       - /var/www/mfl-assistant/certbot/logs:/var/log/letsencrypt/
@@ -56,6 +56,7 @@ services:
 
   api:
     image: mfl-assistant_api:local
+    container_name: api
     build:
       context: ../api
       dockerfile: Dockerfile
@@ -67,7 +68,7 @@ services:
       DB_PASSWORD: "password"
       DB_PORT: "27017"
       DB_DRIVER: "mongodb"
-      MAIL_SERVER: "smtp"
+      MAIL_SERVER: "mailserver"
       MAIL_PORT: "25"
       MAIL_STARTTLS: false
       MAIL_SSL_TLS: false
@@ -83,6 +84,7 @@ services:
 
   web:
     image: mfl-assistant_web:local
+    container_name: web
     build:
       context: ../web
       dockerfile: Dockerfile
