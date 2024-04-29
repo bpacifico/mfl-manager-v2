@@ -69,12 +69,16 @@ services:
       DB_PORT: "27017"
       DB_DRIVER: "mongodb"
       MAIL_SERVER: "mailserver"
-      MAIL_PORT: "25"
+      MAIL_USERNAME: "team@mfl-assistant.com"
+      MAIL_PASSWORD: "password2"
+      MAIL_PORT: "465"
       MAIL_FROM: "team@mfl-assistant.com"
+      MAIL_FROM_NAME: "MFL Assistant"
       MAIL_STARTTLS: true
       MAIL_SSL_TLS: false
-      MAIL_USE_CREDENTIALS: false
-      MAIL_VALIDATE_CERTS: false
+      USE_CREDENTIALS: true
+      VALIDATE_CERTS: true
+      MAIL_DEBUG: 1
     ports:
       - "5000:5000"
     expose:
