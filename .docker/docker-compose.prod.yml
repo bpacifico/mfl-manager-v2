@@ -7,7 +7,6 @@ services:
     container_name: mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: mfl-assistant
     ports:
       - "27017:27017"
@@ -21,7 +20,7 @@ services:
     container_name: mailserver
     hostname: mail
     domainname: mfl-assistant.com
-    env_file: mail-server.env
+    env_file: mail-server.prod.env
     ports:
       - "25:25"
       - "143:143"
@@ -60,22 +59,21 @@ services:
     build:
       context: ../api
       dockerfile: Dockerfile
+    env_file: api.prod.env
     environment:
       ORIGINS: "https://mfl-assistant.com,https://www.mfl-assistant.com"
       DB_HOSTNAME: "mongodb"
       DB_NAME: "mfl-assistant"
       DB_USERNAME: "root"
-      DB_PASSWORD: "password"
       DB_PORT: "27017"
       DB_DRIVER: "mongodb"
       MAIL_SERVER: "mailserver"
       MAIL_USERNAME: "team@mfl-assistant.com"
-      MAIL_PASSWORD: "password2"
       MAIL_PORT: "465"
       MAIL_FROM: "team@mfl-assistant.com"
       MAIL_FROM_NAME: "MFL Assistant"
-      MAIL_STARTTLS: true
-      MAIL_SSL_TLS: false
+      MAIL_STARTTLS: false
+      MAIL_SSL_TLS: true
       USE_CREDENTIALS: true
       VALIDATE_CERTS: true
       MAIL_DEBUG: 1
