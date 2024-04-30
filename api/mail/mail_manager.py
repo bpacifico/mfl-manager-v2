@@ -1,5 +1,5 @@
 from fastapi_mail import MessageSchema
-from config.config import HOST
+from config import HOST
 
 
 def _load_template(body):
