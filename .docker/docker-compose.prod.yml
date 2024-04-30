@@ -69,7 +69,7 @@ services:
       DB_USERNAME: "root"
       DB_PORT: "27017"
       DB_DRIVER: "mongodb"
-      MAIL_SERVER: "mailserver"
+      MAIL_SERVER: "mail.mfl-assistant.com"
       MAIL_USERNAME: "team@mfl-assistant.com"
       MAIL_PORT: "465"
       MAIL_FROM: "team@mfl-assistant.com"
