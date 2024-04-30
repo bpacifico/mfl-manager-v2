@@ -8,6 +8,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_DATABASE: mfl-assistant
+    env_file: mongodb.prod.env
     ports:
       - "27017:27017"
     expose:
