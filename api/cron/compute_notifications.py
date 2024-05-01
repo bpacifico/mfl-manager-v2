@@ -1,7 +1,9 @@
-from fastapi_mail import MessageSchema
 from bson import ObjectId
 import datetime
 import requests
+import logging
+
+from mail.mail_manager import send_listing_email, send_sale_email
 
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/"
@@ -11,18 +13,25 @@ sale_url = base_url + "listings?limit=25&type=PLAYER&status=BOUGHT&sorts=listing
 last_list_var = "last_treated_listing_datetime"
 last_sale_var = "last_treated_sale_datetime"
 
+logger = logging.getLogger("compute_notification")
+logger.setLevel(logging.INFO)
+
 
 async def main(db, mail):
     users = await _get_users(db)
     user_ids = [u["_id"] for u in users]
+    logger.critical(f"Number of users to treat: {len(user_ids)}")
     
     scopes = await _get_notification_scopes(db, user_ids)
     listing_scopes = [s for s in scopes if s["type"] == "listing"]
     sale_scopes = [s for s in scopes if s["type"] == "sale"]
+    logger.critical(f"Number of listing scopes to treat: {len(listing_scopes)}")
+    logger.critical(f"Number of sale scopes to treat: {len(listing_scopes)}")
 
     # Treat listing scopes
 
     listings = await _get_listings_to_treat(db)
+    logger.critical(f"Number of listings to treat: {len(listings)}")
 
     if len(listings) > 0:
         await _update_vars(db, last_list_var, listings[0]["createdDateTime"])
@@ -30,25 +39,38 @@ async def main(db, mail):
         for scope in listing_scopes:
             filtered_listings = await _filter_listings_per_scope(db, scope, listings)
             player_ids = [listing["player"]["id"] for listing in filtered_listings]
+            logger.critical(f"{len(player_ids)} - {len(filtered_listings)}")
 
             if len(player_ids) > 0:
-                notification = await _add_notification_in_db(db, scope["_id"], player_ids)
-                await _send_email(db, mail, notification.inserted_id)
+                user = [u for u in users if u["_id"] == scope["user"]]
+                logger.critical(f"{len(user)}")
+
+                if len(user) > 0:
+                    logger.critical(f"Listing notification to send with {len(player_ids)} players")
+                    user = user.pop()
+                    notification = await _add_notification_in_db(db, scope["_id"], player_ids)
+                    await send_listing_email(db, mail, notification, user, player_ids)
 
     # Treat sale scopes
 
     sales = await _get_sales_to_treat(db)
+    logger.critical(f"Number of sales to treat: {len(sales)}")
 
     if len(sales) > 0:
-        await _update_vars(db, last_sale_var, sales[0]["listingResourceId"])
+        await _update_vars(db, last_sale_var, sales[0]["createdDateTime"])
 
         for scope in sale_scopes:
             filtered_sales = await _filter_sales_per_scope(db, scope, sales)
             player_ids = [sale["player"]["id"] for sale in filtered_sales]
 
             if len(player_ids) > 0:
-                notification = await _add_notification_in_db(db, scope["_id"], player_ids)
-                await _send_email(db, mail, notification.inserted_id)
+                user = [u for u in users if u["_id"] == scope["user"]]
+
+                if len(user) > 0:
+                    logger.critical(f"Sale notification to send with {len(player_ids)} players")
+                    user = user.pop()
+                    notification = await _add_notification_in_db(db, scope["_id"], player_ids)
+                    await send_sale_email(db, mail, notification, user, player_ids)
 
 
 async def _get_users(db):
@@ -75,7 +97,7 @@ async def _get_listings_to_treat(db):
     last_listing_var_record = await db.vars.find_one({"var": last_list_var})
 
     if last_listing_var_record:
-        listings = [listing for listing in listings if listing["listingResourceId"] > last_listing_var_record["value"]]
+        listings = [listing for listing in listings if listing["createdDateTime"] > last_listing_var_record["value"]]
 
     return listings
 
@@ -86,17 +108,17 @@ async def _get_sales_to_treat(db):
     last_sale_var_record = await db.vars.find_one({"var": last_sale_var})
 
     if last_sale_var_record:
-        sales = [sale for sale in sales if sale["listingResourceId"] > last_sale_var_record["value"]]
+        sales = [sale for sale in sales if sale["createdDateTime"] > last_sale_var_record["value"]]
 
     return sales
 
 
-async def _filter_listings_per_scope(db, scope, listings):
+async def _filter_listings_per_scope(scope, listings):
     # TODO
     return listings
 
 
-async def _filter_sales_per_scope(db, scope, sales):
+async def _filter_sales_per_scope(scope, sales):
     # TODO
     return sales
 
@@ -127,27 +149,3 @@ async def _add_notification_in_db(db, notification_scope_id, player_ids):
     }
     
     return await db.notifications.insert_one(notification)
-
-
-async def _send_email(db, mail, notification_id):
-    message = MessageSchema(
-        subject="[MFL-A] New notification",
-        recipients=["test@test.com"],
-        body="Oui",
-        subtype="html"
-    )
-    
-    try:
-        await mail.send_message(message)
-        
-        filters = {"_id": ObjectId(notification_id)}
-        update_data = {
-            "status": "sent",
-            "sending_date": datetime.datetime.now(),
-        }
-
-        await db.notifications.update_one(filters, {"$set": update_data})
-
-        return {"message": "Email sent successfully"}
-    except Exception as e:
-        raise
