@@ -37,7 +37,7 @@ async def main(db, mail):
         await _update_vars(db, last_list_var, listings[0]["createdDateTime"])
 
         for scope in listing_scopes:
-            filtered_listings = await _filter_listings_per_scope(db, scope, listings)
+            filtered_listings = await _filter_listings_per_scope(scope, listings)
             player_ids = [listing["player"]["id"] for listing in filtered_listings]
             logger.critical(f"{len(player_ids)} - {len(filtered_listings)}")
 
@@ -60,7 +60,7 @@ async def main(db, mail):
         await _update_vars(db, last_sale_var, sales[0]["createdDateTime"])
 
         for scope in sale_scopes:
-            filtered_sales = await _filter_sales_per_scope(db, scope, sales)
+            filtered_sales = await _filter_sales_per_scope(scope, sales)
             player_ids = [sale["player"]["id"] for sale in filtered_sales]
 
             if len(player_ids) > 0:
