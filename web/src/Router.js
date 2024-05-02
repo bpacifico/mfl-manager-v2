@@ -33,7 +33,7 @@ const Router: React.FC = (props) => {
   }, [location.pathname]);
 
   return (
-    <div id="Router" className="d-flex flex-column flex-md-row vh-100">
+    <div id="Router" className="d-flex flex-column flex-md-row h-100">
       <div id="AppMenu" className="order-2 order-md-1">
         <Menu
           {...props}

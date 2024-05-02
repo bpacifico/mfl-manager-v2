@@ -23,7 +23,7 @@ const ButtonLogin: React.FC<ButtonLoginProps> = (props) => {
 	    className={props.className}
 	    onClick={props.user?.loggedIn ? logOut : logIn}
 	  >
-	    <div className="ps-3 pe-1 py-md-2 px-md-0">
+	    <div className="px-1 py-md-2 px-md-0">
 	      {props.user?.loggedIn
 	        ? <div
 	          className="Menu-logout d-inline-block align-items-center text-center"

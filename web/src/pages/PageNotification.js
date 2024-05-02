@@ -82,7 +82,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
         <div className="d-flex h-100 justify-content-center align-items-center">
           <div className="card">
             <ButtonLogin
-              className="PageNotification-ButtonLogin fade-in h4 mx-3 my-2"
+              className="PageNotification-ButtonLogin fade-in h4 mx-4 my-3"
               user={props.user}
             />
           </div>
