@@ -82,7 +82,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
 
       <div className="container px-4 py-5">
         <div className="row">
-          <div className="col-6">
+          <div className="col-12 col-md-6">
             {!isComplete
               && <BoxWarning
                 className={"h2 my-3"}
@@ -93,7 +93,7 @@ const PageMercatoSales: React.FC<PageMercatoSalesProps> = ({ initialValue }) => 
             }
           </div>
 
-          <div className="col-6 mb-3">
+          <div className="col-12 col-md-6 mb-3">
             <div className="float-end">
               <FilterContainerPlayer
                 filters={filters}
