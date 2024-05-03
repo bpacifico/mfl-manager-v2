@@ -90,7 +90,13 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
       )
     }
 
-    if (props.user?.loggedIn && !props.assistantUser?.email) {
+    if (!props.assistantUser) {
+      return <div className="d-flex h-100">
+        <LoadingSquare />
+      </div>;
+    }
+
+    if (!props.assistantUser.email) {
       return (
         <div className="d-flex h-100 justify-content-center align-items-center">
           <div className="fade-in">
