@@ -1,5 +1,5 @@
 from graphene import Mutation, ObjectType, String, Int, Field, ID
-from graph.schema import UserType, NotificationScopeType, NotificationType, NotificationScopeTypeEnum
+from graph.schema import UserType, NotificationScopeType, NotificationType
 import datetime
 import secrets
 from bson import ObjectId
@@ -84,7 +84,7 @@ class SendConfirmationEmail(Mutation):
 class AddNotificationScope(Mutation):
     class Arguments:
         user = String(required=True)
-        type = String(required=True) # Enum.from_enum(NotificationScopeTypeEnum)(required=True)
+        type = String(required=True)  # Enum.from_enum(NotificationScopeTypeEnum)(required=True)
         min_price = Int()
         max_price = Int()
         min_age = Int()
@@ -115,8 +115,31 @@ class AddNotificationScope(Mutation):
             notification_scope["user"] = user["_id"]
             notification_scope["creation_date"] = datetime.datetime.now()
 
-            user = info.context["db"].notification_scopes.insert_one(notification_scope)
+            notification_scope = info.context["db"].notification_scopes.insert_one(notification_scope)
             return AddNotificationScope(notification_scope=notification_scope)
+        else:
+            raise Exception("User not found")
+
+
+class DeleteNotificationScope(Mutation):
+    class Arguments:
+        user_id = String(required=True)
+        scope_id = String(required=True)
+
+    async def mutate(self, info, scope_id, user_id):
+        user = await info.context["db"].users.find_one({"address": {"$eq": user_id}})
+
+        if user:
+            scope = info.context["db"].notification_scopes.find_one({
+                "user": {"$eq": ObjectId(user_id)},
+                "_id": ObjectId(scope_id)
+            })
+
+            if scope:
+                scope.delete()
+                return DeleteNotificationScope()
+            else:
+                raise Exception("Scope not found")
         else:
             raise Exception("User not found")
 
@@ -129,7 +152,6 @@ class AddNotification(Mutation):
 
     async def mutate(self, info, notification_scope_id, **kwargs):
         scope = await info.context["db"].notification_scopes.find_one({"_id": ObjectId(notification_scope_id)})
-        print(scope)
 
         if scope:
             notification = kwargs
@@ -145,5 +167,6 @@ class Mutation(ObjectType):
     add_user = AddUser.Field()
     update_user = UpdateUser.Field()
     add_notification_scope = AddNotificationScope.Field()
+    delete_notification_scope = DeleteNotificationScope.Field()
     add_notification = AddNotification.Field()
     send_confirmation_mail = SendConfirmationEmail.Field()
