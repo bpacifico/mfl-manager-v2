@@ -60,7 +60,7 @@ async def main(db, mail):
         await _update_vars(db, last_sale_var, sales[0]["createdDateTime"])
 
         for scope in sale_scopes:
-            filtered_sales = await _filter_sales_per_scope(scope, sales)
+            filtered_sales = await _filter_listings_per_scope(scope, sales)
             player_ids = [sale["player"]["id"] for sale in filtered_sales]
 
             if len(player_ids) > 0:
@@ -114,13 +114,27 @@ async def _get_sales_to_treat(db):
 
 
 async def _filter_listings_per_scope(scope, listings):
-    # TODO
-    return listings
-
-
-async def _filter_sales_per_scope(scope, sales):
-    # TODO
-    return sales
+    return [
+        l for l in listings
+        if (scope["min_price"] is None or scope["min_price"] <= l["price"])
+        and (scope["max_price"] is None or scope["max_price"] >= l["price"])
+        and (scope["min_age"] is None or scope["min_age"] <= l["player"]["metadata"]["ageAtMint"])
+        and (scope["max_age"] is None or scope["max_age"] >= l["player"]["metadata"]["ageAtMint"])
+        and (scope["min_ovr"] is None or scope["min_ovr"] <= l["player"]["metadata"]["overall"])
+        and (scope["max_ovr"] is None or scope["min_ovr"] >= l["player"]["metadata"]["overall"])
+        and (scope["min_pac"] is None or scope["min_pac"] <= l["player"]["metadata"]["pace"])
+        and (scope["max_pac"] is None or scope["max_pac"] >= l["player"]["metadata"]["pace"])
+        and (scope["min_dri"] is None or scope["min_dri"] <= l["player"]["metadata"]["dribbling"])
+        and (scope["max_dri"] is None or scope["max_dri"] >= l["player"]["metadata"]["dribbling"])
+        and (scope["min_pas"] is None or scope["min_pas"] <= l["player"]["metadata"]["passing"])
+        and (scope["max_pas"] is None or scope["max_pas"] >= l["player"]["metadata"]["passing"])
+        and (scope["min_sho"] is None or scope["min_sho"] <= l["player"]["metadata"]["shooting"])
+        and (scope["max_sho"] is None or scope["max_sho"] >= l["player"]["metadata"]["shooting"])
+        and (scope["min_def"] is None or scope["min_def"] <= l["player"]["metadata"]["defense"])
+        and (scope["max_def"] is None or scope["max_def"] >= l["player"]["metadata"]["defense"])
+        and (scope["min_phy"] is None or scope["min_phy"] <= l["player"]["metadata"]["physical"])
+        and (scope["max_phy"] is None or scope["max_phy"] >= l["player"]["metadata"]["physical"])
+    ]
 
 
 async def _update_vars(db, var, value):
