@@ -8,8 +8,8 @@ export const get = async (target, handleSuccess, handleError) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": new URL(target).origin,
-          "Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",
+          /*"Access-Control-Allow-Origin": new URL(target).origin,
+          "Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",*/
         },
       },
     );
