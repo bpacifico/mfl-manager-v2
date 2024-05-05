@@ -8,8 +8,7 @@ export const get = async (target, handleSuccess, handleError) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": target.startsWith(getMflApiEndpoint())
-            ? getMflApiEndpoint() :  getApiEndpoint(),
+          "Access-Control-Allow-Origin": new URL(target).origin,
           "Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",
         },
       },
@@ -36,8 +35,7 @@ export const post = async (target, body, handleSuccess, handleError) => {
         body: body,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": target.startsWith(getMflApiEndpoint())
-            ? getMflApiEndpoint() :  getApiEndpoint(),
+          "Access-Control-Allow-Origin": new URL(target).origin,
           "Access-Control-Allow-Methods": "POST,OPTIONS,HEAD",
         },
       },
