@@ -5,7 +5,7 @@ interface LoadingSquareProps {}
 
 const LoadingSquare: React.FC<LoadingSquareProps> = () => {
   return (
-    <div className="LoadingSquare d-inline-block rounded-1 h-100 w-100"/>
+    <div className="LoadingSquare d-inline-block rounded-2 h-100 w-100"/>
   );
 };
 

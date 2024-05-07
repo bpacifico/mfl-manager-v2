@@ -18,11 +18,11 @@ const Footer: React.FC<FooterProps> = (props) => {
 		          	</Link>
 		          </div>
 
-		          <div className="h6">
+		          {/* <div className="h6">
 		          	<Link to="/map">
 		            	<i className="bi bi-globe-americas me-2"></i>Map
 		          	</Link>
-		          </div>
+		          </div> */}
 
 		          <div className="h6">
 		          	<Link to="/notification">

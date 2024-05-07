@@ -12,6 +12,7 @@ import config
 from cron import compute_notifications
 from endpoint.generate_nonce import generate_nonce
 from endpoint.confirm_email import confirm_email
+from utils.jwt import create_access_token
 
 
 # FastAPI setup
@@ -32,12 +33,12 @@ mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
 graphql = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
     on_get=make_graphiql_handler(),
-    context_value={"db": db, "mail": mail},
+    #context_value={"db": db, "mail": mail},
 )
 graphql_admin = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
     on_get=make_graphiql_handler(),
-    context_value={"db": db, "mail": mail},
+    #context_value={"db": db, "mail": mail},
 )
 
 # To move in right file later
@@ -61,6 +62,25 @@ async def confirm_mail(request: Request):
 
     return HTMLResponse(content="<p>Unknown confirmation code</p>")
 
+# To move in right file later
+
+
+async def login(request: Request, response: Response):
+    address = request.query_params.get('address')
+
+    if address is not None:
+
+        user = await db.users.find_one({"address": {"$eq": address}})
+
+        if user:
+            access_token_expires = timedelta(minutes=24 * 60)
+            token = create_access_token({"address": address})
+
+            response.set_cookie(key="access_token_cookie", value=f"Bearer {token[0]}", httponly=True)
+            return response
+
+    return HTMLResponse(content="Address Unknown")
+
 
 # Manage routes
 
@@ -69,6 +89,7 @@ app.add_route("/graphql/admin", graphql_admin)
 app.add_route("/api/generate_nonce", generate_nonce)
 app.add_route("/api/confirm_email", confirm_email)
 app.add_route("/api/confirm_mail", confirm_mail)
+app.add_route("/api/login", login)
 
 # Manage cron
 

@@ -189,3 +189,20 @@ export const addNotificationScope = ({ handleSuccess=null, handleError=null, par
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
+
+export const deleteNotificationScope = ({ handleSuccess=null, handleError=null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `
+      mutation {
+        deleteNotificationScope(${jsonToParams(params)}) {
+          notificationScope {
+            id
+          }
+        }
+      }
+    `,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);

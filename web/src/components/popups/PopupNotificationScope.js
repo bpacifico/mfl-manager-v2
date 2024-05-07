@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NotificationManager as nm } from "react-notifications";
 import Popup from "reactjs-popup";
-import { addNotificationScope } from "services/api-assistant.js";
+import { addNotificationScope, deleteNotificationScope } from "services/api-assistant.js";
 import { prettifyId } from "utils/graphql.js";
 
 interface PopupNotificationScopeProps {
@@ -78,6 +78,27 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
       	maxDef,
       	minPhy,
       	maxPhy,
+      },
+    });
+	}
+
+	const deleteScope = (close) => {
+		deleteNotificationScope({
+      handleSuccess: (v) => {
+      	if (v.errors) {
+      		nm.warning("Error while deleting the scope");
+      		if (onDelete) {
+      			onDelete();
+      		}
+      		return;
+      	}
+
+      	nm.info("The notification scope has been deleted");
+      	if (onClose) onClose();
+      	close();
+      },
+      params: {
+      	scopeId: item.id 
       },
     });
 	}
@@ -216,7 +237,7 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 								{readOnly
 									? <button
 										className="btn btn-danger text-white"
-										onClick={() => confirm(close)}
+										onClick={() => deleteScope(close)}
 									>
 										<i className="bi bi-trash3"></i> Delete
 									</button>

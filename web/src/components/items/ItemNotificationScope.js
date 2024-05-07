@@ -7,9 +7,10 @@ interface ItemNotificationScopeProps {
   item: Object;
   isSelected?: bool;
   onSelect?: funct;
+  onDelete?: funct;
 }
 
-const ItemNotificationScope: React.FC<ItemNotificationScopeProps> = ({ item, isSelected, onSelect }) => {
+const ItemNotificationScope: React.FC<ItemNotificationScopeProps> = ({ item, isSelected, onSelect, onDelete }) => {
   const paramToIgnore = ["id", "type"];
 
   const getParamCount = () => {
@@ -44,6 +45,7 @@ const ItemNotificationScope: React.FC<ItemNotificationScopeProps> = ({ item, isS
           trigger={
             <i className="bi bi-plus-circle-dotted"></i>
           }
+          onDelete={onDelete}
         />
       </div>
     </div>

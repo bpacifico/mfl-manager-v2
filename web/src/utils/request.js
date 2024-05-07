@@ -9,9 +9,10 @@ export const get = async (target, handleSuccess, handleError) => {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": target.startsWith(getApiEndpoint())
-            ? new URL(target).origin : "*",
+            ? new URL(target).origin : null,
           "Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",
         },
+        credentials: target.startsWith(getApiEndpoint()) ? "include" : null,
       },
     );
 
@@ -39,6 +40,7 @@ export const post = async (target, body, handleSuccess, handleError) => {
           "Access-Control-Allow-Origin": getApiEndpoint(),
           "Access-Control-Allow-Methods": "POST,OPTIONS,HEAD",
         },
+        credentials: "include",
       },
     );
 

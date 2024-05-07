@@ -237,6 +237,10 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                             selectedNotificationScope?.id !== s.id ? s : null
                           );
                         }}
+                        onDelete={() => {
+                          setNotificationScopes(null);
+                          setNotifications(null);
+                        }}
                       />
                     ))}
                   </div>
