@@ -12,6 +12,7 @@ import config
 from cron import compute_notifications
 from endpoint.generate_nonce import generate_nonce
 from endpoint.confirm_email import confirm_email
+from endpoint.login import login
 from utils.jwt import create_access_token
 
 
@@ -33,12 +34,12 @@ mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
 graphql = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
     on_get=make_graphiql_handler(),
-    #context_value={"db": db, "mail": mail},
+    context_value={"db": db, "mail": mail},
 )
 graphql_admin = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
     on_get=make_graphiql_handler(),
-    #context_value={"db": db, "mail": mail},
+    context_value={"db": db, "mail": mail},
 )
 
 # To move in right file later
@@ -88,7 +89,6 @@ app.add_route("/graphql", graphql)
 app.add_route("/graphql/admin", graphql_admin)
 app.add_route("/api/generate_nonce", generate_nonce)
 app.add_route("/api/confirm_email", confirm_email)
-app.add_route("/api/confirm_mail", confirm_mail)
 app.add_route("/api/login", login)
 
 # Manage cron
