@@ -15,9 +15,10 @@ def _getenv(key, default=None, mandatory=True):
 
 # WEB SERVER
 
-PORT =              _getenv('PORT',    default=5000)
-HOST =              _getenv('HOST',    default=f"http://127.0.0.1:{PORT}/")
-ORIGINS =           _getenv('ORIGINS', default="http://127.0.0.1,http://127.0.0.1:3000,http://127.0.0.1:5000").split(",")
+ENVIRONMENT =       _getenv('ENVIRONMENT',  default='dev')
+PORT =              _getenv('PORT',         default=5000)
+HOST =              _getenv('HOST',         default=f"http://127.0.0.1:{PORT}/")
+ORIGINS =           _getenv('ORIGINS',      default="http://127.0.0.1:3000,http://127.0.0.1:5000").split(",")
 
 # DATABASE
 

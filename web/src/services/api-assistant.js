@@ -17,6 +17,16 @@ const defaultHandleError = (h, e) => {
   }
 }
 
+/* login */
+
+export const login = ({ handleSuccess=null, handleError=null, body }) => post(
+  getApiEndpoint() + "api/login",
+  body,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+  true,
+);
+
 /* NONCE */
 
 export const getGenerateNonce = ({ handleSuccess=null, handleError=null }) => get(
@@ -29,12 +39,12 @@ export const getGenerateNonce = ({ handleSuccess=null, handleError=null }) => ge
 
 /* User */
 
-export const getUsers = ({ handleSuccess=null, handleError=null, params }) => post(
+export const getLoggedUser = ({ handleSuccess=null, handleError=null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
       {
-        getUsers(address: "${params.address}") {
+        getLoggedUser() {
           id,
           address,
           email,
@@ -47,12 +57,12 @@ export const getUsers = ({ handleSuccess=null, handleError=null, params }) => po
   (e) => defaultHandleError(handleError, e),
 );
 
-export const addUser = ({ handleSuccess=null, handleError=null, params }) => post(
+export const addLoggedUser = ({ handleSuccess=null, handleError=null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
       mutation {
-        addUser(address: "${params.address}") {
+        addLoggedUser() {
           user {
             id,
             address,
@@ -66,12 +76,12 @@ export const addUser = ({ handleSuccess=null, handleError=null, params }) => pos
   (e) => defaultHandleError(handleError, e),
 );
 
-export const updateUser = ({ handleSuccess=null, handleError=null, params }) => post(
+export const  updateLoggedUserEmail = ({ handleSuccess=null, handleError=null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
       mutation {
-        updateUser(address: "${params.address}", email: "${params.email}") {
+        updateLoggedUserEmail(email: "${params.email}") {
           user {
             address,
             email

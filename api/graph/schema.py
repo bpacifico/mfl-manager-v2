@@ -74,3 +74,9 @@ class NotificationType(ObjectType):
         notification_scope = await info.context["db"].notification_scopes \
             .find_one({"_id": self["notification_scope"]})
         return notification_scope
+
+
+class NonceType(ObjectType):
+    id = ID(source='_id')
+    address = String()
+    nonce = String()

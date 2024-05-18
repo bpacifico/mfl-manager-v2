@@ -1,16 +1,19 @@
 from graphene import ObjectType, String, Int, Schema, Field, List, ID
 from graph.schema import UserType, NotificationScopeType, NotificationType
 from bson import ObjectId
+from decorator.require_token import require_token
 
 
 class Query(ObjectType):
 
-    get_users = List(UserType, address=String())
+    get_user = Field(UserType)
 
-    async def resolve_get_users(self, info, address=None):
-        filters = {"address": address} if address else None
-        users = await info.context["db"].users.find(filters).to_list(length=None)
-        return users
+    @require_token
+    async def resolve_get_logged_user(self, info):
+        print(info, info["user"])
+        filters = {"address": "123"} if address else None
+        user = await info.context["db"].users.find_one(filters)
+        return user
 
     get_notification_scopes = List(NotificationScopeType, user=String())
 

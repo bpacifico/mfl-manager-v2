@@ -1,6 +1,6 @@
 import { getApiEndpoint, getMflApiEndpoint } from "utils/env.js";
 
-export const get = async (target, handleSuccess, handleError) => {
+export const get = async (target, handleSuccess, handleError, credentials=true) => {
   try {
     const response = await fetch(
       target,
@@ -8,11 +8,11 @@ export const get = async (target, handleSuccess, handleError) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": target.startsWith(getApiEndpoint())
-            ? new URL(target).origin : null,
           "Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",
+          "Access-Control-Allow-Origin": target.startsWith(getApiEndpoint()) ? new URL(target).origin : undefined,
+          "Access-Control-Allow-Credentials": target.startsWith(getApiEndpoint()) && credentials ? true : undefined,
         },
-        credentials: target.startsWith(getApiEndpoint()) ? "include" : null,
+        credentials: target.startsWith(getApiEndpoint()) && credentials ? "include" : undefined,
       },
     );
 
@@ -28,19 +28,21 @@ export const get = async (target, handleSuccess, handleError) => {
   }
 };
 
-export const post = async (target, body, handleSuccess, handleError) => {
+export const post = async (target, body, handleSuccess, handleError, credentials=true) => {
   try {
     const response = await fetch(
       target,
       {
         method: "POST",
-        body: body,
+        body,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": getApiEndpoint(),
           "Access-Control-Allow-Methods": "POST,OPTIONS,HEAD",
+          "Access-Control-Allow-Origin": target.startsWith(getApiEndpoint()) ? new URL(target).origin : undefined,
+          "Access-Control-Allow-Credentials": target.startsWith(getApiEndpoint()) && credentials ? true : undefined,
+          "Access-Control-Expose-Headers": target.endsWith("/api/login") ? "Set-Cookie" : undefined,
         },
-        credentials: "include",
+        credentials: target.startsWith(getApiEndpoint()) && credentials ? "include" : undefined,
       },
     );
 

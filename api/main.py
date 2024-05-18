@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi_mail import ConnectionConfig, FastMail
 from apscheduler.schedulers.asyncio import AsyncIOScheduler 
 from graphene import Schema
@@ -11,9 +11,11 @@ from graph.mutation import Mutation
 import config
 from cron import compute_notifications
 from endpoint.generate_nonce import generate_nonce
-from endpoint.confirm_email import confirm_email
-from endpoint.login import login
-from utils.jwt import create_access_token
+from utils.jwt import create_access_token, control_service
+from utils.cookie import set_cookie
+from fastapi.responses import HTMLResponse
+import json
+from datetime import datetime, timedelta
 
 
 # FastAPI setup
@@ -31,23 +33,30 @@ app.add_middleware(
 
 db = AsyncIOMotorClient(config.DB_URL)[config.DB_CONFIG["database"]]
 mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
+
+# Setup GraphQL
+
+def get_context_value(request: Request) -> dict:
+    return {
+        "request": request,
+        "mail": mail,
+        "db": db,
+    }
+
 graphql = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
     on_get=make_graphiql_handler(),
-    context_value={"db": db, "mail": mail},
+    context_value=get_context_value,
 )
 graphql_admin = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
     on_get=make_graphiql_handler(),
-    context_value={"db": db, "mail": mail},
+    context_value=get_context_value,
 )
 
 # To move in right file later
 
-from fastapi.responses import HTMLResponse
-
-
-async def confirm_mail(request: Request):
+async def confirm_email(request: Request):
     confirmation_code = request.query_params.get('confirmation_code')
 
     if confirmation_code is not None:
@@ -65,23 +74,32 @@ async def confirm_mail(request: Request):
 
 # To move in right file later
 
-
+@app.post("/api/login")
 async def login(request: Request, response: Response):
-    address = request.query_params.get('address')
+    service = await request.json()
+    print(service)
 
-    if address is not None:
+    if control_service(service):
+        user = await db.users.find_one({"address": {"$eq": service["address"]}})
 
-        user = await db.users.find_one({"address": {"$eq": address}})
+        print(user)
 
-        if user:
-            access_token_expires = timedelta(minutes=24 * 60)
-            token = create_access_token({"address": address})
+        if not user:
+            db.users.insert_one({"address": service["address"]})
 
-            response.set_cookie(key="access_token_cookie", value=f"Bearer {token[0]}", httponly=True)
-            return response
+        expire_delta = timedelta(minutes=24 * 60)
 
-    return HTMLResponse(content="Address Unknown")
+        token = create_access_token(
+            {"address": service["address"]},
+            expires_delta=expire_delta,
+        )
 
+        print(datetime.now() + expire_delta)
+        response = set_cookie(request, response, "access_token_cookie", token, expire_delta)
+
+        return True
+
+    return HTMLResponse(content="Provided service is not valid")
 
 # Manage routes
 
@@ -89,7 +107,6 @@ app.add_route("/graphql", graphql)
 app.add_route("/graphql/admin", graphql_admin)
 app.add_route("/api/generate_nonce", generate_nonce)
 app.add_route("/api/confirm_email", confirm_email)
-app.add_route("/api/login", login)
 
 # Manage cron
 

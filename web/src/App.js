@@ -8,13 +8,14 @@ import "react-notifications/lib/notifications.css";
 import { BrowserRouter } from "react-router-dom";
 import Router from "Router";
 import * as fcl from "@onflow/fcl";
-import { getUsers, addUser, updateUser } from "services/api-assistant.js";
+import { login, getLoggedUser, addLoggedUser, updateLoggedUserEmail } from "services/api-assistant.js";
 import { getApiEndpoint } from "utils/env.js";
+import { verifyServiceData } from "utils/flow.js";
 
 interface AppProps {}
 
 const App: React.FC<AppProps> = (props) => {
-  const [user, setUser] = useState();
+  const [flowUser, setFlowUser] = useState();
   const [assistantUser, setAssistantUser] = useState();
 
   const accountProofDataResolver = async () => {
@@ -27,35 +28,58 @@ const App: React.FC<AppProps> = (props) => {
     };
   };
 
-  const getAssistantUser = () => {
-    getUsers({
+  const getToken = () => {
+    if (flowUser?.loggedIn) {
+      let service = flowUser.services.filter((s) => s.type === "account-proof").pop();
+
+      if (!service) {
+        nm.error("Wallet service not found");
+      } else {
+        if (verifyServiceData(service)) {
+          nm.error(verifyServiceData(service));
+        } else {
+          login({
+            handleSuccess: (v) => { getOrCreateLoggedUser() },
+            body: JSON.stringify(service.data),
+          });
+        }
+      }
+    }
+  }
+
+  const getOrCreateLoggedUser = () => {
+    getLoggedUser({
       handleSuccess: (v) => {
-        if (v.data.getUsers.length === 0) {
+        if (v.data.getUser) {
           nm.warning("User not found");
         } else {
-          setAssistantUser(v.data.getUsers[0]);
+          setAssistantUser(v.data.getUser);
         }
       },
-      handleError: () => nm.error("Error while retrieving the user"),
-      params: { address: user?.addr }
+      handleError: (error) => {
+        if (true) {
+          console.log(error);
+        } else {
+          nm.error("Error while retrieving the user");
+        }
+      },
     });
   }
 
   const updateAssistantUser = (email) => {
-    updateUser({
+    updateLoggedUserEmail({
       handleSuccess: (v) => {
-        getAssistantUser();
+        getOrCreateLoggedUser();
         nm.info("The confirmation link has been sent via email");
       },
       params: {
-        address: user?.addr,
         email,
       }
     });
   }
 
   useEffect(() => {
-    fcl.currentUser().subscribe(setUser);
+    fcl.currentUser().subscribe(setFlowUser);
     fcl.config({
       "flow.network": "mainnet",
       "app.detail.title": "mfl-assistant",
@@ -66,26 +90,22 @@ const App: React.FC<AppProps> = (props) => {
       "fcl.accountProof.resolver": accountProofDataResolver,
     });
 
-    if (user) {
-      getAssistantUser();
+    if (flowUser) {
+      getToken();
     }
   }, []);
 
   useEffect(() => {
-    console.log(user);
-    if (user?.addr) {
-      addUser({
-        handleSuccess: (v) => { getAssistantUser() },
-        params: { address: user?.addr }
-      });
+    if (flowUser) {
+      getToken();
     }
-  }, [user]);
+  }, [flowUser]);
 
   return (
     <div id="App">
       <BrowserRouter>
         <Router
-          user={user}
+          user={flowUser}
           assistantUser={assistantUser}
           updateAssistantUser={updateAssistantUser}
           {...props}
