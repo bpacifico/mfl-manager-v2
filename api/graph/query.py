@@ -6,14 +6,11 @@ from decorator.require_token import require_token
 
 class Query(ObjectType):
 
-    get_user = Field(UserType)
+    get_logged_user = Field(UserType)
 
     @require_token
-    async def resolve_get_logged_user(self, info):
-        print(info, info["user"])
-        filters = {"address": "123"} if address else None
-        user = await info.context["db"].users.find_one(filters)
-        return user
+    def resolve_get_logged_user(self, info):
+        return info.context["user"]
 
     get_notification_scopes = List(NotificationScopeType, user=String())
 

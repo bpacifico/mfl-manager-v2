@@ -1,17 +1,17 @@
 from config import ENVIRONMENT, ORIGINS
+from datetime import datetime
 
 
-def set_cookie(request, response, name, value, expires):
+def set_cookie(request, response, name, value, max_age):
     if ENVIRONMENT == "dev":
         response.set_cookie(
             key=name,
             value=value,
             path="/",
-            domain="127.0.0.1:3000",
+            domain=None,
             secure=True,
-            httponly=False,
-            samesite=None,
-            #expires=expires
+            httponly=True,
+            max_age=max_age
         )
     else:
         origin = request.environ['HTTP_ORIGIN']
@@ -25,7 +25,7 @@ def set_cookie(request, response, name, value, expires):
                 domain=d,
                 secure=True,
                 httponly=True,
-                expires=expires
+                max_age=max_age
             )
 
     return response

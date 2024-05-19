@@ -9,28 +9,12 @@ from fastapi import Request
 
 def require_token(f):
     @wraps(f)
-    def wrapper(root, info, *args, **kwargs):
+    async def wrapper(root, info, *args, **kwargs):
         request = info.context["request"]
-        authorization = request.headers.get("Authorization")
+        token = request.cookies.get('access_token_cookie')
 
-        if not authorization:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Authorization header is missing",
-            )
-
-        token = authorization.split(" ")[1]
-
-        # Verify and decode the JWT token
         try:
             decoded = verify_token(token)
-            print(decoded)
-            user = info.context["db"].find_one({"_id": ObjectId(decoded)})
-            if not user:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Invalid token",
-                )
         except jwt.ExpiredSignatureError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -42,10 +26,20 @@ def require_token(f):
                 detail="Invalid token",
             )
 
-        # Add the user to the info.context
+        if not decoded["address"]:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token doesn't hold correct information",
+            )
+
+        user = await info.context["db"].users.find_one({"address": decoded["address"]})
+            
+        if not user:
+            info.context["db"].users.insert_one({"address": decoded["address"]})
+            user = await info.context["db"].users.find_one({"address": decoded["address"]})
+
         info.context["user"] = user
 
-        # Call the original function
         return f(root, info, *args, **kwargs)
 
     return wrapper

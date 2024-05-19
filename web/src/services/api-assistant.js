@@ -1,5 +1,5 @@
 import { NotificationManager as nm } from "react-notifications";
-import { get, post } from "utils/request.js";
+import { get, post, loginPost } from "utils/request.js";
 import { getApiEndpoint, getGraphQLEndpoint } from "utils/env.js";
 import { jsonToParams } from "utils/graphql.js";
 
@@ -19,7 +19,7 @@ const defaultHandleError = (h, e) => {
 
 /* login */
 
-export const login = ({ handleSuccess=null, handleError=null, body }) => post(
+export const login = ({ handleSuccess=null, handleError=null, body }) => loginPost(
   getApiEndpoint() + "api/login",
   body,
   (v) => defaultHandleSuccess(handleSuccess, v),
@@ -44,30 +44,11 @@ export const getLoggedUser = ({ handleSuccess=null, handleError=null }) => post(
   JSON.stringify({
     query: `
       {
-        getLoggedUser() {
+        getLoggedUser {
           id,
           address,
           email,
           isEmailConfirmed
-        }
-      }
-    `,
-  }),
-  (v) => defaultHandleSuccess(handleSuccess, v),
-  (e) => defaultHandleError(handleError, e),
-);
-
-export const addLoggedUser = ({ handleSuccess=null, handleError=null, params }) => post(
-  getGraphQLEndpoint(),
-  JSON.stringify({
-    query: `
-      mutation {
-        addLoggedUser() {
-          user {
-            id,
-            address,
-            email
-          }
         }
       }
     `,

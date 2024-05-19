@@ -24,7 +24,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.ORIGINS,
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -77,12 +77,9 @@ async def confirm_email(request: Request):
 @app.post("/api/login")
 async def login(request: Request, response: Response):
     service = await request.json()
-    print(service)
 
     if control_service(service):
         user = await db.users.find_one({"address": {"$eq": service["address"]}})
-
-        print(user)
 
         if not user:
             db.users.insert_one({"address": service["address"]})
@@ -94,10 +91,9 @@ async def login(request: Request, response: Response):
             expires_delta=expire_delta,
         )
 
-        print(datetime.now() + expire_delta)
-        response = set_cookie(request, response, "access_token_cookie", token, expire_delta)
+        response = set_cookie(request, response, "access_token_cookie", token, 24 * 60 * 60)
 
-        return True
+        return "You can find the token in the Set-Cookie HTTP response header"
 
     return HTMLResponse(content="Provided service is not valid")
 
