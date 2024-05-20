@@ -119,7 +119,9 @@ const Menu: React.FC<MenuProps> = (props) => {
         <div className="nav-item align-content-center">
           <ButtonLogin
             className={"nav-link nav-link-login ps-2 ps-md-0 ms-md-0"}
-            user={props.user}
+            flowUser={props.flowUser}
+            assistantUser={props.assistantUser}
+            logout={props.logout}
           />
         </div>
       </div>

@@ -6,34 +6,7 @@ import datetime
 import secrets
 from bson import ObjectId
 from mail.mail_manager import send_confirmation_mail
-
-
-def build_error(code):
-    return {
-        "errors": [
-            {
-                "code": code,
-                "message": "object of type 'AsyncIOMotorCursor' has no len()",
-            } 
-        ]
-    }
-
-
-class AddLoggedUser(Mutation):
-
-    user = Field(lambda: UserType)
-
-    @require_token
-    async def mutate(self, info):
-        cursor = info.context["db"].users.find({"address": {"$eq": info["user"]["address"]}})
-        users = await cursor.to_list(length=1)
-
-        if len(users) > 0:
-            return build_error(502)
-
-        info.context["db"].users.insert_one({"address": info["user"]["address"]})
-        user = UserType({"address": info["user"]["address"]})
-        return AddLoggedUser(user=user)
+import copy
 
 
 class UpdateLoggedUserEmail(Mutation):
@@ -44,21 +17,19 @@ class UpdateLoggedUserEmail(Mutation):
 
     @require_token
     async def mutate(self, info, email):
-        user = await info.context["db"].users.find_one({"address": {"$eq": info["user"]["address"]}})
+        user = copy.deepcopy(info.context["user"])
 
-        if user:
-            user["email"] = email.lower() if email != "null" else None
-            user["confirmation_code"] = secrets.token_hex(32) if user["email"] is not None else None
-            user["is_email_confirmed"] = False
+        user["email"] = email.lower() if email != "null" else None
+        user["confirmation_code"] = secrets.token_hex(32) if user["email"] is not None else None
+        user["is_email_confirmed"] = False
 
-            info.context["db"].users.update_one({"address": info["user"]["address"]}, {"$set": user})
+        info.context["db"].users.update_one({"address": user["address"]}, {"$set": user})
 
-            if user["email"] is not None:
-                await send_confirmation_mail(info.context["mail"], user["email"], user["confirmation_code"])
+        if user["email"] is not None:
+            await send_confirmation_mail(info.context["mail"], user["email"], user["confirmation_code"])
 
-            return UpdateLoggedUserEmail(user=user)
+        return UpdateLoggedUserEmail(user=user)
 
-        return UpdateLoggedUserEmail(user=None)
 
 
 class SendConfirmationEmail(Mutation):
@@ -169,7 +140,6 @@ class AddNotification(Mutation):
 
 
 class Mutation(ObjectType):
-    add_logged_user = AddLoggedUser.Field()
     update_logged_user_email = UpdateLoggedUserEmail.Field()
     add_notification_scope = AddNotificationScope.Field()
     delete_notification_scope = DeleteNotificationScope.Field()

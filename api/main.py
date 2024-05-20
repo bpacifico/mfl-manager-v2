@@ -97,6 +97,12 @@ async def login(request: Request, response: Response):
 
     return HTMLResponse(content="Provided service is not valid")
 
+@app.post("/api/logout")
+async def logout(request: Request, response: Response):
+    response = set_cookie(request, response, "access_token_cookie", token, 0)
+    return "Logging out has been a success"
+
+
 # Manage routes
 
 app.add_route("/graphql", graphql)

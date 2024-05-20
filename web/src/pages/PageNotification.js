@@ -31,7 +31,6 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
         setNotificationScopes(v.data.getNotificationScopes);
         setNotifications(v.data.getNotifications);
       },
-      params: { user: props.assistantUser.id }
     });
   }
 
@@ -77,13 +76,15 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
   }, [notifications]);
 
   const getContent = () => {
-    if (!props.user?.loggedIn) {
+    if (!props.assistantUser) {
       return (
         <div className="d-flex h-100 justify-content-center align-items-center">
           <div className="card">
             <ButtonLogin
               className="PageNotification-ButtonLogin fade-in h4 mx-4 my-3"
-              user={props.user}
+              flowUser={props.flowUser}
+              assistantUser={props.assistantUser}
+              logout={props.logout}
             />
           </div>
         </div>

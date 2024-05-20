@@ -8,7 +8,7 @@ import "react-notifications/lib/notifications.css";
 import { BrowserRouter } from "react-router-dom";
 import Router from "Router";
 import * as fcl from "@onflow/fcl";
-import { login, getLoggedUser, addLoggedUser, updateLoggedUserEmail } from "services/api-assistant.js";
+import { login, logout, getLoggedUser, addLoggedUser, updateLoggedUserEmail } from "services/api-assistant.js";
 import { getApiEndpoint } from "utils/env.js";
 import { verifyServiceData } from "utils/flow.js";
 
@@ -39,7 +39,7 @@ const App: React.FC<AppProps> = (props) => {
           nm.error(verifyServiceData(service));
         } else {
           login({
-            handleSuccess: (v) => { getOrCreateLoggedUser() },
+            handleSuccess: (v) => { getAssistantUser() },
             body: JSON.stringify(service.data),
           });
         }
@@ -47,20 +47,14 @@ const App: React.FC<AppProps> = (props) => {
     }
   }
 
-  const getOrCreateLoggedUser = () => {
+  const getAssistantUser = () => {
     getLoggedUser({
       handleSuccess: (v) => {
-        if (v.data.getUser) {
-          nm.warning("User not found");
+        if (!v.data.getLoggedUser) {
+          setFlowUser(null);
+          setAssistantUser(null);
         } else {
-          setAssistantUser(v.data.getUser);
-        }
-      },
-      handleError: (error) => {
-        if (true) {
-          console.log(error);
-        } else {
-          nm.error("Error while retrieving the user");
+          setAssistantUser(v.data.getLoggedUser);
         }
       },
     });
@@ -69,12 +63,21 @@ const App: React.FC<AppProps> = (props) => {
   const updateAssistantUser = (email) => {
     updateLoggedUserEmail({
       handleSuccess: (v) => {
-        getOrCreateLoggedUser();
+        getAssistantUser();
         nm.info("The confirmation link has been sent via email");
       },
       params: {
         email,
       }
+    });
+  }
+
+  const clearUsers = () => {
+    setFlowUser(null);
+    setAssistantUser(null);
+
+    logout({
+      handleSuccess: (v) => { nm.info("You have been logged out with success") },
     });
   }
 
@@ -90,13 +93,15 @@ const App: React.FC<AppProps> = (props) => {
       "fcl.accountProof.resolver": accountProofDataResolver,
     });
 
-    if (flowUser) {
+    if (flowUser && flowUser.loggedIn) {
       getToken();
+    } else {
+      getAssistantUser();
     }
   }, []);
 
   useEffect(() => {
-    if (flowUser) {
+    if (flowUser && flowUser.loggedIn) {
       getToken();
     }
   }, [flowUser]);
@@ -105,9 +110,10 @@ const App: React.FC<AppProps> = (props) => {
     <div id="App">
       <BrowserRouter>
         <Router
-          user={flowUser}
+          flowUser={flowUser}
           assistantUser={assistantUser}
           updateAssistantUser={updateAssistantUser}
+          logout={clearUsers}
           {...props}
         />
         <NotificationContainer />

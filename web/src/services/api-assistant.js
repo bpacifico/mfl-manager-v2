@@ -27,6 +27,15 @@ export const login = ({ handleSuccess=null, handleError=null, body }) => loginPo
   true,
 );
 
+export const logout = ({ handleSuccess=null, handleError=null }) => loginPost(
+  getApiEndpoint() + "api/logout",
+  null,
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+  true,
+);
+
+
 /* NONCE */
 
 export const getGenerateNonce = ({ handleSuccess=null, handleError=null }) => get(
@@ -95,12 +104,12 @@ export const sendConfirmationMail = ({ handleSuccess=null, handleError=null, par
 
 /* Notification */
 
-export const getNotificationScopesAndNotifications = ({ handleSuccess=null, handleError=null, params }) => post(
+export const getNotificationScopesAndNotifications = ({ handleSuccess=null, handleError=null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: 
       `{
-        getNotificationScopes(user: "${params.user}") {
+        getNotificationScopes {
           id,
           type,
           positions,

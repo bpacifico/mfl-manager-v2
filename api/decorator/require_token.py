@@ -5,6 +5,7 @@ from fastapi import HTTPException, status
 import jwt
 from utils.jwt import verify_token
 from fastapi import Request
+import inspect
 
 
 def require_token(f):
@@ -40,6 +41,9 @@ def require_token(f):
 
         info.context["user"] = user
 
-        return f(root, info, *args, **kwargs)
+        if inspect.iscoroutinefunction(f):
+            return await f(root, info, *args, **kwargs)
+        else:
+            return f(root, info, *args, **kwargs)
 
     return wrapper
