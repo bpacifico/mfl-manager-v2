@@ -55,7 +55,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
   }
 
   useEffect(() => {
-    if (props.assistantUser) {
+    if (props.assistantUser?.email) {
       fetchNotificationScopesAndNotifications();
     }
   }, [props.assistantUser]);
@@ -141,7 +141,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
             </div>
 
             <div className="d-flex overflow-auto">
-              {props.user?.loggedIn && props.assistantUser
+              {props.assistantUser
                 ? <div>
                   <div className="mb-2">
                     <div className="lh-1">Address:</div>

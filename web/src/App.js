@@ -40,6 +40,7 @@ const App: React.FC<AppProps> = (props) => {
         } else {
           login({
             handleSuccess: (v) => { getAssistantUser() },
+            handleError: () => { fcl.unauthenticate(); },
             body: JSON.stringify(service.data),
           });
         }

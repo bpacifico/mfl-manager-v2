@@ -11,11 +11,12 @@ from graph.mutation import Mutation
 import config
 from cron import compute_notifications
 from endpoint.generate_nonce import generate_nonce
-from utils.jwt import create_access_token, control_service
+from utils.jwt import create_access_token
 from utils.cookie import set_cookie
 from fastapi.responses import HTMLResponse
 import json
 from datetime import datetime, timedelta
+from utils.flow import verify_signature
 
 
 # FastAPI setup
@@ -78,7 +79,7 @@ async def confirm_email(request: Request):
 async def login(request: Request, response: Response):
     service = await request.json()
 
-    if control_service(service):
+    if await verify_signature(service):
         user = await db.users.find_one({"address": {"$eq": service["address"]}})
 
         if not user:
@@ -99,7 +100,7 @@ async def login(request: Request, response: Response):
 
 @app.post("/api/logout")
 async def logout(request: Request, response: Response):
-    response = set_cookie(request, response, "access_token_cookie", token, 0)
+    response = set_cookie(request, response, "access_token_cookie", None, 0)
     return "Logging out has been a success"
 
 

@@ -1,13 +1,11 @@
 import jwt
 from datetime import datetime, timedelta
 from typing import Dict, Optional
-
-SECRET_KEY = "your_secret_key"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+from config import JWT_SECRET_KEY
 
 
 def create_access_token(data: Dict, expires_delta: Optional[timedelta] = None):
+
     to_encode = data.copy()
 
     if expires_delta:
@@ -16,20 +14,17 @@ def create_access_token(data: Dict, expires_delta: Optional[timedelta] = None):
         expire = datetime.utcnow() + timedelta(minutes=15)
 
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm="HS256")
 
     return encoded_jwt
 
 
 def verify_token(token: str) -> Dict:
+
     try:
-        decoded = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        decoded = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
         return decoded
     except jwt.ExpiredSignatureError:
         raise ValueError("Token has expired")
     except jwt.InvalidTokenError:
         raise ValueError("Invalid token")
-
-
-def control_service(service) -> bool:
-    return True

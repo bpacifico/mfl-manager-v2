@@ -20,6 +20,10 @@ PORT =              _getenv('PORT',         default=5000)
 HOST =              _getenv('HOST',         default=f"http://127.0.0.1:{PORT}/")
 ORIGINS =           _getenv('ORIGINS',      default="http://127.0.0.1:3000,http://127.0.0.1:5000").split(",")
 
+# AUTH
+
+JWT_SECRET_KEY =    _getenv('JWT_SECRET_KEY',  default='D3f4ult_K3Y')
+
 # DATABASE
 
 DB_CONFIG = {
