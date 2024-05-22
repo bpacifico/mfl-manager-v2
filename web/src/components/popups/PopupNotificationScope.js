@@ -23,25 +23,25 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 	const [positions, setPositions] = useState(undefined);
 	const [nationalities, setNationalities] = useState(undefined);
 
-	const [minPrice, setMinPrice] = useState("");
-	const [maxPrice, setMaxPrice] = useState("");
-	const [minAge, setMinAge] = useState("");
-	const [maxAge, setMaxAge] = useState("");
-	const [minOvr, setMinOvr] = useState("");
-	const [maxOvr, setMaxOvr] = useState("");
+	const [minPrice, setMinPrice] = useState(item?.minPrice ? item.minPrice : "");
+	const [maxPrice, setMaxPrice] = useState(item?.maxPrice ? item.maxPrice : "");
+	const [minAge, setMinAge] = useState(item?.minAge ? item.minAge : "");
+	const [maxAge, setMaxAge] = useState(item?.maxAge ? item.maxAge : "");
+	const [minOvr, setMinOvr] = useState(item?.minOvr ? item.minOvr : "");
+	const [maxOvr, setMaxOvr] = useState(item?.maxOvr ? item.maxOvr : "");
 
-	const [minPac, setMinPac] = useState("");
-	const [maxPac, setMaxPac] = useState("");
-	const [minDri, setMinDri] = useState("");
-	const [maxDri, setMaxDri] = useState("");
-	const [minPas, setMinPas] = useState("");
-	const [maxPas, setMaxPas] = useState("");
-	const [minSho, setMinSho] = useState("");
-	const [maxSho, setMaxSho] = useState("");
-	const [minDef, setMinDef] = useState("");
-	const [maxDef, setMaxDef] = useState("");
-	const [minPhy, setMinPhy] = useState("");
-	const [maxPhy, setMaxPhy] = useState("");
+	const [minPac, setMinPac] = useState(item?.minPac ? item.minPac : "");
+	const [maxPac, setMaxPac] = useState(item?.maxPac ? item.maxPac : "");
+	const [minDri, setMinDri] = useState(item?.minDri ? item.minDri : "");
+	const [maxDri, setMaxDri] = useState(item?.maxDri ? item.maxDri : "");
+	const [minPas, setMinPas] = useState(item?.minPas ? item.minPas : "");
+	const [maxPas, setMaxPas] = useState(item?.maxPas ? item.maxPas : "");
+	const [minSho, setMinSho] = useState(item?.minSho ? item.minSho : "");
+	const [maxSho, setMaxSho] = useState(item?.maxSho ? item.maxSho : "");
+	const [minDef, setMinDef] = useState(item?.minDef ? item.minDef : "");
+	const [maxDef, setMaxDef] = useState(item?.maxDef ? item.maxDef : "");
+	const [minPhy, setMinPhy] = useState(item?.minPhy ? item.minPhy : "");
+	const [maxPhy, setMaxPhy] = useState(item?.maxPhy ? item.maxPhy : "");
 
 	const confirm = (close) => {
 		addNotificationScope({
