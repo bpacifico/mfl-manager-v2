@@ -47,7 +47,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                 <h1 className="text-white text-end">Check at the MFL activity!</h1>
               </div>
 
-              <div className="col-md-4 mb-2">
+              <div className="offset-md-2 col-md-4 mb-2">
                 <Link to="/stats/players" className="text-decoration-none">
                   <div className="card h-100">
                     <img src="/media/images/player.svg" className="card-img-top p-4" alt="Random"></img>
@@ -59,7 +59,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                 </Link>
               </div>
 
-              <div className="col-md-4 mb-2">
+              {/*<div className="col-md-4 mb-2">
                 <Link to="/stats/clubs" className="text-decoration-none">
                   <div className="card h-100">
                     <img src="/media/images/buildings.svg" className="card-img-top p-4" alt="Random"></img>
@@ -69,7 +69,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                     </div>
                   </div>
                 </Link>
-              </div>
+              </div>*/}
 
               <div className="col-md-4 mb-2">
                 <Link to="/stats/competitions" className="text-decoration-none">

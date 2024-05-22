@@ -26,7 +26,7 @@ const Footer: React.FC<FooterProps> = (props) => {
 
 		          <div className="h6">
 		          	<Link to="/notification">
-		            	<i className="bi bi-alarm me-2"></i>Notification center
+		            	<i className="bi bi-alarm me-2"></i>Notif. center
 		          	</Link>
 		          </div>
 	          </div>
@@ -41,11 +41,11 @@ const Footer: React.FC<FooterProps> = (props) => {
 	          	</Link>
 	          </div>
 
-	          <div>
+	          {/* <div>
 	          	<Link to="/dash/clubs">
 	            	Clubs
 	          	</Link>
-	          </div>
+	          </div> */}
 
 	          <div>
 	          	<Link to="/dash/competitions">
