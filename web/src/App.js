@@ -58,6 +58,7 @@ const App: React.FC<AppProps> = (props) => {
           setAssistantUser(v.data.getLoggedUser);
         }
       },
+      handleError: (v) => {return;},
     });
   }
 
