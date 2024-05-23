@@ -2,6 +2,7 @@
 
 # docker
 /.docker/api.prod.env
+/.docker/mongodb.prod.env
 
 # dependencies
 /web/node_modules
