@@ -64,6 +64,7 @@ services:
     environment:
       ORIGINS: "https://mfl-assistant.com,https://www.mfl-assistant.com"
       HOST: "https://api.mfl-assistant.com/"
+      WEBAPP_ENDPOINT: "https://mfl-assistant.com"
       DB_HOSTNAME: "mongodb"
       DB_NAME: "mfl-assistant"
       DB_USERNAME: "root"
