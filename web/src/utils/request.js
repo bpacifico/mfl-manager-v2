@@ -6,7 +6,6 @@ export const get = async (target, handleSuccess, handleError, credentials=true) 
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "GET,OPTIONS",
       },
     };
 
@@ -19,7 +18,8 @@ export const get = async (target, handleSuccess, handleError, credentials=true) 
       }
     }
 
-    const jsonData = await fetch(target, init).json();
+    const response = await fetch(target, init);
+    const jsonData = await response.json();
 
     if (jsonData.errors) {
       handleError(jsonData.errors);
@@ -38,7 +38,6 @@ export const post = async (target, body, handleSuccess, handleError, credentials
       body,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "POST,OPTIONS",
       },
     };
 
@@ -51,7 +50,8 @@ export const post = async (target, body, handleSuccess, handleError, credentials
       }
     }
 
-    const jsonData = await fetch(target, init).json();
+    const response = await fetch(target, init);
+    const jsonData = await response.json();
 
     if (jsonData.errors) {
       handleError(jsonData);
