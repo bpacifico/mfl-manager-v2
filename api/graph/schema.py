@@ -36,6 +36,12 @@ class ClubType(ObjectType):
     country = String()
     foundation_date = DateTime()
     last_computation_date = DateTime()
+    owner = Field(UserType)
+
+
+class CountType(ObjectType):
+    key = String()
+    count = Int()
 
 
 class NotificationScopeType(ObjectType):

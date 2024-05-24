@@ -41,11 +41,11 @@ const Footer: React.FC<FooterProps> = (props) => {
 	          	</Link>
 	          </div>
 
-	          {/* <div>
+	          <div>
 	          	<Link to="/dash/clubs">
 	            	Clubs
 	          	</Link>
-	          </div> */}
+	          </div>
 
 	          <div>
 	          	<Link to="/dash/competitions">

@@ -2,6 +2,7 @@ from bson import ObjectId
 import datetime
 import requests
 import logging
+from utils.db import upsert_vars
 
 from mail.mail_manager import send_listing_email, send_sale_email
 
@@ -34,7 +35,7 @@ async def main(db, mail):
     logger.critical(f"Number of listings to treat: {len(listings)}")
 
     if len(listings) > 0:
-        await _update_vars(db, last_list_var, listings[0]["createdDateTime"])
+        await upsert_vars(db, last_list_var, listings[0]["createdDateTime"])
 
         for scope in listing_scopes:
             filtered_listings = await _filter_listings_per_scope(scope, listings)
@@ -57,7 +58,7 @@ async def main(db, mail):
     logger.critical(f"Number of sales to treat: {len(sales)}")
 
     if len(sales) > 0:
-        await _update_vars(db, last_sale_var, sales[0]["createdDateTime"])
+        await upsert_vars(db, last_sale_var, sales[0]["createdDateTime"])
 
         for scope in sale_scopes:
             filtered_sales = await _filter_listings_per_scope(scope, sales)
@@ -135,23 +136,6 @@ async def _filter_listings_per_scope(scope, listings):
         and ("min_phy" not in scope or scope["min_phy"] is None or scope["min_phy"] <= l["player"]["metadata"]["physical"])
         and ("max_phy" not in scope or scope["max_phy"] is None or scope["max_phy"] >= l["player"]["metadata"]["physical"])
     ]
-
-
-async def _update_vars(db, var, value):
-    var_record = await db.vars.find_one({"var": var})
-
-    if var_record:
-        filters = {"_id": ObjectId(var_record["_id"])}
-        update_data = {
-            "value": value,
-        }
-
-        await db.vars.update_one(filters, {"$set": update_data})
-    else:
-        await db.vars.insert_one({
-            "var": var,
-            "value": value
-        })
 
 
 async def _add_notification_in_db(db, notification_scope_id, player_ids):

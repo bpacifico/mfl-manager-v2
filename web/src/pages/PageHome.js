@@ -152,7 +152,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
               </div>
             </div>
 
-            {/* <div className="row my-5 py-5">
+            <div className="row my-5 py-5">
               <div className="col-md-12 my-5 pt-5">
                 <h1 className="text-white text-end">Tour the Global Club Scene!</h1>
               </div>
@@ -160,7 +160,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
               <div className="offset-md-1 col-md-10 mb-2">
                 <BoxClubMap />
               </div>
-            </div> */}
+            </div>
 
             <div className="row my-5 py-5">
               <div className="col-md-12 my-5 pt-5">

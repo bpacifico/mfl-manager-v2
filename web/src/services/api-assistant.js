@@ -206,3 +206,23 @@ export const deleteNotificationScope = ({ handleSuccess=null, handleError=null, 
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
+
+/* Clubs */
+
+export const getClubData = ({ handleSuccess=null, handleError=null }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: 
+      `{
+        getClubCount,
+        getAllClubCount: getClubCount(foundedOnly: false),
+        getClubDivisionCounts {
+          key,
+          count
+        }
+      }`
+    ,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);

@@ -20,7 +20,7 @@ const MenuPageDash: React.FC<MenuPageDashProps> = (props) => {
             <span className="d-none d-md-inline ms-1">Players</span>
           </Link>
         </li>
-        {/* <li className="nav-item align-self-end lh-1 px-2">
+        <li className="nav-item align-self-end lh-1 px-2">
           <Link
             to="clubs"
             className={"nav-link" + (location.pathname === "/dash/clubs" ? " active" : "")}
@@ -28,7 +28,7 @@ const MenuPageDash: React.FC<MenuPageDashProps> = (props) => {
             <i className="bi bi-buildings mx-1"></i>
             <span className="d-none d-md-inline ms-1">Clubs</span>
           </Link>
-        </li> */}
+        </li>
         <li className="nav-item align-self-end lh-1 px-2">
           <Link
             to="competitions"

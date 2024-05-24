@@ -1,5 +1,5 @@
-from graphene import ObjectType, String, Int, Schema, Field, List, ID
-from graph.schema import UserType, NotificationScopeType, NotificationType
+from graphene import ObjectType, String, Int, Schema, Field, List, ID, Boolean
+from graph.schema import UserType, NotificationScopeType, NotificationType, CountType
 from bson import ObjectId
 from decorator.require_token import require_token
 from fastapi import HTTPException, status
@@ -59,3 +59,35 @@ class Query(ObjectType):
             .to_list(length=None)
 
         return notifications
+
+    get_club_count = Int(founded_only=Boolean())
+
+    async def resolve_get_club_count(self, info, founded_only=True):
+        return await info.context["db"].clubs \
+            .count_documents({ "status": "FOUNDED" } if founded_only else {})
+
+    get_club_division_counts = List(CountType)
+
+    async def resolve_get_club_division_counts(self, info, founded_only=True):
+        cursor = info.context["db"].clubs.aggregate([
+            {
+                "$match": {
+                    "status": "FOUNDED"
+                } if founded_only else None
+            },
+            {
+                "$group": {
+                    "_id": "$division",
+                    "count": {
+                        "$sum": 1
+                    }
+                }
+            }
+        ])
+
+        return [CountType(key=c["_id"], count=c["count"]) async for c in cursor]
+
+    get_club_owner_count = Int()
+
+    async def resolve_get_club_owner_count(self, info, founded_only=True):
+        return await info.context["db"].clubs.distinct('country').length
