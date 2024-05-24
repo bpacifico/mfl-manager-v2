@@ -14,12 +14,28 @@ class NotificationScopeTypeEnum(enum.Enum):
     SALE = "sale"
 
 
+class ClubStatusEnum(enum.Enum):
+    FOUNDED = "FOUNDED"
+    NOT_FOUNDED = "NOT_FOUNDED"
+
+
 class UserType(ObjectType):
     id = ID(source='_id')
     address = String()
     email = String()
     confirmation_code = String()
     is_email_confirmed = Boolean()
+
+
+class ClubType(ObjectType):
+    id = ID(source='_id')
+    status = String()
+    name = String()
+    division = Int()
+    city = String()
+    country = String()
+    foundation_date = DateTime()
+    last_computation_date = DateTime()
 
 
 class NotificationScopeType(ObjectType):

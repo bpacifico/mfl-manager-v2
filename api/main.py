@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
 from graph.mutation import Mutation
 import config
-from cron import compute_notifications
+from cron import compute_notifications, collect_clubs
 from endpoint.generate_nonce import generate_nonce
 from utils.jwt import create_access_token
 from utils.cookie import set_cookie
@@ -115,6 +115,7 @@ app.add_route("/api/confirm_email", confirm_email)
 
 scheduler = AsyncIOScheduler()
 scheduler.add_job(compute_notifications.main, 'interval',  args=[db, mail], seconds=60)
+scheduler.add_job(collect_clubs.main, 'interval',  args=[db], seconds=60)
 scheduler.start()
 
 
