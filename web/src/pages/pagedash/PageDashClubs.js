@@ -106,7 +106,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
                   </div>
                 </div>
 
-                <div className="d-flex flex-fill overflow-hidden">
+                <div className="d-flex flex-fill overflow-hidden py-5 py-md-0">
                   <BoxMessage
                     content={<div><div>Under Development</div><div>Coming soon!</div></div>}
                   />

@@ -16,13 +16,25 @@ interface ChartBarClubsPerOwnerProps {
 
 const ChartBarClubsPerOwner: React.FC < ChartBarClubsPerOwnerProps > = ({ data }) => {
 
-  const getData = () => ({
-    labels: data.sort((a, b) => a.key - b.key).map((d) => d.key + " club" + (d.key === "1" ? "" : "s")),
-    datasets: [{
-      data: data.sort((a, b) => a.key - b.key).map((d) => d.count),
-      backgroundColor: "#0dcaf0",
-    }],
-  });
+  const getData = () => {
+    const keys = data.map(item => parseInt(item.key, 10));
+    const minKey = Math.min(...keys);
+    const maxKey = Math.max(...keys);
+
+    for (let i = minKey; i <= maxKey; i++) {
+      if (keys.indexOf(i) < 0) {
+        data.push({ "key": i.toString(), "count": 0 });
+      }
+    }
+
+    return {
+      labels: data.sort((a, b) => a.key - b.key).map((d) => d.key + " club" + (d.key === "1" ? "" : "s")),
+      datasets: [{
+        data: data.sort((a, b) => a.key - b.key).map((d) => d.count),
+        backgroundColor: "#0dcaf0",
+      }],
+    };
+  };
 
   return (
     <div className="h-100 w-100">
@@ -33,6 +45,8 @@ const ChartBarClubsPerOwner: React.FC < ChartBarClubsPerOwnerProps > = ({ data }
           options={{
             responsive: true,
             maintainAspectRatio: false,
+            barPercentage: 1.0,
+            categoryPercentage: 1.0,
             plugins: {
               legend: {
                 display: false,
