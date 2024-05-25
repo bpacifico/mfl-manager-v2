@@ -19,7 +19,7 @@ const defaultHandleError = (h, e) => {
 
 /* login */
 
-export const login = ({ handleSuccess=null, handleError=null, body }) => loginPost(
+export const login = ({ handleSuccess = null, handleError = null, body }) => loginPost(
   getApiEndpoint() + "api/login",
   body,
   (v) => defaultHandleSuccess(handleSuccess, v),
@@ -27,7 +27,7 @@ export const login = ({ handleSuccess=null, handleError=null, body }) => loginPo
   true,
 );
 
-export const logout = ({ handleSuccess=null, handleError=null }) => loginPost(
+export const logout = ({ handleSuccess = null, handleError = null }) => loginPost(
   getApiEndpoint() + "api/logout",
   null,
   (v) => defaultHandleSuccess(handleSuccess, v),
@@ -38,7 +38,7 @@ export const logout = ({ handleSuccess=null, handleError=null }) => loginPost(
 
 /* NONCE */
 
-export const getGenerateNonce = ({ handleSuccess=null, handleError=null }) => get(
+export const getGenerateNonce = ({ handleSuccess = null, handleError = null }) => get(
   getApiEndpoint() + "api/generate_nonce",
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
@@ -48,7 +48,7 @@ export const getGenerateNonce = ({ handleSuccess=null, handleError=null }) => ge
 
 /* User */
 
-export const getLoggedUser = ({ handleSuccess=null, handleError=null }) => post(
+export const getLoggedUser = ({ handleSuccess = null, handleError = null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -66,7 +66,7 @@ export const getLoggedUser = ({ handleSuccess=null, handleError=null }) => post(
   (e) => defaultHandleError(handleError, e),
 );
 
-export const  updateLoggedUserEmail = ({ handleSuccess=null, handleError=null, params }) => post(
+export const updateLoggedUserEmail = ({ handleSuccess = null, handleError = null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -84,7 +84,7 @@ export const  updateLoggedUserEmail = ({ handleSuccess=null, handleError=null, p
   (e) => defaultHandleError(handleError, e),
 );
 
-export const sendConfirmationMail = ({ handleSuccess=null, handleError=null, params }) => post(
+export const sendConfirmationMail = ({ handleSuccess = null, handleError = null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -104,11 +104,10 @@ export const sendConfirmationMail = ({ handleSuccess=null, handleError=null, par
 
 /* Notification */
 
-export const getNotificationScopesAndNotifications = ({ handleSuccess=null, handleError=null }) => post(
+export const getNotificationScopesAndNotifications = ({ handleSuccess = null, handleError = null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
-    query: 
-      `{
+    query: `{
         getNotificationScopes {
           id,
           type,
@@ -143,18 +142,16 @@ export const getNotificationScopesAndNotifications = ({ handleSuccess=null, hand
             id
           }
         }
-      }`
-    ,
+      }`,
   }),
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
 
-export const getNotificationsOfNotificationScope = ({ handleSuccess=null, handleError=null, params }) => post(
+export const getNotificationsOfNotificationScope = ({ handleSuccess = null, handleError = null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
-    query: 
-      `{
+    query: `{
         getNotifications(${jsonToParams(params)}) {
           id,
           status,
@@ -165,14 +162,13 @@ export const getNotificationsOfNotificationScope = ({ handleSuccess=null, handle
             id
           }
         }
-      }`
-    ,
+      }`,
   }),
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
 
-export const addNotificationScope = ({ handleSuccess=null, handleError=null, params }) => post(
+export const addNotificationScope = ({ handleSuccess = null, handleError = null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -190,7 +186,7 @@ export const addNotificationScope = ({ handleSuccess=null, handleError=null, par
   (e) => defaultHandleError(handleError, e),
 );
 
-export const deleteNotificationScope = ({ handleSuccess=null, handleError=null, params }) => post(
+export const deleteNotificationScope = ({ handleSuccess = null, handleError = null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
@@ -209,19 +205,30 @@ export const deleteNotificationScope = ({ handleSuccess=null, handleError=null, 
 
 /* Clubs */
 
-export const getClubData = ({ handleSuccess=null, handleError=null }) => post(
+export const getClubData = ({ handleSuccess = null, handleError = null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
-    query: 
-      `{
+    query: `{
         getClubCount,
         getAllClubCount: getClubCount(foundedOnly: false),
+        getClubOwnerCount,
+        getClubsPerOwnerCounts {
+          key,
+          count
+        },
+        getAllClubsPerOwnerCounts: getClubDivisionCounts(foundedOnly: false) {
+          key,
+          count
+        },
         getClubDivisionCounts {
           key,
           count
+        },
+        getAllClubDivisionCounts: getClubDivisionCounts(foundedOnly: false) {
+          key,
+          count
         }
-      }`
-    ,
+      }`,
   }),
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),

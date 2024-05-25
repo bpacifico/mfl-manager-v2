@@ -3,14 +3,14 @@ import "./Count.css";
 import LoadingSquare from "components/loading/LoadingSquare.js";
 
 interface CountProps {
-  label?: string;
-  count?: number;
+  label ? : string;
+  count ? : number;
 }
 
-const Count: React.FC<CountProps> = ({ label, count }) => {
+const Count: React.FC < CountProps > = ({ label, count }) => {
   const getContent = () => {
     return (
-      <div className="w-auto flex-column text-center text-md-start">
+      <div className="w-auto flex-column text-md-start">
         {count || count === 0
           ? <div className="count w-auto h1 lh-1 m-0">{ count }</div>
           : <LoadingSquare />
@@ -25,7 +25,7 @@ const Count: React.FC<CountProps> = ({ label, count }) => {
   }
 
   return (
-    <div className="Count d-flex justify-content-center pt-4 pb-5 px-4">
+    <div className="Count d-flex">
       {getContent()}
     </div>
   );

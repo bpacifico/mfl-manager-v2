@@ -66,28 +66,39 @@ class Query(ObjectType):
         return await info.context["db"].clubs \
             .count_documents({ "status": "FOUNDED" } if founded_only else {})
 
-    get_club_division_counts = List(CountType)
+    get_club_division_counts = List(CountType, founded_only=Boolean())
 
-    async def resolve_get_club_division_counts(self, info, founded_only=True):
-        cursor = info.context["db"].clubs.aggregate([
-            {
-                "$match": {
-                    "status": "FOUNDED"
-                } if founded_only else None
-            },
-            {
-                "$group": {
-                    "_id": "$division",
-                    "count": {
-                        "$sum": 1
-                    }
-                }
-            }
-        ])
+    async def resolve_get_club_division_counts(self, info, founded_only=True):        
+        if founded_only:
+            cursor = info.context["db"].clubs.aggregate([
+                {"$match": { "status": "FOUNDED" }},
+                {"$group": {"_id": "$division", "count": {"$sum": 1}}}
+            ])
+        else:
+            cursor = info.context["db"].clubs.aggregate([
+                {"$group": {"_id": "$division", "count": {"$sum": 1}}}
+            ])
 
         return [CountType(key=c["_id"], count=c["count"]) async for c in cursor]
 
     get_club_owner_count = Int()
 
-    async def resolve_get_club_owner_count(self, info, founded_only=True):
-        return await info.context["db"].clubs.distinct('country').length
+    async def resolve_get_club_owner_count(self, info):
+        return len(await info.context["db"].clubs.distinct('owner'))
+
+    get_clubs_per_owner_counts = List(CountType, founded_only=Boolean())
+
+    async def resolve_get_clubs_per_owner_counts(self, info, founded_only=True):
+        if founded_only:
+            cursor = info.context["db"].clubs.aggregate([
+                {"$match": { "status": "FOUNDED" }},
+                {"$group": {"_id": "$owner", "count": {"$sum": 1}}},
+                {"$group": {"_id": "$count", "count": {"$sum": 1}}}
+            ])
+        else:
+            cursor = info.context["db"].clubs.aggregate([
+                {"$group": {"_id": "$owner", "count": {"$sum": 1}}},
+                {"$group": {"_id": "$count", "count": {"$sum": 1}}}
+            ])
+
+        return [CountType(key=c["_id"], count=c["count"]) async for c in cursor]
