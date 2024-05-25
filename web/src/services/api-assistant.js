@@ -216,7 +216,7 @@ export const getClubData = ({ handleSuccess = null, handleError = null }) => pos
           key,
           count
         },
-        getAllClubsPerOwnerCounts: getClubDivisionCounts(foundedOnly: false) {
+        getAllClubsPerOwnerCounts: getClubsPerOwnerCounts(foundedOnly: false) {
           key,
           count
         },
