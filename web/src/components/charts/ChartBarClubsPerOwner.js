@@ -17,11 +17,11 @@ interface ChartBarClubsPerOwnerProps {
 const ChartBarClubsPerOwner: React.FC < ChartBarClubsPerOwnerProps > = ({ data }) => {
 
   const getData = () => ({
-    labels: data.sort((a, b) => a.key - b.key).map((d) => d.key),
+    labels: data.sort((a, b) => a.key - b.key).map((d) => d.key + " club" + (d.key === "1" ? "" : "s")),
     datasets: [{
       data: data.sort((a, b) => a.key - b.key).map((d) => d.count),
+      backgroundColor: "#0dcaf0",
     }],
-    backgroundColor: "#0dcaf0",
   });
 
   return (
@@ -31,6 +31,8 @@ const ChartBarClubsPerOwner: React.FC < ChartBarClubsPerOwnerProps > = ({ data }
         : <Bar
           data={getData()}
           options={{
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               legend: {
                 display: false,
@@ -63,13 +65,9 @@ const ChartBarClubsPerOwner: React.FC < ChartBarClubsPerOwnerProps > = ({ data }
                 },
                 title: {
                   display: false,
-                  text: 'Competition',
                 },
                 grid: {
                   display: false,
-                },
-                border: {
-                  color: '#333',
                 },
               },
             },

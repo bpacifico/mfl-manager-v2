@@ -4,13 +4,15 @@ import BoxClubMap from "components/box/BoxClubMap.js";
 import { getClubData } from "services/api-assistant.js";
 import ChartBarClubsPerDivision from "components/charts/ChartBarClubsPerDivision.js";
 import ChartBarClubsPerOwner from "components/charts/ChartBarClubsPerOwner.js";
+import BoxMessage from "components/box/BoxMessage.js";
 
 interface PageDashClubsProps {}
 
 const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [clubData, setClubData] = useState(null);
-    const [foundedClubOnly, setFoundedClubOnly] = useState(false);
+    const [foundedClubOnlyForOwners, setFoundedClubOnlyForOwners] = useState(false);
+    const [foundedClubOnlyForDivisions, setFoundedClubOnlyForDivisions] = useState(false);
 
     const getData = (pursue, beforeListingId) => {
       setIsLoading(true);
@@ -67,22 +69,8 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
               </div>
 
               <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2 max-height-md-300">
-                <div className="d-flex flex-row mb-2">
-                  <div className="d-flex flex-row mb-2">
-                    <h4 className="flex-grow-1">Established clubs</h4>
-                  </div>
-                </div>
-
-                <div className="d-flex flex-fill overflow-hidden">
-                  
-                </div>
-              </div>
-            </div>
-
-            <div className="d-flex flex-column flex-md-row flex-md-grow-1">
-              <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
-                <div className="d-flex flex-row mb-2">
-                  <div className="d-flex flex-row mb-2">
+                <div className="d-flex flex-row">
+                  <div className="d-flex">
                     <h4 className="flex-grow-1">Clubs per owner</h4>
                   </div>
 
@@ -92,8 +80,8 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
                       <input
                         type="checkbox"
                         className="ms-1"
-                        value={foundedClubOnly}
-                        onChange={() => setFoundedClubOnly(!foundedClubOnly)}
+                        value={foundedClubOnlyForOwners}
+                        onChange={() => setFoundedClubOnlyForOwners(!foundedClubOnlyForOwners)}
                       />
                     </small>
                   </div>
@@ -101,17 +89,33 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
 
                 <div className="d-flex flex-fill overflow-hidden">
                   <ChartBarClubsPerOwner
-                    data={foundedClubOnly
+                    data={foundedClubOnlyForOwners
                       ? clubData?.getClubsPerOwnerCounts
                       : clubData?.getAllClubsPerOwnerCounts
                     }
                   />
                 </div>
               </div>
+            </div>
 
-              <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
-                <div className="d-flex flex-row mb-2">
-                  <div className="d-flex flex-row mb-2">
+            <div className="d-flex flex-column flex-md-row flex-md-grow-1">
+              <div className="card d-flex flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto flex-basis-400 m-2 p-3 pt-2">
+                <div className="d-flex flex-row">
+                  <div className="d-flex">
+                    <h4 className="flex-grow-1">Established clubs</h4>
+                  </div>
+                </div>
+
+                <div className="d-flex flex-fill overflow-hidden">
+                  <BoxMessage
+                    content={<div><div>Under Development</div><div>Coming soon!</div></div>}
+                  />
+                </div>
+              </div>
+
+              <div className="card d-flex flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto m-2 p-3 pt-2">
+                <div className="d-flex flex-row">
+                  <div className="d-flex">
                     <h4 className="flex-grow-1">Clubs per division</h4>
                   </div>
 
@@ -121,8 +125,8 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
                       <input
                         type="checkbox"
                         className="ms-1"
-                        value={foundedClubOnly}
-                        onChange={() => setFoundedClubOnly(!foundedClubOnly)}
+                        value={foundedClubOnlyForDivisions}
+                        onChange={() => setFoundedClubOnlyForDivisions(!foundedClubOnlyForDivisions)}
                       />
                     </small>
                   </div>
@@ -130,7 +134,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
 
                 <div className="d-flex flex-fill overflow-hidden">
                   <ChartBarClubsPerDivision
-                    data={foundedClubOnly
+                    data={foundedClubOnlyForDivisions
                       ? clubData?.getClubDivisionCounts
                       : clubData?.getAllClubDivisionCounts
                     }

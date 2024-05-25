@@ -71,7 +71,7 @@ class Query(ObjectType):
     async def resolve_get_club_division_counts(self, info, founded_only=True):        
         if founded_only:
             cursor = info.context["db"].clubs.aggregate([
-                {"$match": { "status": "FOUNDED" }},
+                {"$match": {"status": "FOUNDED"}},
                 {"$group": {"_id": "$division", "count": {"$sum": 1}}}
             ])
         else:
@@ -91,7 +91,7 @@ class Query(ObjectType):
     async def resolve_get_clubs_per_owner_counts(self, info, founded_only=True):
         if founded_only:
             cursor = info.context["db"].clubs.aggregate([
-                {"$match": { "status": "FOUNDED" }},
+                {"$match": {"status": "FOUNDED"}},
                 {"$group": {"_id": "$owner", "count": {"$sum": 1}}},
                 {"$group": {"_id": "$count", "count": {"$sum": 1}}}
             ])
