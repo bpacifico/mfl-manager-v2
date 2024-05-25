@@ -12,7 +12,7 @@ interface PageHomeProps {
   yScrollPosition: number;
 }
 
-const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
+const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
   return (
     <div id="PageHome">
       {yScrollPosition < 100
@@ -47,7 +47,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                 <h1 className="text-white text-end">Check at the MFL activity!</h1>
               </div>
 
-              <div className="offset-md-2 col-md-4 mb-2">
+              <div className="col-md-4 mb-2">
                 <Link to="/stats/players" className="text-decoration-none">
                   <div className="card h-100">
                     <img src="/media/images/player.svg" className="card-img-top p-4" alt="Random"></img>
@@ -59,7 +59,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                 </Link>
               </div>
 
-              {/*<div className="col-md-4 mb-2">
+              <div className="col-md-4 mb-2">
                 <Link to="/stats/clubs" className="text-decoration-none">
                   <div className="card h-100">
                     <img src="/media/images/buildings.svg" className="card-img-top p-4" alt="Random"></img>
@@ -69,7 +69,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
                     </div>
                   </div>
                 </Link>
-              </div>*/}
+              </div>
 
               <div className="col-md-4 mb-2">
                 <Link to="/stats/competitions" className="text-decoration-none">
@@ -152,7 +152,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
               </div>
             </div>
 
-            <div className="row my-5 py-5">
+            {/*<div className="row my-5 py-5">
               <div className="col-md-12 my-5 pt-5">
                 <h1 className="text-white text-end">Tour the Global Club Scene!</h1>
               </div>
@@ -160,7 +160,7 @@ const PageHome: React.FC<PageHomeProps> = ({ yScrollPosition }) => {
               <div className="offset-md-1 col-md-10 mb-2">
                 <BoxClubMap />
               </div>
-            </div>
+            </div>*/}
 
             <div className="row my-5 py-5">
               <div className="col-md-12 my-5 pt-5">
