@@ -1,4 +1,4 @@
-from graphene import ObjectType, String, Int, Boolean, Field, List, ID, DateTime
+from graphene import ObjectType, String, Int, Boolean, Field, List, ID, DateTime, Date, Decimal
 import enum
 from bson import ObjectId
 
@@ -42,6 +42,12 @@ class ClubType(ObjectType):
 class CountType(ObjectType):
     key = String()
     count = Int()
+
+
+class DataPointType(ObjectType):
+    property = String()
+    date = Date()
+    value = Decimal()
 
 
 class NotificationScopeType(ObjectType):
