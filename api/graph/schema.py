@@ -1,4 +1,4 @@
-from graphene import ObjectType, String, Int, Boolean, Field, List, ID, DateTime, Date, Decimal
+from graphene import ObjectType, String, Int, Boolean, Field, List, ID, DateTime, Float
 import enum
 from bson import ObjectId
 
@@ -46,8 +46,8 @@ class CountType(ObjectType):
 
 class DataPointType(ObjectType):
     property = String()
-    date = Date()
-    value = Decimal()
+    date = String()
+    value = Float()
 
 
 class NotificationScopeType(ObjectType):

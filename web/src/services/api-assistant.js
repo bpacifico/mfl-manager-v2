@@ -227,6 +227,10 @@ export const getClubData = ({ handleSuccess = null, handleError = null }) => pos
         getAllClubDivisionCounts: getClubDivisionCounts(foundedOnly: false) {
           key,
           count
+        },
+        getDataPoints(property: "founded_club_count") {
+          date,
+          value
         }
       }`,
   }),

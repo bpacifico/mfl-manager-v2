@@ -1,5 +1,5 @@
 from graphene import ObjectType, String, Int, Schema, Field, List, ID, Boolean
-from graph.schema import UserType, NotificationScopeType, NotificationType, CountType
+from graph.schema import UserType, NotificationScopeType, NotificationType, CountType, DataPointType
 from bson import ObjectId
 from decorator.require_token import require_token
 from fastapi import HTTPException, status
@@ -107,7 +107,7 @@ class Query(ObjectType):
     get_club_owner_count = Int()
 
     async def resolve_get_club_owner_count(self, info):
-        return len(await info.context["db"].clubs.distinct('owner'))
+        return len(await info.context["db"].clubs.distinct('owner')) - 1
 
     get_clubs_per_owner_counts = List(CountType, founded_only=Boolean())
 
@@ -132,3 +132,10 @@ class Query(ObjectType):
         cursor = info.context["db"].clubs.aggregate(query)
 
         return [CountType(key=c["_id"], count=c["count"]) async for c in cursor]
+
+    get_data_points = List(DataPointType, property=String())
+
+    async def resolve_get_data_points(self, info, property):
+        return await info.context["db"].data_points \
+            .find({"property": property}) \
+            .to_list(length=None)
