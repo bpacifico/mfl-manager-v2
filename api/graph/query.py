@@ -63,21 +63,44 @@ class Query(ObjectType):
     get_club_count = Int(founded_only=Boolean())
 
     async def resolve_get_club_count(self, info, founded_only=True):
-        return await info.context["db"].clubs \
-            .count_documents({ "status": "FOUNDED" } if founded_only else {})
+        query = [
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "owner",
+                    "foreignField": "_id",
+                    "as": "owner_info"
+                }
+            },
+            {"$match": {"owner_info.address": {"$ne": "0xf45dfaa6233fae44"}}},
+            {"$count": "count"}
+        ]
+
+        if founded_only:
+            query.insert(0, {"$match": {"status": "FOUNDED"}})
+
+        return [c["count"] async for c in info.context["db"].clubs.aggregate(query)][0]
 
     get_club_division_counts = List(CountType, founded_only=Boolean())
 
-    async def resolve_get_club_division_counts(self, info, founded_only=True):        
+    async def resolve_get_club_division_counts(self, info, founded_only=True):
+        query = [
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "owner",
+                    "foreignField": "_id",
+                    "as": "owner_info"
+                }
+            },
+            {"$match": {"owner_info.address": {"$ne": "0xf45dfaa6233fae44"}}},
+            {"$group": {"_id": "$division", "count": {"$sum": 1}}}
+        ]
+
         if founded_only:
-            cursor = info.context["db"].clubs.aggregate([
-                {"$match": {"status": "FOUNDED"}},
-                {"$group": {"_id": "$division", "count": {"$sum": 1}}}
-            ])
-        else:
-            cursor = info.context["db"].clubs.aggregate([
-                {"$group": {"_id": "$division", "count": {"$sum": 1}}}
-            ])
+            query.insert(0, {"$match": {"status": "FOUNDED"}})
+
+        cursor = info.context["db"].clubs.aggregate(query)
 
         return [CountType(key=c["_id"], count=c["count"]) async for c in cursor]
 
@@ -89,16 +112,23 @@ class Query(ObjectType):
     get_clubs_per_owner_counts = List(CountType, founded_only=Boolean())
 
     async def resolve_get_clubs_per_owner_counts(self, info, founded_only=True):
+        query = [
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "owner",
+                    "foreignField": "_id",
+                    "as": "owner_info"
+                }
+            },
+            {"$match": {"owner_info.address": {"$ne": "0xf45dfaa6233fae44"}}},
+            {"$group": {"_id": "$owner", "count": {"$sum": 1}}},
+            {"$group": {"_id": "$count", "count": {"$sum": 1}}}
+        ]
+
         if founded_only:
-            cursor = info.context["db"].clubs.aggregate([
-                {"$match": {"status": "FOUNDED"}},
-                {"$group": {"_id": "$owner", "count": {"$sum": 1}}},
-                {"$group": {"_id": "$count", "count": {"$sum": 1}}}
-            ])
-        else:
-            cursor = info.context["db"].clubs.aggregate([
-                {"$group": {"_id": "$owner", "count": {"$sum": 1}}},
-                {"$group": {"_id": "$count", "count": {"$sum": 1}}}
-            ])
+            query.insert(0, {"$match": {"status": "FOUNDED"}})
+
+        cursor = info.context["db"].clubs.aggregate(query)
 
         return [CountType(key=c["_id"], count=c["count"]) async for c in cursor]
