@@ -73,11 +73,6 @@ const ChartAreaClubsPerDay: React.FC < ChartAreaClubsPerDayProps > = ({ data }) 
         display: false,
       },
     },
-    layout: {
-      padding: {
-        top: 30,
-      }
-    }
   };
 
   return (
