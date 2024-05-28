@@ -48,7 +48,7 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
               </div>
 
               <div className="col-md-4 mb-2">
-                <Link to="/stats/players" className="text-decoration-none">
+                <Link to="/dash/players" className="text-decoration-none">
                   <div className="card h-100">
                     <img src="/media/images/player.svg" className="card-img-top p-4" alt="Random"></img>
                     <div className="card-body">
@@ -60,7 +60,7 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
               </div>
 
               <div className="col-md-4 mb-2">
-                <Link to="/stats/clubs" className="text-decoration-none">
+                <Link to="/dash/clubs" className="text-decoration-none">
                   <div className="card h-100">
                     <img src="/media/images/buildings.svg" className="card-img-top p-4" alt="Random"></img>
                     <div className="card-body">
@@ -72,7 +72,7 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
               </div>
 
               <div className="col-md-4 mb-2">
-                <Link to="/stats/competitions" className="text-decoration-none">
+                <Link to="/dash/competitions" className="text-decoration-none">
                   <div className="card h-100">
                     <img src="/media/images/podium.svg" className="card-img-top" alt="Random"></img>
                     <div className="card-body">
