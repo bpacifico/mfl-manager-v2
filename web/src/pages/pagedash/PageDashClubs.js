@@ -44,7 +44,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
                   </div>
                   <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
                     <Count
-                      label="Est. clubs"
+                      label="Established clubs"
                       count={clubData?.getClubCount}
                     />
                   </div>
@@ -76,7 +76,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
 
                   <div className="d-flex flex-fill overflow-auto justify-content-end align-items-end">
                     <small>
-                      Est. club only
+                      Established club only
                       <input
                         type="checkbox"
                         className="ms-1"
@@ -121,7 +121,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
 
                   <div className="d-flex flex-fill overflow-auto justify-content-end align-items-end">
                     <small>
-                      Est. club only
+                      Established club only
                       <input
                         type="checkbox"
                         className="ms-1"
