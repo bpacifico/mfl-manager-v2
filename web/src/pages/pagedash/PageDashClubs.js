@@ -44,7 +44,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
                   </div>
                   <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
                     <Count
-                      label="Established clubs"
+                      label="Est. clubs"
                       count={clubData?.getClubCount}
                     />
                   </div>
