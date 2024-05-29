@@ -75,8 +75,8 @@ const PageSearch: React.FC < PageSearchProps > = () => {
               className="form-control w-100"
               value={fieldValue}
               onChange={(v) => setFieldValue(v.target.value)}
-              placeholder={"Search player..."}
-              autofocus
+              placeholder={"Search players, clubs, ..."}
+              autoFocus
             />
           </div>
 
