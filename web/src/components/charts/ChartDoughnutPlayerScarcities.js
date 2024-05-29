@@ -4,45 +4,41 @@ import LoadingSquare from "components/loading/LoadingSquare";
 import { scarcity } from "utils/player.js";
 
 interface ChartDoughnutPlayerScarcitiesProps {
-  scarcityCount?: dict;
+  scarcityCount ? : dict;
 }
 
-const ChartDoughnutPlayerScarcities: React.FC<ChartDoughnutPlayerScarcitiesProps> = ({ scarcityCount }) => {
+const ChartDoughnutPlayerScarcities: React.FC < ChartDoughnutPlayerScarcitiesProps > = ({ scarcityCount }) => {
 
   const getData = () => ({
     labels: Object.keys(scarcityCount),
-    datasets: [
-      {
-        backgroundColor: scarcity.map((d) => d.color),
-        data: Object.values(scarcityCount),
-      },
-    ],
+    datasets: [{
+      backgroundColor: scarcity.map((d) => d.color),
+      data: Object.values(scarcityCount),
+    }, ],
   });
 
   const getOptions = () => ({
-  	responsive: true,
+    responsive: true,
     maintainAspectRatio: false,
     plugins: {
-		  legend: {
-		  	labels: {
-		  		color: "#AAA",
-		  	},
-		    position: 'bottom',
-		  }
-		},
+      legend: {
+        labels: {
+          color: "#AAA",
+        },
+        position: 'bottom',
+      }
+    },
   });
 
   return (
-    <div className="mb-4 py-2 px-1 px-md-3">
-      <div className="ratio ratio-16x9 w-100">
-        {!scarcityCount
-          ? <LoadingSquare />
-      	  : <Doughnut
-      	  	data={getData()}
-      	  	options={getOptions()}
-      	  />
-      	}
-      </div>
+    <div className="h-100 w-100">
+      {!scarcityCount
+        ? <LoadingSquare />
+        : <Doughnut
+          data={getData()}
+          options={getOptions()}
+        />
+      }
     </div>
   );
 };

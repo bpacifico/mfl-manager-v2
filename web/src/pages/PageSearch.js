@@ -5,23 +5,24 @@ import LoadingSquare from "components/loading/LoadingSquare";
 import ButtonMflPlayerInfo from "components/buttons/ButtonMflPlayerInfo.js";
 import ButtonMflPlayer from "components/buttons/ButtonMflPlayer.js";
 import { getPlayers /*, getUsers */ } from "services/api-mfl.js";
+import { getClubs } from "services/api-assistant.js"
 
-interface PageSearchProps {
-}
+interface PageSearchProps {}
 
-const PageSearch: React.FC<PageSearchProps> = () => {
+const PageSearch: React.FC < PageSearchProps > = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const [fieldValue, setFieldValue] = useState("");
   const [searchValue, setSearchValue] = useState(null);
   const [players, setPlayers] = useState(null);
+  const [clubs, setClubs] = useState(null);
   /* const [users, setUsers] = useState(null); */
   const [isLoading, setIsLoading] = useState(false);
 
   const search = () => {
-    if (searchValue?.length > 0) {
-      navigate({ search: '?name=' + searchValue });
+    if (searchValue && searchValue.length > 0) {
+      navigate({ search: '?q=' + searchValue });
 
       setIsLoading(true);
 
@@ -29,21 +30,22 @@ const PageSearch: React.FC<PageSearchProps> = () => {
         new Promise((resolve, reject) =>
           getPlayers(
             (v) => resolve(v),
-            (e) => console.log(e),
-            { name: searchValue },
+            (e) => console.log(e), { name: searchValue },
           ),
         ),
-        /* new Promise((resolve, reject) =>
-          getUsers(
-            (v) => resolve(v),
-            (e) => console.log(e),
-            searchValue,
-          ),
-        ), */
+        new Promise((resolve, reject) =>
+          getClubs({
+            handleSuccess: (v) => resolve(v),
+            handleError: (e) => console.log(e),
+            params: { search: searchValue },
+          }),
+        ),
       ]
 
       Promise.all(promises).then((values) => {
+        console.log(values);
         setPlayers(values[0]);
+        setClubs(values[1]);
         /* setUsers(values[1]); */
         setIsLoading(false);
       });
@@ -51,16 +53,16 @@ const PageSearch: React.FC<PageSearchProps> = () => {
   };
 
   useEffect(() => {
-    if (searchParams.get("name")) {
-      setFieldValue(searchParams.get("name"));
-      setSearchValue(searchParams.get("name"));
+    if (searchParams.get("q")) {
+      setFieldValue(searchParams.get("q"));
+      setSearchValue(searchParams.get("q"));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     search();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
   return (

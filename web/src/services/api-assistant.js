@@ -205,6 +205,24 @@ export const deleteNotificationScope = ({ handleSuccess = null, handleError = nu
 
 /* Clubs */
 
+export const getClubs = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getClubs(search: "${params.search}") {
+          id,
+          status,
+          name,
+          division,
+          city,
+          country
+        }
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
 export const getClubData = ({ handleSuccess = null, handleError = null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({

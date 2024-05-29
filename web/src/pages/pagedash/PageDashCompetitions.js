@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CountCompetitions from "components/counts/CountCompetitions.js";
 import CountParticipations from "components/counts/CountParticipations.js";
+import BoxSoonToCome from "components/box/BoxSoonToCome.js";
 import ChartBarCompetitionParticipations from "components/charts/ChartBarCompetitionParticipations.js";
 import ChartBarCompetitions from "components/charts/ChartBarCompetitions.js";
 import ChartGanttCompetitions from "components/charts/ChartGanttCompetitions.js";
@@ -8,7 +9,7 @@ import { getPastCompetitions, getUpcomingCompetitions } from "services/api-mfl.j
 
 interface PageDashCompetitionsProps {}
 
-const PageDashCompetitions: React.FC<PageDashCompetitionsProps> = ({ initialValue }) => {
+const PageDashCompetitions: React.FC < PageDashCompetitionsProps > = ({ initialValue }) => {
   const [pastCompetitions, setPastCompetitions] = useState(null);
   const [upcomingCompetitions, setUpcomingCompetitions] = useState(null);
 
@@ -24,67 +25,48 @@ const PageDashCompetitions: React.FC<PageDashCompetitionsProps> = ({ initialValu
   }, []);
 
   return (
-    <div id="PageDashCompetitions" className="position-relative">
-      <div className="container px-4 py-5">
-        <div className="row mb-5">
-          <div className="col">
-            <div className="row mt-md-2 mb-5">
-              <div className="offset-lg-2 col-lg-2 col-sm-4">
-                <CountCompetitions
-                  competitions={pastCompetitions && upcomingCompetitions
-                    ? pastCompetitions?.concat(upcomingCompetitions)
-                    : null
-                  }
-                />
+    <div id="PageDashCompetitions" className="h-100 w-100">
+      <div className="container container-xl h-100 w-100 px-2 px-md-4 py-4">
+        <div className="d-flex flex-column h-100 w-100 fade-in">
+          <div className="d-flex flex-column flex-md-row flex-md-grow-0 flex-basis-300">
+            <div className="card d-flex flex-column flex-md-grow-0 flex-basis-300 m-2 p-3 pt-2">
+              <div className="d-flex flex-row flex-md-grow-1">
+                <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
+                  <CountCompetitions
+                    competitions={pastCompetitions && upcomingCompetitions
+                      ? pastCompetitions?.concat(upcomingCompetitions)
+                      : null
+                    }
+                  />
+                </div>
+                <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
+                  <CountCompetitions
+                    label={"Upcoming"}
+                    competitions={upcomingCompetitions}
+                  />
+                </div>
               </div>
-              <div className="offset-lg-1 col-lg-2 col-sm-4">
-                <CountCompetitions
-                  label={"Upcoming"}
-                  competitions={upcomingCompetitions}
-                />
-              </div>
-              <div className="offset-lg-1 col-lg-2 col-sm-4">
-                <CountParticipations
-                  competitions={pastCompetitions}
-                />
-              </div>
-            </div>
-
-            <div className="row mb-4">
-              <div className="col-sm-6">
-                <h4 className="pb-3">Number of competitions per month</h4>
-
-                <ChartBarCompetitions
-                  competitions={pastCompetitions && upcomingCompetitions
-                    ? pastCompetitions?.concat(upcomingCompetitions)
-                    : null
-                  }
-                />
-              </div>
-
-              <div className="col-sm-6">
-                <h4 className="pb-3">Number of participants per month</h4>
-
-                <ChartBarCompetitionParticipations
-                  competitions={pastCompetitions && upcomingCompetitions
-                    ? pastCompetitions?.concat(upcomingCompetitions)
-                    : null
-                  }
-                />
+              <div className="d-flex flex-row flex-md-grow-1">
+                <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
+                  <CountParticipations
+                    competitions={pastCompetitions}
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="row mb-4">
-              <div className="col-sm-12">
-                <h4 className="pb-3">Calendar</h4>
+            <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2 max-height-md-300">
+              <BoxSoonToCome />
+            </div>
+          </div>
 
-                <ChartGanttCompetitions
-                  competitions={pastCompetitions && upcomingCompetitions
-                    ? pastCompetitions?.concat(upcomingCompetitions)
-                    : null
-                  }
-                />
-              </div>
+          <div className="d-flex flex-column flex-md-row flex-md-grow-1">
+            <div className="card d-flex flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto flex-basis-0 m-2 p-3 pt-2">
+              <BoxSoonToCome />
+            </div>
+
+            <div className="card d-flex flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto m-2 p-3 pt-2">
+              <BoxSoonToCome />
             </div>
           </div>
         </div>

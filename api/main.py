@@ -30,10 +30,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
 # Plugins
 
 db = AsyncIOMotorClient(config.DB_URL)[config.DB_CONFIG["database"]]
 mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
+
+# Setup indexes
+
+db.clubs.create_index(
+    [
+        ('name', 'text'),
+        ('city', 'text'),
+        ('country', 'text')
+    ],
+    weights={
+        'name': 10,
+        'city': 5,
+        'country': 2
+    }
+)
 
 # Setup GraphQL
 

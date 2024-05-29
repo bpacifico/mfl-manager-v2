@@ -1,5 +1,5 @@
 from graphene import ObjectType, String, Int, Schema, Field, List, ID, Boolean
-from graph.schema import UserType, NotificationScopeType, NotificationType, CountType, DataPointType
+from graph.schema import UserType, NotificationScopeType, NotificationType, CountType, DataPointType, ClubType
 from bson import ObjectId
 from decorator.require_token import require_token
 from fastapi import HTTPException, status
@@ -59,6 +59,41 @@ class Query(ObjectType):
             .to_list(length=None)
 
         return notifications
+
+    get_clubs = List(ClubType, search=String(), skip=Int(), limit=Int(), sort=String(), order=Int())
+
+    async def resolve_get_clubs(self, info, search=None, skip=0, limit=10, sort="_id", order=1):
+
+        words = [] if search is None else [w for w in search.split(" ") if len(w) > 0]
+
+        clubs = info.context["db"].clubs
+
+        if search:
+            query = {
+                '$text': {
+                    '$search': search
+                }
+            }
+            projection = {
+                'score': {
+                    '$meta': 'textScore'
+                }
+            }
+
+            clubs = clubs \
+                .find(query, projection) \
+                .sort(
+                    [('score', {'$meta': 'textScore'})]
+                )
+        else:
+            clubs = clubs.sort(sort, -1 if order < 0 else 1)
+
+        clubs = await clubs \
+            .skip(skip) \
+            .limit(limit) \
+            .to_list(length=None)
+
+        return clubs
 
     get_club_count = Int(founded_only=Boolean())
 
