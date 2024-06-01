@@ -209,7 +209,7 @@ export const getClubs = ({ handleSuccess = null, handleError = null, params }) =
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `{
-        getClubs(search: "${params.search}") {
+        getClubs(${jsonToParams(params)}) {
           id,
           status,
           name,

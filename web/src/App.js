@@ -14,7 +14,7 @@ import { verifyServiceData } from "utils/flow.js";
 
 interface AppProps {}
 
-const App: React.FC<AppProps> = (props) => {
+const App: React.FC < AppProps > = (props) => {
   const [flowUser, setFlowUser] = useState();
   const [assistantUser, setAssistantUser] = useState();
 
@@ -29,7 +29,7 @@ const App: React.FC<AppProps> = (props) => {
   };
 
   const getToken = () => {
-    if (flowUser?.loggedIn) {
+    if (flowUser && flowUser.loggedIn) {
       let service = flowUser.services.filter((s) => s.type === "account-proof").pop();
 
       if (!service) {
@@ -58,7 +58,7 @@ const App: React.FC<AppProps> = (props) => {
           setAssistantUser(v.data.getLoggedUser);
         }
       },
-      handleError: (v) => {return;},
+      handleError: (v) => { return; },
     });
   }
 

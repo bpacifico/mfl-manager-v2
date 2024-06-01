@@ -1,17 +1,18 @@
 import React from 'react';
+import "./ButtonMflPlayerInfo.css";
 
 interface ButtonMflPlayerInfoProps {
-  playerId?: int;
+  playerId ? : int;
 }
 
-const ButtonMflPlayerInfo: React.FC<ButtonMflPlayerInfoProps> = ({ playerId }) => {
+const ButtonMflPlayerInfo: React.FC < ButtonMflPlayerInfoProps > = ({ playerId }) => {
 
   return (
     <button
-      className="btn btn-info btn-xs text-white"
+      className="btn background-mpi btn-xs text-white"
       onClick={() => window.open("https://mflplayer.info/player/" + playerId, "_blank")}
     >
-      Player Info <i className="bi bi-box-arrow-in-right"></i>
+      MPI<i className="bi bi-caret-right-fill"></i>
     </button>
   );
 };

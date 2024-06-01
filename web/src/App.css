@@ -170,8 +170,8 @@ select:focus {
 }
 
 button.btn-xs {
-  font-size: 0.75rem;
-  padding: .1rem .25rem !important;
+  font-size: 0.5rem;
+  padding: .02rem .12rem !important;
 }
 
 button.btn-link {

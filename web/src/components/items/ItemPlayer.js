@@ -7,7 +7,7 @@ interface ItemPlayerProps {
   id: Int;
 }
 
-const ItemPlayer: React.FC<ItemPlayerProps> = ({ id }) => {
+const ItemPlayer: React.FC < ItemPlayerProps > = ({ id }) => {
   return (
     <div 
     	className="ItemPlayer d-flex flex-column mb-2"

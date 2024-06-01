@@ -1,12 +1,13 @@
+.Item {
+  font-size: 14px;
+  padding: 1px 4px;
+}
 
 .Item:hover {
   background-color: rgba(13, 202, 240, .2) !important;
   color: white;
   cursor: pointer;
-}
 
-.Item {
-  font-size: 14px;
 }
 
 .Item.selected {
@@ -14,6 +15,6 @@
   color: white;
 }
 
-.Item:nth-child(odd) {
+.Item:nth-child(even) {
   background-color: rgba(11, 12, 13, .4);
 }
