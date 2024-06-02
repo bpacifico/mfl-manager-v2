@@ -57,7 +57,7 @@ a .card:hover {
 }
 
 @media (max-width: 768px) {
-  .card img {
+  .card>img {
     width: 50%;
     margin: auto
   }
@@ -96,6 +96,10 @@ svg .content .bar text {
 }
 
 /* FLEX */
+
+.flex-basis-40 {
+  flex-basis: 40px;
+}
 
 @media (min-width: 768px) {
   .flex-basis-200 {
