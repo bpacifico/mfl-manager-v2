@@ -5,7 +5,7 @@ import BoxSocials from "components/box/BoxSocials.js";
 
 interface FooterProps {}
 
-const Footer: React.FC<FooterProps> = (props) => {
+const Footer: React.FC < FooterProps > = (props) => {
   return (
     <div id="Footer" className="mt-5 p-5">
     	<div className="container py-5 px-3 px-md-5">
@@ -55,16 +55,16 @@ const Footer: React.FC<FooterProps> = (props) => {
 	      	</div>
 
 	      	<div className="col-6 col-md-2 p-4 p-md-1">
-	      		<h5 className="text-white">Mercato</h5>
+	      		<h5 className="text-white">Tools</h5>
 
 	      		<div>
-	      			<Link to="/mercato/contracts">
+	      			<Link to="/tools/contracts">
 	            	Contracts
 	          	</Link>
 	          </div>
 
 	          <div>
-	          	<Link to="/mercato/sales">
+	          	<Link to="/tools/sales">
 	            	Sales
 	          	</Link>
 	          </div>

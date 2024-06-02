@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 interface MenuPageMercatoProps {}
 
-const MenuPageMercato: React.FC<MenuPageMercatoProps> = (props) => {
+const MenuPageMercato: React.FC < MenuPageMercatoProps > = (props) => {
   const location = useLocation();
 
   return (
@@ -14,7 +14,7 @@ const MenuPageMercato: React.FC<MenuPageMercatoProps> = (props) => {
           <Link
             to="contracts"
             className={"nav-link"
-              + (["/mercato", "/mercato/", "/mercato/contracts"].indexOf(location.pathname) >= 0 ? " active" : "")}
+              + (["/tools", "/tools/", "/tools/contracts"].indexOf(location.pathname) >= 0 ? " active" : "")}
           >
             <i className="bi bi-file-earmark-medical mx-1"></i>
             <span className="d-none d-md-inline ms-1">Contracts</span>
@@ -23,7 +23,7 @@ const MenuPageMercato: React.FC<MenuPageMercatoProps> = (props) => {
         <li className="nav-item align-self-end lh-1 px-2">
           <Link
             to="sales"
-            className={"nav-link" + (location.pathname === "/mercato/sales" ? " active" : "")}
+            className={"nav-link" + (location.pathname === "/tools/sales" ? " active" : "")}
           >
             <i className="bi bi-cash-coin mx-1"></i>
             <span className="d-none d-md-inline ms-1">Sales</span>

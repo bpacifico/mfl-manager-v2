@@ -88,7 +88,7 @@ const Router: React.FC = (props) => {
               />
             </Route>
             <Route
-              path="mercato"
+              path="tools"
               element={<PageMercato
                 yScrollPosition={yScrollPosition}
               />}

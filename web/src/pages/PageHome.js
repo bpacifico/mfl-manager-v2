@@ -91,10 +91,10 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
 
               <div className="col-md-6 d-flex flex-fill align-items-center">
                 <div className="d-flex flex-column w-100 text-center mt-5 mb-4">
-                  <h4>With the 2 mercato tabs:</h4>
+                  <h4>With the 2 tools:</h4>
 
                   <div className="text-center my-4">
-                    <Link to="/mercato/contracts" className="text-decoration-none">
+                    <Link to="/tools/contracts" className="text-decoration-none">
                       <div className="card-page card mb-2 mx-2 d-inline-block">
                         <div className="card-body px-3 py-2">
                           <p className="card-text text-info">Contracts</p>
@@ -102,7 +102,7 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
                       </div>
                     </Link>
 
-                    <Link to="/mercato/sales" className="text-decoration-none">
+                    <Link to="/tools/sales" className="text-decoration-none">
                       <div className="card-page card mb-2 mx-1 d-inline-block">
                         <div className="card-body px-3 py-2">
                           <p className="card-text text-info">Sales</p>
@@ -118,7 +118,7 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
                   <h6>Enhanced by a filtering system:</h6>
                 </div>
 
-                <Link to="/mercato/contracts?overallMin=85" className="text-decoration-none">
+                <Link to="/tools/contracts?overallMin=85" className="text-decoration-none">
                   <div className="card mb-2 mt-4">
                     <div className="card-body">
                       <p className="card-text"><i className="bi bi-star-fill text-white me-2"></i>Examine the legendary player contracts</p>
@@ -126,7 +126,7 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
                   </div>
                 </Link>
 
-                <Link to="/mercato/contracts?positions=CB" className="text-decoration-none">
+                <Link to="/tools/contracts?positions=CB" className="text-decoration-none">
                   <div className="card mb-4">
                     <div className="card-body">
                       <p className="card-text"><i className="bi bi-shield-shaded text-white me-2"></i>Examine the CB contracts</p>
@@ -134,7 +134,7 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
                   </div>
                 </Link>
 
-                <Link to="/mercato/sales?overallMax=64" className="text-decoration-none">
+                <Link to="/tools/sales?overallMax=64" className="text-decoration-none">
                   <div className="card mb-2 mt-4">
                     <div className="card-body">
                       <p className="card-text"><i className="bi bi-speedometer text-white me-2"></i>Evaluate the common player sales</p>
@@ -142,7 +142,7 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
                   </div>
                 </Link>
 
-                <Link to="/mercato/sales?positions=LW,RW" className="text-decoration-none">
+                <Link to="/tools/sales?positions=LW,RW" className="text-decoration-none">
                   <div className="card mb-2">
                     <div className="card-body">
                       <p className="card-text"><i className="bi bi-shield-shaded text-white me-2"></i>Evaluate the ST sales</p>

@@ -5,7 +5,7 @@ import ButtonLogin from "components/buttons/ButtonLogin.js";
 
 interface MenuProps {}
 
-const Menu: React.FC<MenuProps> = (props) => {
+const Menu: React.FC < MenuProps > = (props) => {
   const location = useLocation();
 
   const getMenuLabel = (text, cl) => {
@@ -60,36 +60,36 @@ const Menu: React.FC<MenuProps> = (props) => {
               className={"nav-link" + (location.pathname.startsWith("/dash") ? " active" : "")}
             >
               {location.pathname.startsWith("/dash")
-                && getMenuLabel("MFL Dash", "d-none d-md-inline")
+                && getMenuLabel("Dashboard", "d-none d-md-inline")
               }
               <div className="px-2 px-md-0">
                 {location.pathname.startsWith("/dash")
-                  ? <i className="bi bi-activity"></i>
-                  : <i className="bi bi-activity"></i>
+                  ? <i className="bi bi-clipboard-data-fill"></i>
+                  : <i className="bi bi-clipboard-data"></i>
 
                 }
               </div>
               {location.pathname.startsWith("/dash")
-                && getMenuLabel("MFL Dash", "d-inline d-md-none")
+                && getMenuLabel("Dashboard", "d-inline d-md-none")
               }
             </Link>
           </li>
           <li className="nav-item">
             <Link
-              to="/mercato"
-              className={"nav-link" + (location.pathname.startsWith("/mercato") ? " active" : "")}
+              to="/tools"
+              className={"nav-link" + (location.pathname.startsWith("/tools") ? " active" : "")}
             >
-              {location.pathname.startsWith("/mercato")
-                && getMenuLabel("Mercato", "d-none d-md-inline")
+              {location.pathname.startsWith("/tools")
+                && getMenuLabel("Tools", "d-none d-md-inline")
               }
               <div className="px-2 px-md-0">
-                {location.pathname.startsWith("/mercato")
-                  ? <i className="bi bi-clipboard-data-fill"></i>
-                  : <i className="bi bi-clipboard-data"></i>
+                {location.pathname.startsWith("/tools")
+                  ? <i className="bi bi-wrench-adjustable-circle-fill"></i>
+                  : <i className="bi bi-wrench-adjustable-circle"></i>
                 }
               </div>
-              {location.pathname.startsWith("/mercato")
-                && getMenuLabel("Mercato", "d-inline d-md-none")
+              {location.pathname.startsWith("/tools")
+                && getMenuLabel("Tools", "d-inline d-md-none")
               }
             </Link>
           </li>
