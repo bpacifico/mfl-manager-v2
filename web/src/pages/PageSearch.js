@@ -123,7 +123,7 @@ const PageSearch: React.FC < PageSearchProps > = () => {
 
   return (
     <div id="PageSearch">
-      <div className="container px-4 py-5">
+      <div className="container max-width-md px-4 py-5">
         <div className="row mb-4">
           <div className="col flex-grow-1">
             <input

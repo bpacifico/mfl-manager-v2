@@ -115,6 +115,20 @@ svg .content .bar text {
   }
 }
 
+/* MAX WIDTH */
+
+.max-width-sm {
+  max-width: 576px !important;
+}
+
+.max-width-md {
+  max-width: 768px !important;
+}
+
+.max-width-lg {
+  max-width: 992px !important;
+}
+
 /* EFFECTS */
 
 .fade-in {

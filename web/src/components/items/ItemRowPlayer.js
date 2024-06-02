@@ -36,7 +36,7 @@ const ItemRowPlayer: React.FC < ItemRowPlayerProps > = ({ p }) => {
           {p.metadata.nationalities[0] ? p.metadata.nationalities[0] : ""}
         </div>
 
-        <div className="d-flex flex - rowflex-md-grow-0 justify-content-end">
+        <div className="d-flex flex-row flex-md-grow-0 justify-content-end">
           <div className="me-1">
             <ButtonMflPlayerInfo
               playerId={p.id}
