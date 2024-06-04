@@ -26,7 +26,15 @@ async def main(db):
 
         if response.status_code == 200:
             data = response.json()
-            user = await insert_user_if_not_exists(db, data["ownedBy"]["walletAddress"])
+            user = None
+
+            if "ownedBy" in data and "walletAddress" in data["ownedBy"]:
+                user = await insert_user_if_not_exists(
+                    db,
+                    data["ownedBy"]["walletAddress"],
+                    data["ownedBy"]["name"]
+                )
+
             club = await _upsert_club_in_db(db, response.json(), user)
         
         if response.status_code == 404:
@@ -57,7 +65,7 @@ async def _upsert_club_in_db(db, club, user):
         "country": club["country"],
         "foundation_date": club["foundationDate"] if club["status"] == "FOUNDED" else None,
         "last_computation_date": datetime.datetime.now(),
-        "owner": user["_id"]
+        "owner": user["_id"] if user is not None else None
     }
     
     return await db.clubs.replace_one({"_id": club["id"]}, club, upsert=True)

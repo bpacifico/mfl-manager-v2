@@ -19,9 +19,9 @@ async def upsert_vars(db, var, value):
         })
 
 
-async def insert_user_if_not_exists(db, address):
+async def insert_user_if_not_exists(db, address, name=None):
     return await db.users.find_one_and_update(
-    	{"address": address},
+    	{"address": address} if name is None else {"address": address, "name": name},
     	{"$set": {"address": address}},
     	upsert=True,
     	return_document=ReturnDocument.AFTER

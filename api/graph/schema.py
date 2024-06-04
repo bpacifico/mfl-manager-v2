@@ -23,6 +23,7 @@ class UserType(ObjectType):
     id = ID(source='_id')
     address = String()
     email = String()
+    name = String()
     confirmation_code = String()
     is_email_confirmed = Boolean()
 
