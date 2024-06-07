@@ -2,7 +2,7 @@ from bson import ObjectId
 import datetime
 import requests
 import logging
-from utils.db import upsert_vars, insert_user_if_not_exists
+from utils.db import upsert_vars, get_var_value, upsert_user
 
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/clubs/"
@@ -16,7 +16,7 @@ logger.setLevel(logging.INFO)
 
 async def main(db):
 
-    last_id = await _get_last_treated_club_id(db)
+    last_id = await get_var_value(db, last_treated_club_id_var)
 
     club_ids_to_fetch = [x for x in range(last_id + 1, last_id + 1 + max_clubs_to_update)]
     logger.critical(f"Club IDs to treat: {club_ids_to_fetch}")
@@ -29,7 +29,7 @@ async def main(db):
             user = None
 
             if "ownedBy" in data and "walletAddress" in data["ownedBy"]:
-                user = await insert_user_if_not_exists(
+                user = await upsert_user(
                     db,
                     data["ownedBy"]["walletAddress"],
                     data["ownedBy"]["name"]
@@ -57,7 +57,7 @@ async def _get_last_treated_club_id(db):
 async def _upsert_club_in_db(db, club, user):
 
     club = {
-        "id": club["id"],
+        "_id": club["id"],
         "status": club["status"],
         "name": club["name"],
         "division": club["division"],
@@ -68,4 +68,4 @@ async def _upsert_club_in_db(db, club, user):
         "owner": user["_id"] if user is not None else None
     }
     
-    return await db.clubs.replace_one({"_id": club["id"]}, club, upsert=True)
+    return await db.clubs.replace_one({"_id": club["_id"]}, club, upsert=True)
