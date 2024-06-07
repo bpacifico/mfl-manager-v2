@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
 from graph.mutation import Mutation
 import config
-from cron import compute_notifications, collect_clubs, collect_sales, compute_club_count_per_day
+from cron import compute_notifications, collect_clubs, collect_sales, compute_club_count_per_day, compute_sale_total
 from endpoint.generate_nonce import generate_nonce
 from utils.jwt import create_access_token
 from utils.cookie import set_cookie
