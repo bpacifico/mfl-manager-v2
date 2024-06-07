@@ -28,8 +28,17 @@ class UserType(ObjectType):
     is_email_confirmed = Boolean()
 
 
+class PlayerType(ObjectType):
+    id = Int(source='_id')
+    first_name = String()
+    last_name = String()
+    overall = String()
+    nationalities = List(String)
+    positions = List(String)
+
+
 class ClubType(ObjectType):
-    id = ID(source='_id')
+    id = Int(source='_id')
     status = String()
     name = String()
     division = Int()
@@ -38,6 +47,14 @@ class ClubType(ObjectType):
     foundation_date = DateTime()
     last_computation_date = DateTime()
     owner = Field(UserType)
+
+
+class SaleType(ObjectType):
+    id = Int(source='_id')
+    price = Float()
+    execution_date = DateTime()
+    player = Field(PlayerType)
+    club = Field(ClubType)
 
 
 class CountType(ObjectType):

@@ -1,8 +1,5 @@
-from bson import ObjectId
 import datetime
-import requests
 import logging
-from utils.db import upsert_vars, insert_user_if_not_exists
 
 logger = logging.getLogger("compute_club_count_per_day")
 logger.setLevel(logging.INFO)
