@@ -12,12 +12,12 @@ const MenuPageDash: React.FC < MenuPageDashProps > = (props) => {
       <ul className="navbar-nav flex-row h6 ps-md-3">
         <li className="nav-item align-self-end lh-1 px-2">
           <Link
-            to="players"
+            to="marketplace"
             className={"nav-link"
-              + (["/dash", "/dash/", "/dash/players"].indexOf(location.pathname) >= 0 ? " active" : "")}
+              + (["/dash", "/dash/", "/dash/marketplace"].indexOf(location.pathname) >= 0 ? " active" : "")}
           >
-            <i className="bi bi-person-badge mx-1"></i>
-            <span className="d-none d-md-inline ms-1">Players</span>
+            <i className="bi bi-shop mx-1"></i>
+            <span className="d-none d-md-inline ms-1">Marketplace</span>
           </Link>
         </li>
         <li className="nav-item align-self-end lh-1 px-2">
@@ -31,11 +31,11 @@ const MenuPageDash: React.FC < MenuPageDashProps > = (props) => {
         </li>
         <li className="nav-item align-self-end lh-1 px-2">
           <Link
-            to="competitions"
-            className={"nav-link" + (location.pathname === "/dash/competitions" ? " active" : "")}
+            to="players"
+            className={"nav-link" + (location.pathname === "/dash/players" ? " active" : "")}
           >
-            <i className="bi bi-diagram-3-fill mx-1"></i>
-            <span className="d-none d-md-inline ms-1">Competitions</span>
+            <i className="bi bi-person-badge mx-1"></i>
+            <span className="d-none d-md-inline ms-1">Players</span>
           </Link>
         </li>
       </ul>

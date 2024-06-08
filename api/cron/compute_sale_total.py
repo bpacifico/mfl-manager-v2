@@ -29,12 +29,6 @@ sale_total_property = {
 
 async def main(db):
 
-    """pipeline = [
-        {"$match": {"player": {"$exists": True, "$ne": None}}},
-        {"$group": _get_time_unit_group_id("w")},
-    ]
-    logger.critical([c async for c in db.sales.aggregate(pipeline)])"""
-
     for i in ["h", "d", "m"]:
         pipeline = [
             {"$match": {"player": {"$exists": True, "$ne": None}}},
@@ -64,8 +58,7 @@ async def _insert_and_replace_data_points(db, pipeline, property, interval):
     total_per_date = [c async for c in db.sales.aggregate(pipeline)]
 
     data_points = [{"property": property, "date": r["_id"], "value": r["total"]} for r in total_per_date]
-
-    fill_missing_intervals(data_points, interval, property)
+    data_points = fill_missing_intervals(data_points, interval, property)
 
     await db.data_points.delete_many({"property": property})
     await db.data_points.insert_many(data_points)

@@ -15,10 +15,9 @@ import {
 } from "services/api-assistant.js";
 import { validateEmail } from "utils/re.js";
 
-interface PageNotificationProps {
-}
+interface PageNotificationProps {}
 
-const PageNotification: React.FC<PageNotificationProps> = (props) => {
+const PageNotification: React.FC < PageNotificationProps > = (props) => {
   const [notificationScopes, setNotificationScopes] = useState(null);
   const [notifications, setNotifications] = useState(null);
   const [selectedNotificationScope, setSelectedNotificationScope] = useState(null);
@@ -119,7 +118,7 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
 
               <div className="d-flex justify-content-end my-1">
                 <button
-                  className="btn btn-info btn-small text-white"
+                  className="btn btn-info text-white"
                   onClick={() => props.updateAssistantUser(emailValue)}
                   disabled={!validateEmail(emailValue)}
                 >
@@ -251,8 +250,9 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
           </div>
         </div>
 
-        <div className="d-flex flex-column flex-md-row flex-md-grow-1">
-          <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
+      <
+      div className = "d-flex flex-column flex-md-row flex-md-grow-1" >
+      <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
             <div className="d-flex flex-row mb-2">
               <h4 className="flex-grow-1">Notifications</h4>
             </div>
@@ -295,18 +295,23 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
             </div>
           </div>
 
-          <div className="card d-flex flex-column flex-md-grow-0 flex-basis-200 m-2 p-3 pt-2">
-            <div className="d-flex flex-row mb-2">
+      <
+      div className = "card d-flex flex-column flex-md-grow-0 flex-basis-200 m-2 p-3 pt-2" >
+      <div className="d-flex flex-row mb-2">
               <h4 className="flex-grow-1">Players</h4>
             </div>
 
-            <div className="d-flex flex-fill overflow-auto justify-content-center">
-              <UtilConditionalRender
+      <
+      div className = "d-flex flex-fill overflow-auto justify-content-center" >
+      <UtilConditionalRender
                 value={selectedNotification?.playerIds}
-                renderUndefined={() => <BoxMessage content={"No notification selected"} />}
-                renderEmpty={() => <BoxMessage content={"No player to display"} />}
-                renderOk={
-                  () => <div className="d-flex flex-column height-md-0">
+                renderUndefined={() => <BoxMessage content={"No notification selected"} />
+    }
+    renderEmpty = {
+      () => <BoxMessage content={"No player to display"} />
+    }
+    renderOk = {
+      () => <div className="d-flex flex-column height-md-0">
                     {selectedNotification.playerIds.map((id) => (
                       <ItemPlayer
                         key={id}
@@ -314,22 +319,22 @@ const PageNotification: React.FC<PageNotificationProps> = (props) => {
                       />
                     ))}
                   </div>
-                }
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    }
+    /> < /
+    div > <
+      /div> < /
+    div > <
+      /div>
+  );
+}
 
-  return (
-    <div id="PageNotification" className="h-100 w-100">
+return (
+  <div id="PageNotification" className="h-100 w-100">
       <div className="container-md h-100 w-100 px-4 py-5">
         {getContent()}
       </div>
     </div>
-  );
+);
 };
 
 export default PageNotification;

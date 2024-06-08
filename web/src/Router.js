@@ -8,7 +8,7 @@ import PageMercato from "pages/PageMercato";
 import PageNotification from "pages/PageNotification.js";
 import Page404 from "pages/Page404";
 import PageDashPlayers from "pages/pagedash/PageDashPlayers.js";
-import PageDashCompetitions from "pages/pagedash/PageDashCompetitions.js";
+import PageDashMarketplace from "pages/pagedash/PageDashMarketplace.js";
 import PageDashClubs from "pages/pagedash/PageDashClubs.js";
 import PageDashMap from "pages/pagedash/PageDashMap.js";
 import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
@@ -68,7 +68,11 @@ const Router: React.FC = (props) => {
             >
               <Route
                 index
-                element={<PageDashPlayers />}
+                element={<PageDashMarketplace />}
+              />
+              <Route
+                path="marketplace"
+                element={<PageDashMarketplace />}
               />
               <Route
                 path="players"
@@ -77,10 +81,6 @@ const Router: React.FC = (props) => {
               <Route
                 path="clubs"
                 element={<PageDashClubs />}
-              />
-              <Route
-                path="competitions"
-                element={<PageDashCompetitions />}
               />
               <Route
                 path="map"

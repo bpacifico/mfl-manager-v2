@@ -255,3 +255,17 @@ export const getClubData = ({ handleSuccess = null, handleError = null }) => pos
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
+
+export const getMarketplaceData = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getPlayerSaleTotal: getDataPoints(property: "${params.playerSaleTotalProperty}") {
+          date,
+          value
+        }
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
