@@ -23,6 +23,7 @@ async def main(db):
 
     for i in club_ids_to_fetch:
         response = requests.get(url=base_url + str(i))
+        logger.critical(f"collect_clubs: Response status: {response.status_code} with id {i}")
 
         if response.status_code == 200:
             data = response.json()
