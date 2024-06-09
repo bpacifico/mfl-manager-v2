@@ -30,8 +30,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-
 # Plugins
 
 db = AsyncIOMotorClient(config.DB_URL)[config.DB_CONFIG["database"]]

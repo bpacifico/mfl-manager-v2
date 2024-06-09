@@ -4,15 +4,15 @@ import Menu from "bars/Menu";
 import PageSearch from "pages/PageSearch";
 import PageHome from "pages/PageHome";
 import PageDash from "pages/PageDash";
-import PageMercato from "pages/PageMercato";
+import PageTools from "pages/PageTools";
 import PageNotification from "pages/PageNotification.js";
 import Page404 from "pages/Page404";
 import PageDashPlayers from "pages/pagedash/PageDashPlayers.js";
 import PageDashMarketplace from "pages/pagedash/PageDashMarketplace.js";
 import PageDashClubs from "pages/pagedash/PageDashClubs.js";
 import PageDashMap from "pages/pagedash/PageDashMap.js";
-import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
-import PageMercatoSales from "pages/pagemercato/PageMercatoSales.js";
+// import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
+import PageToolsPlayerPricing from "pages/pagetools/PageToolsPlayerPricing.js";
 
 const Router: React.FC = (props) => {
   const location = useLocation();
@@ -89,22 +89,22 @@ const Router: React.FC = (props) => {
             </Route>
             <Route
               path="tools"
-              element={<PageMercato
+              element={<PageTools
                 yScrollPosition={yScrollPosition}
               />}
             >
               <Route
                 index
-                element={<PageMercatoContracts />}
+                element={<PageToolsPlayerPricing />}
               />
               <Route
-                path="contracts"
-                element={<PageMercatoContracts />}
+                path="pricing"
+                element={<PageToolsPlayerPricing />}
               />
-              <Route
+              {/*<Route
                 path="sales"
                 element={<PageMercatoSales />}
-              />
+              />*/}
             </Route>
             <Route
               path="notification"
