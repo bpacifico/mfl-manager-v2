@@ -60,7 +60,7 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ init
                 <h4 className="flex-grow-1">Player profile</h4>
               </div>
 
-              <div className="d-flex flex-fill flex-column py-5 py-md-0">
+              <div className="d-flex flex-fill flex-column">
                 <input
                   type="number"
                   min="30"
@@ -73,14 +73,12 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ init
                   autoFocus
                 />
                 <select
-                  className="form-select"
+                  className="form-select w-100 mb-1"
                   value={position}
                   onChange={(v) => setPosition(v.target.value)}
                   placeholder={"Position"}
                 >
-                  <option value={""} key={null}>
-                    Position
-                  </option>
+                  <option value={""} key={null}/>
                   {positions
                     .map((p) => (
                     <option value={p.name} key={p.name}>
@@ -98,7 +96,12 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ init
                   onChange={(v) => {setAge(v.target.value)}}
                   placeholder={"Age"}
                 />
-                <button className="btn btn-info text-white">Run</button>
+                <button
+                  className="btn btn-info text-white"
+                  disabled={!overall || !position || !age}
+                >
+                  Run
+                </button>
               </div>
             </div>
 
@@ -109,7 +112,7 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ init
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden py-5 py-md-0">
+              <div className="d-flex flex-fill overflow-hidden">
                 <BoxSoonToCome />
               </div>
             </div>
