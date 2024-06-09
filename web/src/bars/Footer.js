@@ -36,6 +36,12 @@ const Footer: React.FC < FooterProps > = (props) => {
 	      		<h5 className="text-white">MFL Dash</h5>
 
 	      		<div>
+	          	<Link to="/dash/marketplace">
+	            	Marketplace
+	          	</Link>
+	          </div>
+
+	      		<div>
 	      			<Link to="/dash/players">
 	            	Players
 	          	</Link>
@@ -44,12 +50,6 @@ const Footer: React.FC < FooterProps > = (props) => {
 	          <div>
 	          	<Link to="/dash/clubs">
 	            	Clubs
-	          	</Link>
-	          </div>
-
-	          <div>
-	          	<Link to="/dash/competitions">
-	            	Competitions
 	          	</Link>
 	          </div>
 	      	</div>

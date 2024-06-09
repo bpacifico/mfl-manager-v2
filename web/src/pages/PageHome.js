@@ -48,6 +48,18 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
               </div>
 
               <div className="col-md-4 mb-2">
+                <Link to="/dash/marketplace" className="text-decoration-none">
+                  <div className="card h-100">
+                    <img src="/media/images/podium.svg" className="card-img-top" alt="Random"></img>
+                    <div className="card-body">
+                      <h4 className="card-title text-white">Marketplace</h4>
+                      <p className="card-text">Check the report including the activity of the player sales and more.</p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              <div className="col-md-4 mb-2">
                 <Link to="/dash/players" className="text-decoration-none">
                   <div className="card h-100">
                     <img src="/media/images/player.svg" className="card-img-top p-4" alt="Random"></img>
@@ -66,18 +78,6 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
                     <div className="card-body">
                       <h4 className="card-title text-white">Clubs</h4>
                       <p className="card-text">He also knows everything about the clubs and the division structure!</p>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-
-              <div className="col-md-4 mb-2">
-                <Link to="/dash/competitions" className="text-decoration-none">
-                  <div className="card h-100">
-                    <img src="/media/images/podium.svg" className="card-img-top" alt="Random"></img>
-                    <div className="card-body">
-                      <h4 className="card-title text-white">Competitions</h4>
-                      <p className="card-text">Check the report including the calendar, the participations and more.</p>
                     </div>
                   </div>
                 </Link>
