@@ -17,6 +17,7 @@ logger.setLevel(logging.INFO)
 async def main(db):
 
     last_id = await get_var_value(db, last_treated_club_id_var)
+    reset_var = false
 
     club_ids_to_fetch = [x for x in range(last_id + 1, last_id + 1 + max_clubs_to_update)]
     logger.critical(f"Club IDs to treat: {club_ids_to_fetch}")
@@ -39,10 +40,14 @@ async def main(db):
             club = await _upsert_club_in_db(db, response.json(), user)
         
         if response.status_code == 404:
-            await upsert_vars(db, last_treated_club_id_var, 0)
+            reset_var = true
+            break
 
-    if len(club_ids_to_fetch) > 0:
-        await upsert_vars(db, last_treated_club_id_var, club_ids_to_fetch[-1])
+    if reset_var:
+        await upsert_vars(db, last_treated_club_id_var, 0)
+    else:
+        if len(club_ids_to_fetch) > 0:
+            await upsert_vars(db, last_treated_club_id_var, club_ids_to_fetch[-1])
 
 
 async def _get_last_treated_club_id(db):
