@@ -7,7 +7,7 @@ async def upsert_vars(db, var, value):
     var_record = await db.vars.find_one({"var": var})
 
     if var_record:
-        filters = {"_id": ObjectId(var_record["_id"])}
+        filters = {"_id": var_record["_id"]}
         update_data = {
             "value": value,
         }

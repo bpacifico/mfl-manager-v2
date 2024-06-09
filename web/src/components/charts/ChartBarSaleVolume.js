@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
-import { sortDataset, fillMonthlyDataset } from "utils/chart.js";
-import { unixTimestampToMonthString } from "utils/date.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(
@@ -64,18 +62,18 @@ const ChartBarSaleVolume: React.FC < ChartBarSaleVolumeProps > = ({ data }) => {
         ? <LoadingSquare />
         : <div className="h-100 w-100">
         	<div className="position-absolute top-0 start-0">
-        		<button className={"btn btn-small" + (startPosition == 0 ? " invisible": "")} onClick={extendLeft}>
+        		<button className={"btn btn-small" + (startPosition === 0 ? " invisible": "")} onClick={extendLeft}>
         			<i className="bi bi-arrow-bar-left text-info"></i>
         		</button>
-        		<button className={"btn btn-small" + (startPosition == 0 ? " invisible": "")} onClick={moveLeft}>
+        		<button className={"btn btn-small" + (startPosition === 0 ? " invisible": "")} onClick={moveLeft}>
         			<i className="bi bi-caret-left-fill text-info"></i>
         		</button>
         	</div>
         	<div className="position-absolute top-0 end-0">
-        		<button className={"btn btn-small" + (endPosition == data.length ? " invisible": "")} onClick={moveRight}>
+        		<button className={"btn btn-small" + (endPosition === data.length ? " invisible": "")} onClick={moveRight}>
         			<i className="bi bi-caret-right-fill text-info"></i>
         		</button>
-        		<button className={"btn btn-small" + (endPosition == data.length ? " invisible": "")} onClick={extendRight}>
+        		<button className={"btn btn-small" + (endPosition === data.length ? " invisible": "")} onClick={extendRight}>
         			<i className="bi bi-arrow-bar-right text-info"></i>
         		</button>
         	</div>
