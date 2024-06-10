@@ -269,3 +269,64 @@ export const getMarketplaceData = ({ handleSuccess = null, handleError = null, p
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
+
+export const getTeams = ({ handleSuccess = null, handleError = null }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getTeams {
+          id,
+          name,
+          formation,
+          isPublic
+        }
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
+export const getTeamMembers = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getTeamMembers(${jsonToParams(params)}) {
+          id,
+          team {
+            id
+          },
+          player {
+            id,
+            firstName,
+            lastName,
+            overall,
+            nationalities,
+            positions
+          },
+          position
+        }
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
+export const addTeam = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `
+      mutation {
+        addTeam(${jsonToParams(params)}) {
+          team {
+            id,
+            name,
+            formation,
+            isPublic
+          }
+        }
+      }
+    `,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);

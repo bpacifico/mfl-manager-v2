@@ -20,6 +20,15 @@ const MenuPageTools: React.FC < MenuPageToolsProps > = (props) => {
             <span className="d-none d-md-inline ms-1">Player pricing</span>
           </Link>
         </li>
+        <li className="nav-item align-self-end lh-1 px-2">
+          <Link
+            to="team-builder"
+            className={"nav-link" + (location.pathname === "/tools/team-builder" ? " active" : "")}
+          >
+            <i className="bi bi-clipboard2-check-fill mx-1"></i>
+            <span className="d-none d-md-inline ms-1">Team builder</span>
+          </Link>
+        </li>
         {/* <li className="nav-item align-self-end lh-1 px-2">
           <Link
             to="player-pricing"

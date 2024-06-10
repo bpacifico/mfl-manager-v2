@@ -19,33 +19,33 @@ export const getUpcomingCompetitions = (handleSuccess, handleError) => get(
 /* PLAYERS */
 
 export const getPlayers = (handleSuccess, handleError, params) => get(
-  getMflApiEndpoint()
-    + "players?limit=400&withCount=true&"
-    + convertDictToUrlParams(params),
+  getMflApiEndpoint() +
+  "players?limit=400&withCount=true&" +
+  convertDictToUrlParams(params),
   handleSuccess,
   handleError,
 );
 
 export const getPlayerCount = (handleSuccess, handleError, params) => get(
-  getMflApiEndpoint()
-    + "players?limit=1&withCount=true&excludingMflOwned=true&"
-    + convertDictToUrlParams(params),
+  getMflApiEndpoint() +
+  "players?limit=1&withCount=true&excludingMflOwned=true&" +
+  convertDictToUrlParams(params),
   handleSuccess,
   handleError,
 );
 
 export const getUnderContractPlayers = (handleSuccess, handleError, params) => get(
-  getMflApiEndpoint()
-    + "players?limit=400&withCount=true&sorts=metadata.overall&sortsOrders=ASC&excludingMflOwned=true&isFreeAgent=false&"
-    + convertDictToUrlParams(params),
+  getMflApiEndpoint() +
+  "players?limit=400&withCount=true&sorts=metadata.overall&sortsOrders=ASC&excludingMflOwned=true&isFreeAgent=false&" +
+  convertDictToUrlParams(params),
   handleSuccess,
   handleError,
 );
 
 export const getPlayerSales = (handleSuccess, handleError, params) => get(
-  getMflApiEndpoint()
-    + "listings?limit=25&type=PLAYER&status=BOUGHT&"
-    + convertDictToUrlParams(params),
+  getMflApiEndpoint() +
+  "listings?limit=25&type=PLAYER&status=BOUGHT&" +
+  convertDictToUrlParams(params),
   handleSuccess,
   handleError,
 );
@@ -53,9 +53,9 @@ export const getPlayerSales = (handleSuccess, handleError, params) => get(
 /* LISTINGS */
 
 export const getClubSales = (handleSuccess, handleError, params) => get(
-  getMflApiEndpoint()
-    + "listings?limit=25&type=CLUB&status=BOUGHT&"
-    + convertDictToUrlParams(params),
+  getMflApiEndpoint() +
+  "listings?limit=25&type=CLUB&status=BOUGHT&" +
+  convertDictToUrlParams(params),
   handleSuccess,
   handleError,
 );

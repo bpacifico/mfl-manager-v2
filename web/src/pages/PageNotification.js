@@ -191,8 +191,7 @@ const PageNotification: React.FC < PageNotificationProps > = (props) => {
               {notificationScopes?.length > 0
                 && <PopupNotificationScope
                   trigger={
-                    <button
-                      className="btn btn-info btn-sm text-white">
+                    <button className="btn btn-info btn-sm text-white">
                       <i className="bi bi-plus"></i>
                     </button>
                   }

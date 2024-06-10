@@ -57,6 +57,21 @@ class SaleType(ObjectType):
     club = Field(ClubType)
 
 
+class TeamType(ObjectType):
+    id = ID(source='_id')
+    name = String()
+    formation = String()
+    is_public = Boolean()
+    user = Field(UserType)
+
+
+class TeamMemberType(ObjectType):
+    id = ID(source='_id')
+    team = Field(TeamType)
+    player = Field(PlayerType)
+    position = Int()
+
+
 class CountType(ObjectType):
     key = String()
     count = Int()

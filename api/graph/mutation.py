@@ -1,7 +1,7 @@
-from graphene import Mutation, ObjectType, String, Int, Field, ID
+from graphene import Mutation, ObjectType, String, Int, Field, ID, Boolean
 
 from decorator.require_token import require_token
-from graph.schema import UserType, NotificationScopeType, NotificationType
+from graph.schema import UserType, NotificationScopeType, NotificationType, TeamType, TeamMemberType
 import datetime
 import secrets
 from bson import ObjectId
@@ -139,9 +139,26 @@ class AddNotification(Mutation):
             raise Exception("Notification scope not found")
 
 
+class AddTeam(Mutation):
+    class Arguments:
+        name = String(required=True)
+        formation = String()
+        is_public = Boolean()
+
+    team = Field(lambda: TeamType)
+
+    @require_token
+    async def mutate(self, info, **kwargs):
+        team = kwargs
+        team["user"] = info.context["user"]["_id"]
+        team = info.context["db"].teams.insert_one(team)
+        return AddTeam(team=team)
+
+
 class Mutation(ObjectType):
     update_logged_user_email = UpdateLoggedUserEmail.Field()
     add_notification_scope = AddNotificationScope.Field()
     delete_notification_scope = DeleteNotificationScope.Field()
     add_notification = AddNotification.Field()
     send_confirmation_mail = SendConfirmationEmail.Field()
+    add_team = AddTeam.Field()

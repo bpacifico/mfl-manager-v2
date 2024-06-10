@@ -1,5 +1,5 @@
 from graphene import ObjectType, String, Int, Schema, Field, List, ID, Boolean
-from graph.schema import UserType, NotificationScopeType, NotificationType, CountType, DataPointType, ClubType
+from graph.schema import UserType, NotificationScopeType, NotificationType, CountType, DataPointType, ClubType, TeamType, TeamMemberType, PlayerType
 from bson import ObjectId
 from decorator.require_token import require_token
 from fastapi import HTTPException, status
@@ -174,3 +174,73 @@ class Query(ObjectType):
         return await info.context["db"].data_points \
             .find({"property": property}) \
             .to_list(length=None)
+
+    get_teams = List(TeamType)
+
+    @require_token
+    async def resolve_get_teams(self, info):
+        return await info.context["db"].teams \
+            .find({"user": info.context["user"]["_id"]}) \
+            .to_list(length=None)
+
+    get_team_members = List(TeamMemberType, team=String())
+
+    @require_token
+    async def resolve_get_team_members(self, info, team=None):
+        team = await info.context["db"].teams.find_one({"_id": ObjectId(team)})
+
+        if not team:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, # to change to 404
+                detail="Team not found",
+            )
+
+        if info.context["user"]["_id"] != team["user"]:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="This user does not have access to this team",
+            )
+
+        team_members = await info.context["db"].team_members \
+            .find({"team": team["_id"]}) \
+            .to_list(length=None)
+
+        return team_members
+
+    get_players = List(PlayerType, min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String))
+
+    @require_token
+    async def resolve_get_players(self, info, min_ovr=1, max_ovr=1, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
+
+        filters = {
+            "overall": {"$gt":min_ovr, "$lt":max_ovr}
+        }
+
+        if nationalities is not None:
+            filters["nationalities"] = {"$in": nationalities}
+        if positions is not None:
+            filters["positions"] = {"$in": positions}
+
+        players = await info.context["db"].notifications \
+            .find(filters) \
+            .sort(sort, -1 if order < 0 else 1) \
+            .skip(skip) \
+            .limit(limit) \
+            .to_list(length=None)
+
+        return players
+
+    get_player_nationalitie = List(String)
+
+    @require_token
+    async def resolve_get_player_nationalities(self, info):
+
+        pipeline = [
+            { "$unwind": "$nationalities" },
+            { "$group": { "_id": "$nationalities" } },
+            { "$sort": { "_id": 1 } }
+        ]
+
+        result = collection.aggregate(pipeline)
+
+        return [doc["_id"] for doc in result]

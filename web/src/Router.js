@@ -13,6 +13,8 @@ import PageDashClubs from "pages/pagedash/PageDashClubs.js";
 import PageDashMap from "pages/pagedash/PageDashMap.js";
 // import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
 import PageToolsPlayerPricing from "pages/pagetools/PageToolsPlayerPricing.js";
+import PageToolsTeamBuilder from "pages/pagetools/PageToolsTeamBuilder.js";
+
 
 const Router: React.FC = (props) => {
   const location = useLocation();
@@ -98,8 +100,12 @@ const Router: React.FC = (props) => {
                 element={<PageToolsPlayerPricing />}
               />
               <Route
-                path="pricing"
+                path="player-pricing"
                 element={<PageToolsPlayerPricing />}
+              />
+              <Route
+                path="team-builder"
+                element={<PageToolsTeamBuilder />}
               />
               {/*<Route
                 path="sales"
