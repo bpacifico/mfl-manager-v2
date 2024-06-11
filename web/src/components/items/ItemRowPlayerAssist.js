@@ -5,11 +5,16 @@ import ButtonMflPlayer from "components/buttons/ButtonMflPlayer.js";
 
 interface ItemRowPlayerAssistProps {
   p: object;
+  isSelected: bool;
+  onSelect: func;
 }
 
-const ItemRowPlayerAssist: React.FC < ItemRowPlayerAssistProps > = ({ p }) => {
+const ItemRowPlayerAssist: React.FC < ItemRowPlayerAssistProps > = ({ p, isSelected, onSelect }) => {
   return (
-    <div className="Item ItemRowPlayerAssist">
+    <div
+      className={"Item ItemRowPlayerAssist " + (isSelected ? "selected" : "")}
+      onClick={() => onSelect(p)}
+    >
       <div className="d-flex flex-column flex-md-row flex-fill pb-1 pb-md-0">
         <div className="d-flex flex-row flex-basis-300">
           <i class="bi bi-person-badge-fill me-1"/>

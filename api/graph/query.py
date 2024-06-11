@@ -207,13 +207,12 @@ class Query(ObjectType):
 
         return team_members
 
-    get_players = List(PlayerType, min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String))
+    get_players = List(PlayerType, min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
 
-    @require_token
-    async def resolve_get_players(self, info, min_ovr=1, max_ovr=1, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
+    async def resolve_get_players(self, info, min_ovr=1, max_ovr=100, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
 
         filters = {
-            "overall": {"$gt":min_ovr, "$lt":max_ovr}
+            "overall": {"$gt": min_ovr, "$lt": max_ovr}
         }
 
         if nationalities is not None:
@@ -221,7 +220,7 @@ class Query(ObjectType):
         if positions is not None:
             filters["positions"] = {"$in": positions}
 
-        players = await info.context["db"].notifications \
+        players = await info.context["db"].players \
             .find(filters) \
             .sort(sort, -1 if order < 0 else 1) \
             .skip(skip) \
@@ -230,9 +229,8 @@ class Query(ObjectType):
 
         return players
 
-    get_player_nationalitie = List(String)
+    get_player_nationalities = List(String)
 
-    @require_token
     async def resolve_get_player_nationalities(self, info):
 
         pipeline = [
@@ -241,6 +239,6 @@ class Query(ObjectType):
             { "$sort": { "_id": 1 } }
         ]
 
-        result = collection.aggregate(pipeline)
+        result = info.context["db"].players.aggregate(pipeline)
 
-        return [doc["_id"] for doc in result]
+        return [doc["_id"] async for doc in result]

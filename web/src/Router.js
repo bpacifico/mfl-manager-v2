@@ -105,7 +105,9 @@ const Router: React.FC = (props) => {
               />
               <Route
                 path="team-builder"
-                element={<PageToolsTeamBuilder />}
+                element={<PageToolsTeamBuilder
+                  {...props}
+                />}
               />
               {/*<Route
                 path="sales"

@@ -69,6 +69,16 @@ a .card:hover {
   background-color: rgba(0, 0, 0, .8);
 }
 
+.popup-xl-content {
+  width: 900px;
+  max-width: 100%;
+}
+
+.popup-lg-content {
+  width: 700px;
+  max-width: 100%;
+}
+
 .popup-md-content {
   width: 500px;
   max-width: 100%;

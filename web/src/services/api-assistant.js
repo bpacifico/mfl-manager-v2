@@ -330,3 +330,32 @@ export const addTeam = ({ handleSuccess = null, handleError = null, params }) =>
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
+
+export const getPlayerNationalities = ({ handleSuccess = null, handleError = null }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getPlayerNationalities
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
+export const getPlayers = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getPlayers(${jsonToParams(params)}) {
+          id,
+          firstName,
+          lastName,
+          overall,
+          nationalities,
+          positions
+        }
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
