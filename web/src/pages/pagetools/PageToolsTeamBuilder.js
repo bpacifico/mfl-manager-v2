@@ -9,7 +9,7 @@ import ChartBarPlayerSales from "components/charts/ChartBarPlayerSales.js";
 import ChartBarPlayerSaleValue from "components/charts/ChartBarPlayerSaleValue.js";
 import ChartScatterPlayerSales from "components/charts/ChartScatterPlayerSales.js";
 import BoxWarning from "components/box/BoxWarning.js";
-import { getTeams, getTeamMembers } from "services/api-assistant.js";
+import { getTeams, getTeamMembers, addTeamMembers } from "services/api-assistant.js";
 import BoxSoonToCome from "components/box/BoxSoonToCome.js";
 import BoxMessage from "components/box/BoxMessage.js";
 import Count from "components/counts/Count.js";
@@ -45,7 +45,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
     });
   }
 
-  const addTeamMembers = (playerIds) => {
+  const addTeamMembersInGroup = (playerIds) => {
     setIsLoading(true);
 
     addTeamMembers({
@@ -53,8 +53,8 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
         getData();
       },
       params: {
-        team: selectedTeam,
-        players: playerIds,
+        teamId: selectedTeam,
+        playerIds,
       },
     });
   }
@@ -86,21 +86,23 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
 
   return (
     <div id="PageToolsTeamBuilder" className="h-100 w-100">
-      <div className="container-xxl h-100 px-2 px-md-4 py-4">
+      <div className="container-md h-100 px-2 px-md-4 py-4">
         <div className="d-flex flex-column flex-md-row h-100 w-100 fade-in">
           <div className="d-flex flex-column flex-md-grow-0 flex-basis-300">
             <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2">
               <div className="d-flex flex-row flex-md-grow-0">
                 <h4 className="flex-grow-1">My teams</h4>
 
-                <PopupAddTeam
-                  trigger={
-                    <button className="btn btn-info btn-sm text-white">
-                      <i className="bi bi-plus"></i>
-                    </button>
-                  }
-                  onClose={getData}
-                />
+                {props.assistantUser
+                  && <PopupAddTeam
+                    trigger={
+                      <button className="btn btn-info btn-sm text-white">
+                        <i className="bi bi-plus"></i>
+                      </button>
+                    }
+                    onClose={getData}
+                  />
+                }
               </div>
 
               <div className="d-flex flex-fill flex-column">
@@ -145,21 +147,25 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
           </div>
 
           <div className="d-flex flex-column flex-md-column flex-md-grow-1">
-            <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto flex-basis-0 m-2 p-3 pt-2">
+            <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto flex-basis-0 m-2 p-3 pt-2 max-height-md-200">
               <div className="d-flex flex-row flex-md-grow-0">
-                <h4 className="flex-grow-1">Player group</h4>
+                <h4 className="flex-grow-1">
+                  Player group
+                </h4>
 
-                <PopupAddPlayers
-                  trigger={
-                    <button className="btn btn-info btn-sm text-white">
-                      <i className="bi bi-plus"></i>
-                    </button>
-                  }
-                  onConfirm={(players) => addTeamMembers(players.map((p) => p.id))}
-                />
+                {props.assistantUser && selectedTeam
+                  && <PopupAddPlayers
+                    trigger={
+                      <button className="btn btn-info btn-sm text-white">
+                        <i className="bi bi-plus"></i>
+                      </button>
+                    }
+                    onConfirm={(players) => addTeamMembersInGroup(players.map((p) => p.id))}
+                  />
+                }
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill flex-column overflow-auto">
                 {!selectedTeam
                   && <BoxMessage content={"No team selected"} />
                 }
@@ -173,46 +179,57 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                 }
 
                 {selectedTeam && teamMembers
-                  && teamMembers.map((p) => <ItemRowPlayerAssist p={p}/>)
+                  && teamMembers.map((p) => <ItemRowPlayerAssist p={p.player}/>)
                 }
               </div>
             </div>
 
-            <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex - basis - 400 m-2 p-3 pt-2">
+            <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-basis-400 m-2 p-3 pt-2">
               <div className="d-flex flex-row">
-                <div className="d-flex">
-                  <h4 className="flex-grow-1">Formation</h4>
+                <div className="d-flex flex-row">
+                  <h4 className="d-flex flex-grow-1">
+                    Formation
+                  </h4>
 
-                  <select
-                    className="form-select w-100 mb-1"
-                    value={selectedFormation}
-                    onChange={(v) => setSelectedFormation(v.target.value)}
-                    placeholder={"Formation"}
-                  >
-                    <option value={""} key={null}/>
-                    {Object.keys(formations).map((f) => (
-                      <option value={f} key={f}>
-                        {f}
-                      </option>
-                    ))}
-                  </select>
+                  {props.assistantUser && selectedTeam
+                    && <div className="d-flex">
+                      <select
+                        className="form-select w-100 mb-1"
+                        value={selectedFormation}
+                        onChange={(v) => setSelectedFormation(v.target.value)}
+                        placeholder={"Formation"}
+                      >
+                        <option value={""} key={null}/>
+                        {Object.keys(formations).map((f) => (
+                          <option value={f} key={f}>
+                            {f}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  }
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-1x1">
                 {selectedFormation
-                  ? <div className="h-100 w-100">
-                    {Object.keys(formations[selectedFormation]).map(p => {
+                  ? <div className="d-block p-relative h-100 w-100 football-field rounded-2">
+                    {Object.keys(formations[selectedFormation]).map(p =>
                       <div style={{
                         position: "absolute",
-                        top: formations[selectedFormation][p].y,
-                        left: formations[selectedFormation][p].x
+                        top: formations[selectedFormation][p].y + "%",
+                        left: formations[selectedFormation][p].x + "%",
+                        transform: "translate(-50%,-50%)",
                       }}>
-                        {p}
+                        <button className="btn btn-info btn-small text-white">
+                          <i class="bi bi-person-plus-fill"></i>
+                        </button>
+                        <div className="text-white">CDM</div>
                       </div>
-                    })}
+                    )}
                   </div>
-                  : <BoxMessage content={"No formation selected"} />}
+                  : <BoxMessage content={"No formation selected"} />
+                }
               </div>
             </div>
           </div>

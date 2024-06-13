@@ -29,7 +29,7 @@ const ItemRowPlayerAssist: React.FC < ItemRowPlayerAssistProps > = ({ p, isSelec
         </div>
 
         <div className="d-flex flex-md-grow-1">
-          {p.nationalities[0]
+          {p.nationalities && p.nationalities[0]
             ? <img
               className="d-inline me-1 my-1 ms-md-1"
               style={{height: 14}}
@@ -38,7 +38,7 @@ const ItemRowPlayerAssist: React.FC < ItemRowPlayerAssistProps > = ({ p, isSelec
             : ""
           }
 
-          {p.nationalities[0] ? p.nationalities[0] : ""}
+          {p.nationalities && p.nationalities ? p.nationalities[0] : ""}
         </div>
 
         <div className="d-flex flex-row flex-md-grow-0 justify-content-end">

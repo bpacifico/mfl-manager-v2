@@ -71,6 +71,14 @@ class TeamMemberType(ObjectType):
     player = Field(PlayerType)
     position = Int()
 
+    async def resolve_team(self, info):
+        team = await info.context["db"].teams.find_one({"_id": self["team"]})
+        return team
+
+    async def resolve_player(self, info):
+        player = await info.context["db"].players.find_one({"_id": self["player"]})
+        return player
+
 
 class CountType(ObjectType):
     key = String()

@@ -1,4 +1,4 @@
-from graphene import Mutation, ObjectType, String, Int, Field, ID, Boolean
+from graphene import Mutation, ObjectType, String, Int, Field, ID, Boolean, List
 
 from decorator.require_token import require_token
 from graph.schema import UserType, NotificationScopeType, NotificationType, TeamType, TeamMemberType
@@ -151,8 +151,22 @@ class AddTeam(Mutation):
     async def mutate(self, info, **kwargs):
         team = kwargs
         team["user"] = info.context["user"]["_id"]
-        team = info.context["db"].teams.insert_one(team)
+        team = await info.context["db"].teams.insert_one(team)
         return AddTeam(team=team)
+
+
+class AddTeamMembers(Mutation):
+    class Arguments:
+        team_id = ID(required=True)
+        player_ids = List(Int, required=True)
+
+    team_members = List(TeamMemberType)
+
+    @require_token
+    async def mutate(self, info, **kwargs):
+        team_members = [{"team": ObjectId(kwargs["team_id"]), "player": p} for p in kwargs["player_ids"]]
+        team_members = await info.context["db"].team_members.insert_many(team_members)
+        return AddTeamMembers(team_members=team_members)
 
 
 class Mutation(ObjectType):
@@ -162,3 +176,4 @@ class Mutation(ObjectType):
     add_notification = AddNotification.Field()
     send_confirmation_mail = SendConfirmationEmail.Field()
     add_team = AddTeam.Field()
+    add_team_members = AddTeamMembers.Field()

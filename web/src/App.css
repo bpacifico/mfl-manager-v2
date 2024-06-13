@@ -157,6 +157,10 @@ svg .content .bar text {
 
 /* OTHERS */
 
+.football-field {
+  background: repeating-linear-gradient(#B0EBB4, #B0EBB4 40px, #BFF6C3 40px, #BFF6C3 80px);
+}
+
 canvas {
   width: 100% !important;
 }
@@ -192,8 +196,65 @@ select:focus {
     max-height: 300px;
   }
 
+  .max-height-md-200 {
+    max-height: 200px;
+  }
+
   .height-md-0 {
     height: 0px;
+  }
+
+  .ratio-md-1x1 {
+    --bs-aspect-ratio: 100%;
+  }
+
+  .ratio-md-4x3 {
+    --bs-aspect-ratio: calc(3 / 4 * 100%);
+  }
+
+  .ratio-md-16x9 {
+    --bs-aspect-ratio: calc(9 / 16 * 100%);
+  }
+
+  .ratio-md-21x9 {
+    --bs-aspect-ratio: calc(9 / 21 * 100%);
+  }
+}
+
+@media (max-width: 768px) {
+  .ratio-sm {
+    position: relative;
+    width: 100%;
+  }
+
+  .ratio-sm::before {
+    display: block;
+    padding-top: var(--bs-aspect-ratio);
+    content: "";
+  }
+
+  .ratio-sm>* {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ratio-sm-1x1 {
+    --bs-aspect-ratio: 100%;
+  }
+
+  .ratio-sm-4x3 {
+    --bs-aspect-ratio: calc(3 / 4 * 100%);
+  }
+
+  .ratio-sm-16x9 {
+    --bs-aspect-ratio: calc(9 / 16 * 100%);
+  }
+
+  .ratio-sm-21x9 {
+    --bs-aspect-ratio: calc(9 / 21 * 100%);
   }
 }
 

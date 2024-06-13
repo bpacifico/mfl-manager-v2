@@ -202,7 +202,7 @@ class Query(ObjectType):
             )
 
         team_members = await info.context["db"].team_members \
-            .find({"team": team["_id"]}) \
+            .find({"team": ObjectId(team["_id"])}) \
             .to_list(length=None)
 
         return team_members

@@ -1,4 +1,3 @@
-
 export function jsonToParams(params) {
   var paramString = "";
 
@@ -10,10 +9,14 @@ export function jsonToParams(params) {
 
       paramString += `${k}: `;
 
-      if (typeof params[k] === "number") {
-        paramString += params[k];
+      if (!Array.isArray(params[k])) {
+        if (typeof params[k] === "number") {
+          paramString += params[k];
+        } else {
+          paramString += `"${params[k]}"`;
+        }
       } else {
-        paramString += `"${params[k]}"`;
+        paramString += `[${params[k].join(",")}]`;
       }
     }
   })
