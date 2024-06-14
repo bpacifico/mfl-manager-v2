@@ -40,6 +40,18 @@ class PlayerType(ObjectType):
     overall = String()
     nationalities = List(String)
     positions = List(String)
+    height = List(Int)
+    preferred_foot = List(String)
+    age_at_mint = List(Int)
+    pace = List(Int)
+    shooting = List(Int)
+    passing = List(Int)
+    dribbling = List(Int)
+    defense = List(Int)
+    physical = List(Int)
+    goalkeeping = List(Int)
+    resistance = List(Int)
+    owner = Field(UserType)
 
 
 class ClubType(ObjectType):

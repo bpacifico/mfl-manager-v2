@@ -3,7 +3,7 @@ import datetime
 import requests
 import logging
 from utils.db import upsert_vars
-
+from utils.date import convert_unix_to_datetime
 from mail.mail_manager import send_listing_email, send_sale_email
 
 
@@ -35,7 +35,7 @@ async def main(db, mail):
     logger.critical(f"Number of listings to treat: {len(listings)}")
 
     if len(listings) > 0:
-        await upsert_vars(db, last_list_var, listings[0]["createdDateTime"])
+        await upsert_vars(db, last_list_var, convert_unix_to_datetime(listings[0]["createdDateTime"]))
 
         for scope in listing_scopes:
             filtered_listings = await _filter_listings_per_scope(scope, listings)
@@ -58,7 +58,7 @@ async def main(db, mail):
     logger.critical(f"Number of sales to treat: {len(sales)}")
 
     if len(sales) > 0:
-        await upsert_vars(db, last_sale_var, sales[0]["createdDateTime"])
+        await upsert_vars(db, last_sale_var, convert_unix_to_datetime(sales[0]["createdDateTime"]))
 
         for scope in sale_scopes:
             filtered_sales = await _filter_listings_per_scope(scope, sales)
@@ -98,7 +98,8 @@ async def _get_listings_to_treat(db):
     last_listing_var_record = await db.vars.find_one({"var": last_list_var})
 
     if last_listing_var_record:
-        listings = [listing for listing in listings if listing["createdDateTime"] > last_listing_var_record["value"]]
+        listings = [listing for listing in listings
+            if convert_unix_to_datetime(listing["createdDateTime"]) > last_listing_var_record["value"]]
 
     return listings
 
@@ -109,7 +110,8 @@ async def _get_sales_to_treat(db):
     last_sale_var_record = await db.vars.find_one({"var": last_sale_var})
 
     if last_sale_var_record:
-        sales = [sale for sale in sales if sale["createdDateTime"] > last_sale_var_record["value"]]
+        sales = [sale for sale in sales
+            if convert_unix_to_datetime(sale["createdDateTime"]) > last_sale_var_record["value"]]
 
     return sales
 
