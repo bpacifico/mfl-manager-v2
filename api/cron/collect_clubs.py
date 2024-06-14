@@ -19,6 +19,9 @@ async def main(db):
     last_id = await get_var_value(db, last_treated_club_id_var)
     reset_var = False
 
+    if last_id is None:
+        last_id = 0
+
     club_ids_to_fetch = [x for x in range(last_id + 1, last_id + 1 + max_clubs_to_update)]
     logger.critical(f"Club IDs to treat: {club_ids_to_fetch}")
 
