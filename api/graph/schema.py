@@ -19,6 +19,11 @@ class ClubStatusEnum(enum.Enum):
     NOT_FOUNDED = "NOT_FOUNDED"
 
 
+class SaleTypeEnum(enum.Enum):
+    PLAYER = "PLAYER"
+    CLUB = "CLUB"
+
+
 class UserType(ObjectType):
     id = ID(source='_id')
     address = String()
@@ -55,6 +60,12 @@ class SaleType(ObjectType):
     execution_date = DateTime()
     player = Field(PlayerType)
     club = Field(ClubType)
+
+    async def resolve_player(self, info):
+        return await info.context["db"].players.find_one({"_id": self["player"]})
+
+    async def resolve_club(self, info):
+        return await info.context["db"].clubs.find_one({"_id": self["club"]})
 
 
 class CountType(ObjectType):
@@ -97,15 +108,12 @@ class NotificationScopeType(ObjectType):
     notifications = List(lambda: NotificationType)
 
     async def resolve_notifications(self, info):
-        notification_scope_id = str(self.id)
-        notifications = await info.context["db"].notifications \
-            .find({"notification_scope": ObjectId(notification_scope_id)}) \
+        return await info.context["db"].notifications \
+            .find({"notification_scope": ObjectId(str(self.id))}) \
             .to_list(None)
-        return notifications
 
     async def resolve_user(self, info):
-        user = await info.context["db"].users.find_one({"_id": self["user"]})
-        return user
+        return await info.context["db"].users.find_one({"_id": self["user"]})
 
 
 class NotificationType(ObjectType):
@@ -117,9 +125,7 @@ class NotificationType(ObjectType):
     notification_scope = Field(NotificationScopeType)
 
     async def resolve_notification_scope(self, info):
-        notification_scope = await info.context["db"].notification_scopes \
-            .find_one({"_id": self["notification_scope"]})
-        return notification_scope
+        return await info.context["db"].notification_scopes.find_one({"_id": self["notification_scope"]})
 
 
 class NonceType(ObjectType):

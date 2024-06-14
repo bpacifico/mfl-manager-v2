@@ -100,8 +100,9 @@ async def build_and_upsert_club(db, mfl_club, owner=None):
         club["city"] = mfl_club["city"]
     if "country" in mfl_club:
         club["country"] = mfl_club["country"]
-    if "foundation_date" in mfl_club:
-        club["foundation_date"] = mfl_club["foundation_date"]
+    if "foundationDate" in mfl_club:
+        club["foundation_date"] = datetime.datetime.fromtimestamp(mfl_club["foundationDate"] / 1000) \
+            if "foundationDate" in mfl_club else None
     if "country" in mfl_club:
         club["country"] = mfl_club["country"]
 
@@ -116,7 +117,7 @@ async def build_and_upsert_sale(db, mfl_sale, player=None, club=None):
     sale = {
         "_id": mfl_sale["id"],
         "price": mfl_sale["price"],
-        "execution_date": mfl_sale["purchaseDateTime"],
+        "execution_date": datetime.datetime.fromtimestamp(mfl_sale["purchaseDateTime"] / 1000),
     }
 
     if player is not None:

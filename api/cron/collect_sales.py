@@ -33,10 +33,10 @@ async def main(db):
 
             for s in sales:
                 if new_last_treated_sale_datetime is None:
-                    new_last_treated_sale_datetime = s["purchaseDateTime"]
+                    new_last_treated_sale_datetime = datetime.datetime.fromtimestamp(s["purchaseDateTime"] / 1000)
 
                 if continue_treatment:
-                    if last_treated_sale_datetime is None or s["purchaseDateTime"] > last_treated_sale_datetime:
+                    if last_treated_sale_datetime is None or datetime.datetime.fromtimestamp(s["purchaseDateTime"] / 1000) > last_treated_sale_datetime:
                         logger.critical("collect_sales: Treat: " + str(s["id"]))
                         await _treat_sale(db, s)
                     else:
