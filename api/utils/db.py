@@ -1,6 +1,7 @@
 from bson import ObjectId
 from pymongo import ReturnDocument
 import datetime
+from utils.date import convert_unix_to_datetime
 
 
 async def upsert_vars(db, var, value):
@@ -58,7 +59,7 @@ async def upsert_sale(db, sale):
     )
 
 
-async def build_and_upsert_player(db, mfl_player):
+async def build_and_upsert_player(db, mfl_player, owner=None):
     if "id" not in mfl_player or mfl_player["id"] is None:
         return None
 
@@ -71,12 +72,39 @@ async def build_and_upsert_player(db, mfl_player):
             player["first_name"] = mfl_player["metadata"]["firstName"]
         if "lastName" in mfl_player["metadata"]:
             player["last_name"] = mfl_player["metadata"]["lastName"]
+
         if "overall" in mfl_player["metadata"]:
             player["overall"] = mfl_player["metadata"]["overall"]
         if "nationalities" in mfl_player["metadata"]:
             player["nationalities"] = mfl_player["metadata"]["nationalities"]
         if "positions" in mfl_player["metadata"]:
             player["positions"] = mfl_player["metadata"]["positions"]
+        if "height" in mfl_player["metadata"]:
+            player["height"] = mfl_player["metadata"]["height"]
+        if "preferredFoot" in mfl_player["metadata"]:
+            player["preferred_foot"] = mfl_player["metadata"]["preferredFoot"]
+        if "ageAtMint" in mfl_player["metadata"]:
+            player["age_at_mint"] = mfl_player["metadata"]["ageAtMint"]
+
+        if "pace" in mfl_player["metadata"]:
+            player["pace"] = mfl_player["metadata"]["pace"]
+        if "shooting" in mfl_player["metadata"]:
+            player["shooting"] = mfl_player["metadata"]["shooting"]
+        if "passing" in mfl_player["metadata"]:
+            player["passing"] = mfl_player["metadata"]["passing"]
+        if "dribbling" in mfl_player["metadata"]:
+            player["dribbling"] = mfl_player["metadata"]["dribbling"]
+        if "defense" in mfl_player["metadata"]:
+            player["defense"] = mfl_player["metadata"]["defense"]
+        if "physical" in mfl_player["metadata"]:
+            player["physical"] = mfl_player["metadata"]["physical"]
+        if "goalkeeping" in mfl_player["metadata"]:
+            player["goalkeeping"] = mfl_player["metadata"]["goalkeeping"]
+        if "resistance" in mfl_player["metadata"]:
+            player["resistance"] = mfl_player["metadata"]["resistance"]
+
+    if owner and "_id" in owner:
+        player["owner"] = owner["_id"]
 
     return await upsert_player(db, player)
 
@@ -100,8 +128,9 @@ async def build_and_upsert_club(db, mfl_club, owner=None):
         club["city"] = mfl_club["city"]
     if "country" in mfl_club:
         club["country"] = mfl_club["country"]
-    if "foundation_date" in mfl_club:
-        club["foundation_date"] = mfl_club["foundation_date"]
+    if "foundationDate" in mfl_club:
+        club["foundation_date"] = convert_unix_to_datetime(mfl_club["foundationDate"]) \
+            if "foundationDate" in mfl_club else None
     if "country" in mfl_club:
         club["country"] = mfl_club["country"]
 
@@ -116,7 +145,7 @@ async def build_and_upsert_sale(db, mfl_sale, player=None, club=None):
     sale = {
         "_id": mfl_sale["id"],
         "price": mfl_sale["price"],
-        "execution_date": mfl_sale["purchaseDateTime"],
+        "execution_date": convert_unix_to_datetime(mfl_sale["purchaseDateTime"]),
     }
 
     if player is not None:

@@ -2,11 +2,11 @@ from bson import ObjectId
 import datetime
 import requests
 import logging
-from utils.db import upsert_vars, get_var_value, upsert_user
+from utils.db import upsert_vars, get_var_value, upsert_user, build_and_upsert_club
 
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/clubs/"
-max_clubs_to_update = 3
+max_clubs_to_update = 30
 
 last_treated_club_id_var = "last_treated_club_id"
 
@@ -18,6 +18,9 @@ async def main(db):
 
     last_id = await get_var_value(db, last_treated_club_id_var)
     reset_var = False
+
+    if last_id is None:
+        last_id = 0
 
     club_ids_to_fetch = [x for x in range(last_id + 1, last_id + 1 + max_clubs_to_update)]
     logger.critical(f"Club IDs to treat: {club_ids_to_fetch}")
@@ -37,7 +40,7 @@ async def main(db):
                     data["ownedBy"]["name"]
                 )
 
-            club = await _upsert_club_in_db(db, response.json(), user)
+            club = await build_and_upsert_club(db, response.json(), user)
         
         if response.status_code == 404:
             reset_var = True
@@ -58,20 +61,3 @@ async def _get_last_treated_club_id(db):
         return last_treated_club_record["value"]
 
     return 0
-
-
-async def _upsert_club_in_db(db, club, user):
-
-    club = {
-        "_id": club["id"],
-        "status": club["status"],
-        "name": club["name"],
-        "division": club["division"],
-        "city": club["city"],
-        "country": club["country"],
-        "foundation_date": club["foundationDate"] if club["status"] == "FOUNDED" else None,
-        "last_computation_date": datetime.datetime.now(),
-        "owner": user["_id"] if user is not None else None
-    }
-    
-    return await db.clubs.replace_one({"_id": club["_id"]}, club, upsert=True)

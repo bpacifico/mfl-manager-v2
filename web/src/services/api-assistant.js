@@ -263,6 +263,17 @@ export const getMarketplaceData = ({ handleSuccess = null, handleError = null, p
         getPlayerSaleTotal: getDataPoints(property: "${params.playerSaleTotalProperty}") {
           date,
           value
+        },
+        getClubSales: getSales(type: "CLUB", limit: 100000) {
+          executionDate,
+          price,
+          club {
+            status,
+            division,
+            city,
+            country,
+            foundationDate
+          }
         }
       }`,
   }),

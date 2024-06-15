@@ -2,6 +2,7 @@ import datetime
 import requests
 import logging
 from utils.db import get_var_value, upsert_vars, build_and_upsert_player, build_and_upsert_club, build_and_upsert_sale 
+from utils.date import convert_unix_to_datetime
 
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/listings/feed?limit=25"
@@ -33,10 +34,10 @@ async def main(db):
 
             for s in sales:
                 if new_last_treated_sale_datetime is None:
-                    new_last_treated_sale_datetime = s["purchaseDateTime"]
+                    new_last_treated_sale_datetime = convert_unix_to_datetime(s["purchaseDateTime"])
 
                 if continue_treatment:
-                    if last_treated_sale_datetime is None or s["purchaseDateTime"] > last_treated_sale_datetime:
+                    if last_treated_sale_datetime is None or convert_unix_to_datetime(s["purchaseDateTime"]) > last_treated_sale_datetime:
                         logger.critical("collect_sales: Treat: " + str(s["id"]))
                         await _treat_sale(db, s)
                     else:
@@ -63,7 +64,6 @@ async def main(db):
             sales = response.json()
 
             for s in sales:
-                logger.critical("collect_sales: Treat old sale: " + str(s["id"]))
                 await _treat_sale(db, s)
 
 

@@ -1,5 +1,5 @@
 from graphene import ObjectType, String, Int, Schema, Field, List, ID, Boolean
-from graph.schema import UserType, NotificationScopeType, NotificationType, CountType, DataPointType, ClubType, TeamType, TeamMemberType, PlayerType
+from graph.schema import UserType, SaleType, NotificationScopeType, NotificationType, CountType, DataPointType, ClubType, TeamType, TeamMemberType, PlayerType
 from bson import ObjectId
 from decorator.require_token import require_token
 from fastapi import HTTPException, status
@@ -94,6 +94,24 @@ class Query(ObjectType):
             .to_list(length=None)
 
         return clubs
+
+    get_sales = List(SaleType, type=String(), skip=Int(), limit=Int(), sort=String(), order=Int())
+
+    async def resolve_get_sales(self, info, type=None, skip=0, limit=10, sort="execution_date", order=-1):
+
+        sales = info.context["db"].sales
+
+        if type == "PLAYER":
+            sales = sales.find({"player": {"$exists": True, "$ne": None}})
+        elif type == "CLUB":
+            sales = sales.find({"club": {"$exists": True, "$ne": None}})
+
+        sales = await sales \
+            .skip(skip) \
+            .limit(limit) \
+            .to_list(length=None)
+
+        return sales
 
     get_club_count = Int(founded_only=Boolean())
 

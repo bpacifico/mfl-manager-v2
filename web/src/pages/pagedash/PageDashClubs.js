@@ -87,7 +87,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <ChartBarClubsPerOwner
                   data={foundedClubOnlyForOwners
                     ? clubData?.getClubsPerOwnerCounts
@@ -106,7 +106,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden py-5 py-md-0">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <ChartAreaClubsPerDay
                   data={clubData?.getDataPoints}
                 />
@@ -132,7 +132,7 @@ const PageDashClubs: React.FC < PageDashClubsProps > = ({}) => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <ChartBarClubsPerDivision
                   data={foundedClubOnlyForDivisions
                     ? clubData?.getClubDivisionCounts

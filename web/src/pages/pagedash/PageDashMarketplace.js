@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Count from "components/counts/Count.js";
 import { getMarketplaceData } from "services/api-assistant.js";
 import ChartBarSaleVolume from "components/charts/ChartBarSaleVolume.js";
+import ChartScatterClubSales from "components/charts/ChartScatterClubSales.js";
 import BoxSoonToCome from "components/box/BoxSoonToCome.js";
 
 interface PageDashMarketplaceProps {}
@@ -10,6 +11,7 @@ const PageDashMarketplace: React.FC < PageDashMarketplaceProps > = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState(null);
   const [timeUnit, setTimeUnit] = useState("d");
+  const [clubSaleTimeUnit, setClubSaleTimeUnit] = useState("m");
 
   let playerSaleTotalProperties = {
     "h": "player_sale_total_per_hour",
@@ -63,12 +65,48 @@ const PageDashMarketplace: React.FC < PageDashMarketplaceProps > = ({}) => {
             <div className="card d-flex flex-column flex-md-grow-1 m-2 p-3 pt-2 max-height-md-300">
               <div className="d-flex flex-row">
                 <div className="d-flex">
-                  <h4 className="flex-grow-1"></h4>
+                  <h4 className="flex-grow-1">Club sales</h4>
+                </div>
+
+                <div className="d-flex flex-fill overflow-auto justify-content-end align-items-end">
+                  <button
+                    className={"btn btn-small" + (clubSaleTimeUnit === "w" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setClubSaleTimeUnit("w")}
+                  >
+                    W
+                  </button>
+                  <button
+                    className={"btn btn-small" + (clubSaleTimeUnit === "m" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setClubSaleTimeUnit("m")}
+                  >
+                    M
+                  </button>
+                  <button
+                    className={"btn btn-small" + (clubSaleTimeUnit === "q" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setClubSaleTimeUnit("q")}
+                  >
+                    Q
+                  </button>
+                  <button
+                    className={"btn btn-small" + (clubSaleTimeUnit === "y" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setClubSaleTimeUnit("y")}
+                  >
+                    Y
+                  </button>
+                  <button
+                    className={"btn btn-small" + (clubSaleTimeUnit === "*" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setClubSaleTimeUnit("*")}
+                  >
+                    ALL
+                  </button>
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden py-5 py-md-0">
-                <BoxSoonToCome />
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
+                <ChartScatterClubSales
+                  sales={data?.getClubSales}
+                  unit={clubSaleTimeUnit}
+                />
               </div>
             </div>
           </div>
@@ -102,7 +140,7 @@ const PageDashMarketplace: React.FC < PageDashMarketplaceProps > = ({}) => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <ChartBarSaleVolume
                   data={data?.getPlayerSaleTotal}
                 />
@@ -116,7 +154,7 @@ const PageDashMarketplace: React.FC < PageDashMarketplaceProps > = ({}) => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <BoxSoonToCome />
               </div>
             </div>
