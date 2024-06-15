@@ -342,15 +342,32 @@ export const addTeam = ({ handleSuccess = null, handleError = null, params }) =>
   (e) => defaultHandleError(handleError, e),
 );
 
+export const updateTeam = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `
+      mutation {
+        updateTeam(${jsonToParams(params)}) {
+          status
+        }
+      }
+    `,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
 export const addTeamMembers = ({ handleSuccess = null, handleError = null, params }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
     query: `
       mutation {
         addTeamMembers(${jsonToParams(params)}) {
-          team { id },
-          player { id },
-          position
+          teamMembers {
+            team { id },
+            player { id },
+            position
+          }
         }
       }
     `,

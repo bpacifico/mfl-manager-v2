@@ -1,15 +1,15 @@
 import React from 'react';
 
 interface ControllerAgeProps {
-  ageAtMintMin?: int;
-  ageAtMintMax?: int;
+  ageAtMintMin ? : int;
+  ageAtMintMax ? : int;
   onChange: func;
 }
 
-const ControllerAge: React.FC<ControllerAgeProps> = ({ ageAtMintMin, ageAtMintMax, onChange }) => {
+const ControllerAge: React.FC < ControllerAgeProps > = ({ ageAtMintMin, ageAtMintMax, onChange }) => {
   const minAge = 16;
   const maxAge = 40;
-  
+
   const getAgeTextValue = () => {
     if (ageAtMintMin || ageAtMintMax) {
       let text = [];
@@ -33,7 +33,7 @@ const ControllerAge: React.FC<ControllerAgeProps> = ({ ageAtMintMin, ageAtMintMa
         <h3>{getAgeTextValue()}</h3>
       </div>
       <div className="col">
-    	  <input
+        <input
           className="w-100"
           type="range"
           value={ageAtMintMin || minAge}

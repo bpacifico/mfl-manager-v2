@@ -79,8 +79,8 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
 				className={"fade-in popup-xl"}
 			>
 				{(close) => (
-					<div className="container bg-dark border border-info border-3 rounded-3 p-4">
-						<div className="d-flex flex-grow-0 flex-row mb-3">
+					<div className="container bg-dark d-flex flex-column border border-info border-3 rounded-3 p-4">
+						<div className="d-flex flex-row flex-grow-0 mb-3">
 							<div className="flex-grow-1">
 						  	<h2 className="text-white">
 						  		Add players in the group
@@ -95,7 +95,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
 							</div>
 						</div>
 
-						<div className="d-flex flex-grow-0 flex-row mb-3">
+						<div className="d-flex flex-row flex-grow-0 mb-3">
 							<select
                 className="form-select w-100 mb-1"
                 value={selectedNationality}
@@ -112,7 +112,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
               </select>
 						</div>
 
-						<div className="d-flex flex-grow-1 flex-column mb-3 height-md-0">
+						<div className="d-flex flex-grow-1 flex-column mb-3 overflow-auto">
 							{players
 								? players.map((p) => <ItemRowPlayerAssist
 										p={p}

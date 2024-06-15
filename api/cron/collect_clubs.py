@@ -6,7 +6,7 @@ from utils.db import upsert_vars, get_var_value, upsert_user, build_and_upsert_c
 
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/clubs/"
-max_clubs_to_update = 30
+max_clubs_to_update = 3
 
 last_treated_club_id_var = "last_treated_club_id"
 

@@ -9,13 +9,14 @@ import ChartBarPlayerSales from "components/charts/ChartBarPlayerSales.js";
 import ChartBarPlayerSaleValue from "components/charts/ChartBarPlayerSaleValue.js";
 import ChartScatterPlayerSales from "components/charts/ChartScatterPlayerSales.js";
 import BoxWarning from "components/box/BoxWarning.js";
-import { getTeams, getTeamMembers, addTeamMembers } from "services/api-assistant.js";
+import { getTeams, getTeamMembers, addTeamMembers, updateTeam } from "services/api-assistant.js";
 import BoxSoonToCome from "components/box/BoxSoonToCome.js";
 import BoxMessage from "components/box/BoxMessage.js";
 import Count from "components/counts/Count.js";
 import LoadingSquare from "components/loading/LoadingSquare.js"
 import { positions } from "utils/player.js";
 import PopupAddTeam from "components/popups/PopupAddTeam.js";
+import PopupSelectPlayer from "components/popups/PopupSelectPlayer.js";
 import PopupAddPlayers from "components/popups/PopupAddPlayers.js";
 import ItemTeam from "components/items/ItemTeam.js";
 import ItemRowPlayerAssist from "components/items/ItemRowPlayerAssist.js";
@@ -31,8 +32,6 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
   const [teams, setTeams] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [teamMembers, setTeamMembers] = useState(null);
-
-  const [selectedFormation, setSelectedFormation] = useState(null);
 
   const getData = () => {
     setIsLoading(true);
@@ -57,6 +56,28 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
         playerIds,
       },
     });
+  }
+
+  const getSelectedTeam = () => {
+    if (selectedTeam) {
+      return teams.filter((t) => t.id === selectedTeam).pop();
+    }
+
+    return null;
+  }
+
+  const updateTeam = (data) => {
+    if (getSelectedTeam) {
+      updateTeam({
+        handleSuccess: (v) => {
+          getData();
+        },
+        params: {
+          id: selectedTeam,
+          ...data,
+        },
+      });
+    }
   }
 
   useEffect(() => {
@@ -133,17 +154,17 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
               </div>
             </div>
 
-            {/*<div className="card d-flex flex-column flex-fill m-2 p-3 pt-2">
+            <div className="card d-flex flex-column flex-fill m-2 p-3 pt-2">
               <div className="d-flex flex-row">
                 <div className="d-flex">
-                  <h4 className="flex-grow-1">Pricing</h4>
+                  <h4 className="flex-grow-1">Team details</h4>
                 </div>
               </div>
 
               <div className="d-flex flex-fill overflow-hidden">
                 <BoxSoonToCome />
               </div>
-            </div>*/}
+            </div>
           </div>
 
           <div className="d-flex flex-column flex-md-column flex-md-grow-1">
@@ -179,51 +200,56 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                 }
 
                 {selectedTeam && teamMembers
-                  && teamMembers.map((p) => <ItemRowPlayerAssist p={p.player}/>)
+                  && teamMembers
+                    .filter((p) => !p.position)
+                    .map((p) => <ItemRowPlayerAssist p={p.player}/>)
                 }
               </div>
             </div>
 
             <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-basis-400 m-2 p-3 pt-2">
               <div className="d-flex flex-row">
-                <div className="d-flex flex-row">
-                  <h4 className="d-flex flex-grow-1">
-                    Formation
-                  </h4>
+                <h4 className="flex-grow-1">
+                  Formation
+                </h4>
 
-                  {props.assistantUser && selectedTeam
-                    && <div className="d-flex">
-                      <select
-                        className="form-select w-100 mb-1"
-                        value={selectedFormation}
-                        onChange={(v) => setSelectedFormation(v.target.value)}
-                        placeholder={"Formation"}
-                      >
-                        <option value={""} key={null}/>
-                        {Object.keys(formations).map((f) => (
-                          <option value={f} key={f}>
-                            {f}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  }
-                </div>
+                {props.assistantUser && selectedTeam
+                  && <div className="d-flex flex-grow-0">
+                    <select
+                      className="form-select w-100 mb-1"
+                      value={getSelectedTeam().formation}
+                      onChange={(v) => updateTeam({ formation: v.target.value })}
+                      placeholder={"Formation"}
+                    >
+                      <option value={""} key={null}/>
+                      {Object.keys(formations).map((f) => (
+                        <option value={f} key={f}>
+                          {f}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                }
               </div>
 
               <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-1x1">
-                {selectedFormation
+                {selectedTeam && getSelectedTeam().formation
                   ? <div className="d-block p-relative h-100 w-100 football-field rounded-2">
-                    {Object.keys(formations[selectedFormation]).map(p =>
+                    {Object.keys(formations[getSelectedTeam().formation]).map(p =>
                       <div style={{
                         position: "absolute",
-                        top: formations[selectedFormation][p].y + "%",
-                        left: formations[selectedFormation][p].x + "%",
+                        top: formations[getSelectedTeam().formation][p].y + "%",
+                        left: formations[getSelectedTeam().formation][p].x + "%",
                         transform: "translate(-50%,-50%)",
                       }}>
-                        <button className="btn btn-info btn-small text-white">
-                          <i class="bi bi-person-plus-fill"></i>
-                        </button>
+                        <PopupSelectPlayer
+                          trigger={
+                            <button className="btn btn-info btn-small text-white">
+                              <i class="bi bi-person-plus-fill"></i>
+                            </button>
+                          }
+                          teamMembers={teamMembers}
+                        />
                         <div className="text-white">CDM</div>
                       </div>
                     )}

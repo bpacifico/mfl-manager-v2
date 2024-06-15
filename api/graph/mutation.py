@@ -155,6 +155,21 @@ class AddTeam(Mutation):
         return AddTeam(team=team)
 
 
+class UpdateTeam(Mutation):
+    class Arguments:
+        id = ID(required=True)
+        name = String()
+        formation = String()
+        is_public = Boolean()
+
+    status = Boolean()
+
+    @require_token
+    async def mutate(self, info, id, **kwargs):
+        await info.context["db"].teams.update_one({"_id": ObjectId(id)}, {'$set': kwargs})
+        return UpdateTeam(status=True)
+
+
 class AddTeamMembers(Mutation):
     class Arguments:
         team_id = ID(required=True)
@@ -166,7 +181,24 @@ class AddTeamMembers(Mutation):
     async def mutate(self, info, **kwargs):
         team_members = [{"team": ObjectId(kwargs["team_id"]), "player": p} for p in kwargs["player_ids"]]
         team_members = await info.context["db"].team_members.insert_many(team_members)
+        team_members = await info.context["db"].team_members \
+            .find({"_id": { "$in": team_members.inserted_ids }}) \
+            .to_list(length=None)
         return AddTeamMembers(team_members=team_members)
+
+
+class UpdateTeamMember(Mutation):
+    class Arguments:
+        id = ID(required=True)
+        position = String()
+
+    status = Boolean()
+
+    @require_token
+    async def mutate(self, info, id, **kwargs):
+        await info.context["db"].team_members.updateMany({"position": kwargs["position"]}, {'$set': {"position": null}})
+        await info.context["db"].team_members.update_one({"_id": ObjectId(id)}, {'$set': kwargs})
+        return UpdateTeamMember(status=True)
 
 
 class Mutation(ObjectType):
@@ -176,4 +208,6 @@ class Mutation(ObjectType):
     add_notification = AddNotification.Field()
     send_confirmation_mail = SendConfirmationEmail.Field()
     add_team = AddTeam.Field()
+    update_team = UpdateTeam.Field()
     add_team_members = AddTeamMembers.Field()
+    update_team_member = UpdateTeamMember.Field()
