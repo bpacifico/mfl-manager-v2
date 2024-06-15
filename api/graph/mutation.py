@@ -190,13 +190,13 @@ class AddTeamMembers(Mutation):
 class UpdateTeamMember(Mutation):
     class Arguments:
         id = ID(required=True)
-        position = String()
+        position = Int()
 
     status = Boolean()
 
     @require_token
     async def mutate(self, info, id, **kwargs):
-        await info.context["db"].team_members.updateMany({"position": kwargs["position"]}, {'$set': {"position": null}})
+        await info.context["db"].team_members.update_many({"position": kwargs["position"]}, {'$set': {"position": None}})
         await info.context["db"].team_members.update_one({"_id": ObjectId(id)}, {'$set': kwargs})
         return UpdateTeamMember(status=True)
 

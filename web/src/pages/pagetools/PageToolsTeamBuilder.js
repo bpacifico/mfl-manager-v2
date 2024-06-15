@@ -9,7 +9,7 @@ import ChartBarPlayerSales from "components/charts/ChartBarPlayerSales.js";
 import ChartBarPlayerSaleValue from "components/charts/ChartBarPlayerSaleValue.js";
 import ChartScatterPlayerSales from "components/charts/ChartScatterPlayerSales.js";
 import BoxWarning from "components/box/BoxWarning.js";
-import { getTeams, getTeamMembers, addTeamMembers, updateTeam } from "services/api-assistant.js";
+import { getTeams, getTeamMembers, addTeamMembers, updateTeam, updateTeamMember } from "services/api-assistant.js";
 import BoxSoonToCome from "components/box/BoxSoonToCome.js";
 import BoxMessage from "components/box/BoxMessage.js";
 import Count from "components/counts/Count.js";
@@ -66,7 +66,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
     return null;
   }
 
-  const updateTeam = (data) => {
+  const saveTeam = (data) => {
     if (getSelectedTeam) {
       updateTeam({
         handleSuccess: (v) => {
@@ -75,6 +75,20 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
         params: {
           id: selectedTeam,
           ...data,
+        },
+      });
+    }
+  }
+
+  const saveTeamMember = (id, position) => {
+    if (getSelectedTeam) {
+      updateTeamMember({
+        handleSuccess: (v) => {
+          getData();
+        },
+        params: {
+          id,
+          position,
         },
       });
     }
@@ -218,7 +232,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                     <select
                       className="form-select w-100 mb-1"
                       value={getSelectedTeam().formation}
-                      onChange={(v) => updateTeam({ formation: v.target.value })}
+                      onChange={(v) => saveTeam({ formation: v.target.value })}
                       placeholder={"Formation"}
                     >
                       <option value={""} key={null}/>
@@ -249,6 +263,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                             </button>
                           }
                           teamMembers={teamMembers}
+                          onConfirm={(m) => saveTeamMember(m.id, parseInt(p))}
                         />
                         <div className="text-white">CDM</div>
                       </div>
