@@ -102,7 +102,7 @@ const PageDashMarketplace: React.FC < PageDashMarketplaceProps > = ({}) => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden py-5 py-md-0">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <ChartScatterClubSales
                   sales={data?.getClubSales}
                   unit={clubSaleTimeUnit}
@@ -140,7 +140,7 @@ const PageDashMarketplace: React.FC < PageDashMarketplaceProps > = ({}) => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <ChartBarSaleVolume
                   data={data?.getPlayerSaleTotal}
                 />
@@ -154,7 +154,7 @@ const PageDashMarketplace: React.FC < PageDashMarketplaceProps > = ({}) => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <BoxSoonToCome />
               </div>
             </div>
