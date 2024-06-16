@@ -2,11 +2,11 @@ export function jsonToParams(params) {
   var paramString = "";
 
   Object.keys(params).forEach((k) => {
-    if (paramString.length > 0) {
-      paramString += ",";
-    }
-
     if (params[k]) {
+      if (paramString.length > 0) {
+        paramString += ",";
+      }
+
       paramString += `${k}: `;
 
       if (!Array.isArray(params[k])) {
@@ -16,9 +16,21 @@ export function jsonToParams(params) {
           paramString += `"${params[k]}"`;
         }
       } else {
-        paramString += `[${params[k].join(",")}]`;
+        if (params[k].length === 0) {
+          paramString += `[]`;
+        } else if (typeof params[k][0] === "number") {
+          paramString += `[${params[k].join(",")}]`;
+        } else {
+          paramString += `["${params[k].join('","')}"]`;
+        }
       }
-    } else {
+    }
+
+    if (params[k] === null) {
+      if (paramString.length > 0) {
+        paramString += ",";
+      }
+
       paramString += `${k}: ${null}`;
     }
   })
