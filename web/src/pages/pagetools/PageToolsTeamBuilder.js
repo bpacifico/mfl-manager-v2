@@ -180,7 +180,10 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                 }
 
                 {props.assistantUser && !isLoading && !teams
-                  && <BoxMessage content={"No team found"} />
+                  && <BoxMessage
+                    className={"py-4 py-md-0"}
+                    content={"No team found"}
+                  />
                 }
 
                 {props.assistantUser && !isLoading && teams
@@ -270,6 +273,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                     </div>
                   </div>
                   : <BoxMessage
+                    className={"py-4 py-md-0"}
                     content={"No team selected"}
                   />
                 }
@@ -314,7 +318,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                         transform: "translate(-50%,-50%)",
                       }}>
                         {getTeamMemberInPosition(parseInt(p))
-                          ? <div className="d-flex flex-column" style={{ lineHeight: 1.3 }}>
+                          ? <div className="d-flex flex-column transform-scale-sm-80" style={{ lineHeight: 1.3 }}>
                             <div className="text-white">
                               {getTeamMemberInPosition(parseInt(p)).player.lastName}
                             </div>
@@ -341,7 +345,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                               </button>
                             </div>
                           </div>
-                          : <div>
+                          : <div className="transform-scale-sm-80">
                             <PopupSelectPlayer
                               trigger={
                                 <button className="btn btn-info btn-small text-white">
@@ -384,7 +388,10 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
 
               <div className="d-flex flex-fill flex-column overflow-auto">
                 {!selectedTeam
-                  && <BoxMessage content={"No team selected"} />
+                  && <BoxMessage
+                    className={"py-4 py-md-0"}
+                    content={"No team selected"}
+                  />
                 }
 
                 {selectedTeam && teamMembers === null
@@ -392,7 +399,10 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                 }
 
                 {selectedTeam && teamMembers?.length === 0
-                  && <BoxMessage content={"No player in the group"} />
+                  && <BoxMessage
+                    className={"py-4 py-md-0"}
+                    content={"No player in the group"}
+                  />
                 }
 
                 {selectedTeam && teamMembers

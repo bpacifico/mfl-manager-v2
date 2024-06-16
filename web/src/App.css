@@ -268,6 +268,11 @@ select:focus {
   .ratio-sm-21x9 {
     --bs-aspect-ratio: calc(9 / 21 * 100%);
   }
+
+
+  .transform-scale-sm-80 {
+    transform: scale(0.8);
+  }
 }
 
 button.btn-small {
