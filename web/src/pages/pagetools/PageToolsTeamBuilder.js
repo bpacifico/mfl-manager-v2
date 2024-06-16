@@ -20,6 +20,8 @@ import PopupSelectPlayer from "components/popups/PopupSelectPlayer.js";
 import PopupAddPlayers from "components/popups/PopupAddPlayers.js";
 import ItemTeam from "components/items/ItemTeam.js";
 import ItemRowPlayerAssist from "components/items/ItemRowPlayerAssist.js";
+import MiscFlag from "components/misc/MiscFlag.js";
+import MiscOverall from "components/misc/MiscOverall.js";
 import ButtonLogin from "components/buttons/ButtonLogin.js";
 import { formations } from "utils/formation.js";
 
@@ -302,19 +304,22 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                       }}>
                         {getTeamMemberInPosition(parseInt(p))
                           ? <div className="d-flex flex-column" style={{ lineHeight: 1.3 }}>
-                            <div>
+                            <div className="text-white">
                               {getTeamMemberInPosition(parseInt(p)).player.lastName}
                             </div>
                             <div className="d-flex flex-row">
                               <div className="d-flex align-items-center flex-wrap me-1">
-                                <img
-                                  style={{height: 14}}
-                                  src={`https://app.playmfl.com/img/flags/${getTeamMemberInPosition(parseInt(p)).player.nationalities[0]}.svg`}
+                                <MiscFlag
+                                  country={getTeamMemberInPosition(parseInt(p)).player.nationalities[0]}
                                 />
                               </div>
 
                               <div className="d-flex flex-grow-1 me-1">
-                                {getTeamMemberInPosition(parseInt(p)).player.overall}
+                                <MiscOverall
+                                  player={getTeamMemberInPosition(parseInt(p)).player}
+                                  actualPosition={getTeamMemberInPosition(parseInt(p)).position}
+                                  calculatedOvr={true}
+                                />
                               </div>
 
                               <button
