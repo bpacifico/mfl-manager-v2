@@ -37,7 +37,7 @@ class PlayerType(ObjectType):
     id = Int(source='_id')
     first_name = String()
     last_name = String()
-    overall = String()
+    overall = Int()
     nationalities = List(String)
     positions = List(String)
     height = List(Int)

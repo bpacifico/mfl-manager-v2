@@ -27,87 +27,26 @@ import { formations } from "utils/formation.js";
 interface PageToolsTeamBuilderProps {}
 
 const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-  const [teams, setTeams] = useState(null);
-  const [selectedTeam, setSelectedTeam] = useState(null);
-  const [teamMembers, setTeamMembers] = useState(null);
+    const [teams, setTeams] = useState(null);
+    const [selectedTeam, setSelectedTeam] = useState(null);
+    const [teamMembers, setTeamMembers] = useState(null);
 
-  const getData = () => {
-    setIsLoading(true);
-
-    getTeams({
-      handleSuccess: (v) => {
-        setTeams(v.data.getTeams);
-        setIsLoading(false);
+    const fetchTeams = (triggerLoading = true) => {
+      if (triggerLoading) {
+        setIsLoading(true);
       }
-    });
-  }
 
-  const addTeamMembersInGroup = (playerIds) => {
-    setIsLoading(true);
-
-    addTeamMembers({
-      handleSuccess: (v) => {
-        getData();
-      },
-      params: {
-        teamId: selectedTeam,
-        playerIds,
-      },
-    });
-  }
-
-  const getSelectedTeam = () => {
-    if (selectedTeam) {
-      return teams.filter((t) => t.id === selectedTeam).pop();
-    }
-
-    return null;
-  }
-
-  const saveTeam = (data) => {
-    if (getSelectedTeam) {
-      updateTeam({
+      getTeams({
         handleSuccess: (v) => {
-          getData();
-        },
-        params: {
-          id: selectedTeam,
-          ...data,
-        },
+          setTeams(v.data.getTeams);
+          setIsLoading(false);
+        }
       });
     }
-  }
 
-  const saveTeamMember = (id, position) => {
-    if (getSelectedTeam) {
-      updateTeamMember({
-        handleSuccess: (v) => {
-          getData();
-        },
-        params: {
-          id,
-          position,
-        },
-      });
-    }
-  }
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (props.assistantUser) {
-      getData();
-    }
-  }, [props.assistantUser]);
-
-  useEffect(() => {
-    if (selectedTeam === null) {
-      setTeamMembers(null);
-    } else {
+    const fetchTeamMembers = () => {
       getTeamMembers({
         handleSuccess: (v) => {
           setTeamMembers(v.data.getTeamMembers)
@@ -117,10 +56,83 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
         }
       });
     }
-  }, [selectedTeam]);
 
-  return (
-    <div id="PageToolsTeamBuilder" className="h-100 w-100">
+    const addTeamMembersInGroup = (playerIds) => {
+      addTeamMembers({
+        handleSuccess: (v) => {
+          fetchTeamMembers();
+        },
+        params: {
+          teamId: selectedTeam,
+          playerIds,
+        },
+      });
+    }
+
+    const getSelectedTeam = () => {
+      if (selectedTeam) {
+        return teams.filter((t) => t.id === selectedTeam).pop();
+      }
+
+      return null;
+    }
+
+    const saveTeam = (data) => {
+      if (getSelectedTeam) {
+        updateTeam({
+          handleSuccess: (v) => {
+            fetchTeams(false);
+          },
+          params: {
+            id: selectedTeam,
+            ...data,
+          },
+        });
+      }
+    }
+
+    const saveTeamMember = (id, position) => {
+      if (getSelectedTeam) {
+        updateTeamMember({
+          handleSuccess: (v) => {
+            fetchTeamMembers();
+          },
+          params: {
+            id,
+            position,
+          },
+        });
+      }
+    }
+
+    const getTeamMemberInPosition = (position) => {
+      if (!teamMembers) {
+        return null;
+      }
+
+      return teamMembers.filter((tm) => tm.position === position).pop();
+    }
+
+    useEffect(() => {
+      fetchTeams();
+    }, []);
+
+    useEffect(() => {
+      if (props.assistantUser) {
+        fetchTeams();
+      }
+    }, [props.assistantUser]);
+
+    useEffect(() => {
+      if (selectedTeam === null) {
+        setTeamMembers(null);
+      } else {
+        fetchTeamMembers();
+      }
+    }, [selectedTeam]);
+
+    return (
+        <div id="PageToolsTeamBuilder" className="h-100 w-100">
       <div className="container-md h-100 px-2 px-md-4 py-4">
         <div className="d-flex flex-column flex-md-row h-100 w-100 fade-in">
           <div className="d-flex flex-column flex-md-grow-0 flex-basis-300">
@@ -135,7 +147,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                         <i className="bi bi-plus"></i>
                       </button>
                     }
-                    onClose={getData}
+                    onClose={fetchTeams}
                   />
                 }
               </div>
@@ -176,7 +188,78 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
               </div>
 
               <div className="d-flex flex-fill overflow-hidden">
-                <BoxSoonToCome />
+                {selectedTeam
+                  ? <div className="d-flex flex-column flex-md-grow-1">
+                    <div className="d-flex flex-row flex-md-grow-1">
+                      <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
+                        <Count
+                          label="Group OVR"
+                          count={
+                            teamMembers && teamMembers.length > 0
+                              ? teamMembers
+                                .map((tm) => tm.player.overall)
+                                .reduce((acc, cur) => acc + cur)
+                              : 0
+                          }
+                        />
+                      </div>
+                      <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
+                        <Count
+                          label="Starter OVR"
+                          count={
+                            teamMembers && teamMembers.length > 0
+                              ? teamMembers
+                                .filter((tm) => tm.position)
+                                .map((tm) => tm.player.overall)
+                                .reduce((acc, cur) => acc + cur)
+                              : 0
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="d-flex flex-row flex-md-grow-1">
+                      <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
+                        <Count
+                          label="Group AVR"
+                          count={
+                            teamMembers && teamMembers.length > 0
+                              ? Number(
+                                teamMembers
+                                  .map((tm) => tm.player.overall)
+                                  .reduce((acc, cur) => acc + cur)
+                                /
+                                teamMembers
+                                  .length
+                                ).toFixed(1)
+                              : 0
+                          }
+                        />
+                      </div>
+                      <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
+                        <Count
+                          label="Starter AVR"
+                          count={
+                            teamMembers && teamMembers.length > 0
+                              ? Number(
+                                teamMembers
+                                  .filter((tm) => tm.position)
+                                  .map((tm) => tm.player.overall)
+                                  .reduce((acc, cur) => acc + cur)
+                                /
+                                teamMembers
+                                  .filter((tm) => tm.position)
+                                  .length
+                              ).toFixed(1)
+                              : 0
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  : <BoxMessage
+                    content={"No team selected"}
+                  />
+                }
               </div>
             </div>
           </div>
@@ -256,16 +339,36 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                         left: formations[getSelectedTeam().formation][p].x + "%",
                         transform: "translate(-50%,-50%)",
                       }}>
-                        <PopupSelectPlayer
-                          trigger={
-                            <button className="btn btn-info btn-small text-white">
-                              <i class="bi bi-person-plus-fill"></i>
+                        {getTeamMemberInPosition(parseInt(p))
+                          ? <div>
+                            <div>
+                              {getTeamMemberInPosition(parseInt(p)).player.lastName}
+                            </div>
+                            <div>
+                              {getTeamMemberInPosition(parseInt(p)).player.overall}
+                            </div>
+                            <button
+                              className="btn btn-error btn-small text-white"
+                              onClick={() => saveTeamMember(getTeamMemberInPosition(parseInt(p)).id, null)}
+                            >
+                              <i className="bi bi-x-lg"></i>
                             </button>
-                          }
-                          teamMembers={teamMembers}
-                          onConfirm={(m) => saveTeamMember(m.id, parseInt(p))}
-                        />
-                        <div className="text-white">CDM</div>
+                          </div>
+                          : <div>
+                            <PopupSelectPlayer
+                              trigger={
+                                <button className="btn btn-info btn-small text-white">
+                                  <i className="bi bi-person-plus-fill"></i>
+                                </button>
+                              }
+                              teamMembers={teamMembers}
+                              onConfirm={(m) => saveTeamMember(m.id, parseInt(p))}
+                            />
+                            <div className="text-white">
+                              {formations[getSelectedTeam().formation][p].position}
+                            </div>
+                          </div>
+                        }
                       </div>
                     )}
                   </div>
@@ -275,8 +378,8 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div> <
+    /div>
   );
 };
 

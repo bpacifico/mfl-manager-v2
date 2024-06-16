@@ -2,11 +2,11 @@ export function jsonToParams(params) {
   var paramString = "";
 
   Object.keys(params).forEach((k) => {
-    if (params[k]) {
-      if (paramString.length > 0) {
-        paramString += ",";
-      }
+    if (paramString.length > 0) {
+      paramString += ",";
+    }
 
+    if (params[k]) {
       paramString += `${k}: `;
 
       if (!Array.isArray(params[k])) {
@@ -18,6 +18,8 @@ export function jsonToParams(params) {
       } else {
         paramString += `[${params[k].join(",")}]`;
       }
+    } else {
+      paramString += `${k}: ${null}`;
     }
   })
 
