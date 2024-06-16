@@ -97,12 +97,14 @@ const Router: React.FC = (props) => {
             >
               <Route
                 index
-                element={<PageToolsPlayerPricing />}
+                element={<PageToolsTeamBuilder
+                  {...props}
+                />}
               />
-              <Route
+              {/*<Route
                 path="player-pricing"
                 element={<PageToolsPlayerPricing />}
-              />
+              />*/}
               <Route
                 path="team-builder"
                 element={<PageToolsTeamBuilder
