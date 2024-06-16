@@ -189,8 +189,8 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
 
               <div className="d-flex flex-fill overflow-hidden">
                 {selectedTeam
-                  ? <div className="d-flex flex-column flex-md-grow-1">
-                    <div className="d-flex flex-row flex-md-grow-1">
+                  ? <div className="d-flex flex-column flex-grow-1">
+                    <div className="d-flex flex-row flex-grow-1">
                       <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
                         <Count
                           label="Group OVR"
@@ -217,7 +217,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                         />
                       </div>
                     </div>
-                    <div className="d-flex flex-row flex-md-grow-1">
+                    <div className="d-flex flex-row flex-grow-1">
                       <div className="d-flex flex-column flex-grow-1 flex-basis-0 align-items-center justify-content-center py-4 py-md-0">
                         <Count
                           label="Group AVR"
@@ -264,46 +264,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
             </div>
           </div>
 
-          <div className="d-flex flex-column flex-md-column flex-md-grow-1">
-            <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto flex-basis-0 m-2 p-3 pt-2 max-height-md-200">
-              <div className="d-flex flex-row flex-md-grow-0">
-                <h4 className="flex-grow-1">
-                  Player group
-                </h4>
-
-                {props.assistantUser && selectedTeam
-                  && <PopupAddPlayers
-                    trigger={
-                      <button className="btn btn-info btn-sm text-white">
-                        <i className="bi bi-plus"></i>
-                      </button>
-                    }
-                    onConfirm={(players) => addTeamMembersInGroup(players.map((p) => p.id))}
-                  />
-                }
-              </div>
-
-              <div className="d-flex flex-fill flex-column overflow-auto">
-                {!selectedTeam
-                  && <BoxMessage content={"No team selected"} />
-                }
-
-                {selectedTeam && teamMembers === null
-                  && <LoadingSquare />
-                }
-
-                {selectedTeam && teamMembers?.length === 0
-                  && <BoxMessage content={"No player in the group"} />
-                }
-
-                {selectedTeam && teamMembers
-                  && teamMembers
-                    .filter((p) => !p.position)
-                    .map((p) => <ItemRowPlayerAssist p={p.player}/>)
-                }
-              </div>
-            </div>
-
+          <div className="d-flex flex-column flex-md-column flex-md-column-reverse flex-md-grow-1">
             <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-basis-400 m-2 p-3 pt-2">
               <div className="d-flex flex-row">
                 <h4 className="flex-grow-1">
@@ -340,25 +301,35 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                         transform: "translate(-50%,-50%)",
                       }}>
                         {getTeamMemberInPosition(parseInt(p))
-                          ? <div>
+                          ? <div className="d-flex flex-column" style={{ lineHeight: 1.3 }}>
                             <div>
                               {getTeamMemberInPosition(parseInt(p)).player.lastName}
                             </div>
-                            <div>
-                              {getTeamMemberInPosition(parseInt(p)).player.overall}
+                            <div className="d-flex flex-row">
+                              <div className="d-flex align-items-center flex-wrap me-1">
+                                <img
+                                  style={{height: 14}}
+                                  src={`https://app.playmfl.com/img/flags/${getTeamMemberInPosition(parseInt(p)).player.nationalities[0]}.svg`}
+                                />
+                              </div>
+
+                              <div className="d-flex flex-grow-1 me-1">
+                                {getTeamMemberInPosition(parseInt(p)).player.overall}
+                              </div>
+
+                              <button
+                                className="btn btn-small text-danger"
+                                onClick={() => saveTeamMember(getTeamMemberInPosition(parseInt(p)).id, null)}
+                              >
+                                <i className="bi bi-person-fill-x"></i>
+                              </button>
                             </div>
-                            <button
-                              className="btn btn-error btn-small text-white"
-                              onClick={() => saveTeamMember(getTeamMemberInPosition(parseInt(p)).id, null)}
-                            >
-                              <i className="bi bi-x-lg"></i>
-                            </button>
                           </div>
                           : <div>
                             <PopupSelectPlayer
                               trigger={
                                 <button className="btn btn-info btn-small text-white">
-                                  <i className="bi bi-person-plus-fill"></i>
+                                  <i className="bi bi-person-fill-add"></i>
                                 </button>
                               }
                               teamMembers={teamMembers}
@@ -373,6 +344,45 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                     )}
                   </div>
                   : <BoxMessage content={"No formation selected"} />
+                }
+              </div>
+            </div>
+
+            <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto flex-basis-0 m-2 p-3 pt-2 max-height-md-200">
+              <div className="d-flex flex-row flex-md-grow-0">
+                <h4 className="flex-grow-1">
+                  Player group
+                </h4>
+
+                {props.assistantUser && selectedTeam
+                  && <PopupAddPlayers
+                    trigger={
+                      <button className="btn btn-info btn-sm text-white">
+                        <i className="bi bi-plus"></i>
+                      </button>
+                    }
+                    onConfirm={(players) => addTeamMembersInGroup(players.map((p) => p.id))}
+                  />
+                }
+              </div>
+
+              <div className="d-flex flex-fill flex-column overflow-auto">
+                {!selectedTeam
+                  && <BoxMessage content={"No team selected"} />
+                }
+
+                {selectedTeam && teamMembers === null
+                  && <LoadingSquare />
+                }
+
+                {selectedTeam && teamMembers?.length === 0
+                  && <BoxMessage content={"No player in the group"} />
+                }
+
+                {selectedTeam && teamMembers
+                  && teamMembers
+                    .filter((p) => !p.position)
+                    .map((p) => <ItemRowPlayerAssist p={p.player}/>)
                 }
               </div>
             </div>
