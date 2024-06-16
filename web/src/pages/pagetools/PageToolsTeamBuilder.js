@@ -207,7 +207,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                         <Count
                           label="Starter OVR"
                           count={
-                            teamMembers && teamMembers.length > 0
+                            teamMembers && teamMembers.filter((tm) => tm.position).length > 0
                               ? teamMembers
                                 .filter((tm) => tm.position)
                                 .map((tm) => tm.player.overall)
@@ -239,7 +239,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                         <Count
                           label="Starter AVR"
                           count={
-                            teamMembers && teamMembers.length > 0
+                            teamMembers && teamMembers.filter((tm) => tm.position).length > 0
                               ? Number(
                                 teamMembers
                                   .filter((tm) => tm.position)
