@@ -70,7 +70,6 @@ export const getOverallColor = (overall) => {
 }
 
 export const getCalculatedOverall = (player, position) => {
-  console.log(player, position)
   let overall = 0;
 
   Object.keys(positionAttributes[position]).map((a) => {

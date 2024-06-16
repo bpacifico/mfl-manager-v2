@@ -4,12 +4,12 @@ export const formations = {
     "2": { "x": 20, "y": 70, "position": "CB" },
     "3": { "x": 50, "y": 70, "position": "CB" },
     "4": { "x": 80, "y": 70, "position": "CB" },
-    "5": { "x": 15, "y": 50, "position": "LWB" },
+    "5": { "x": 15, "y": 50, "position": "LM" },
     "6": { "x": 35, "y": 50, "position": "CM" },
     "7": { "x": 65, "y": 50, "position": "CM" },
-    "8": { "x": 85, "y": 50, "position": "RWB" },
-    "9": { "x": 40, "y": 30, "position": "CAM" },
-    "10": { "x": 60, "y": 30, "position": "CAM" },
+    "8": { "x": 85, "y": 50, "position": "RM" },
+    "9": { "x": 40, "y": 30, "position": "CF" },
+    "10": { "x": 60, "y": 30, "position": "CF" },
     "11": { "x": 50, "y": 10, "position": "ST" }
   },
   "3-4-3": {
