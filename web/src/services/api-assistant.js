@@ -312,7 +312,15 @@ export const getTeamMembers = ({ handleSuccess = null, handleError = null, param
             lastName,
             overall,
             nationalities,
-            positions
+            positions,
+            pace,
+            shooting,
+            dribbling,
+            passing,
+            defense,
+            physical,
+            goalkeeping,
+            resistance
           },
           position
         }

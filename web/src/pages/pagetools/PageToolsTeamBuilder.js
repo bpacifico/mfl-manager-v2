@@ -179,7 +179,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                   && <LoadingSquare />
                 }
 
-                {props.assistantUser && !isLoading && !teams
+                {props.assistantUser && !isLoading && teams.length === 0
                   && <BoxMessage
                     className={"py-4 py-md-0"}
                     content={"No team found"}
@@ -332,7 +332,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                               <div className="d-flex flex-grow-1 me-1">
                                 <MiscOverall
                                   player={getTeamMemberInPosition(parseInt(p)).player}
-                                  actualPosition={getTeamMemberInPosition(parseInt(p)).position}
+                                  actualPosition={formations[getSelectedTeam().formation][getTeamMemberInPosition(parseInt(p)).position].position.toString()}
                                   calculatedOvr={true}
                                 />
                               </div>
@@ -349,15 +349,13 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                             <PopupSelectPlayer
                               trigger={
                                 <button className="btn btn-info btn-small text-white">
-                                  <i className="bi bi-person-fill-add"></i>
+                                  <i className="bi bi-person-fill-add me-1"/>
+                                  {formations[getSelectedTeam().formation][p].position}
                                 </button>
                               }
                               teamMembers={teamMembers}
                               onConfirm={(m) => saveTeamMember(m.id, parseInt(p))}
                             />
-                            <div className="text-white">
-                              {formations[getSelectedTeam().formation][p].position}
-                            </div>
                           </div>
                         }
                       </div>

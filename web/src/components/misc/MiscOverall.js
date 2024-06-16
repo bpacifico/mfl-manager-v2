@@ -10,10 +10,10 @@ interface MiscOverallProps {
 const MiscOverall: React.FC < MiscOverallProps > = ({ player, actualPosition, calculatedOvr }) => {
 
   const getDifferenceString = () => {
-    if (getCalculatedOverall(player) - player.overall >= 0) {
-      return `(+${getCalculatedOverall(player) - player.overall})`
+    if (getCalculatedOverall(player, actualPosition) - player.overall >= 0) {
+      return `(+${getCalculatedOverall(player, actualPosition) - player.overall})`
     } else {
-      return `(-${Math.abs(getCalculatedOverall(player) - player.overall)})`
+      return `(-${Math.abs(getCalculatedOverall(player, actualPosition) - player.overall)})`
     }
   }
 
@@ -21,10 +21,10 @@ const MiscOverall: React.FC < MiscOverallProps > = ({ player, actualPosition, ca
     <div>
       {calculatedOvr
         ? <div className="d-flex flex-row">
-          <div style={{ color: getOverallColor(getCalculatedOverall(player)) }}>
-            {getCalculatedOverall(player)}
+          <div style={{ color: getOverallColor(getCalculatedOverall(player, actualPosition)) }}>
+            {getCalculatedOverall(player, actualPosition)}
           </div>
-          <div className={"small mt-auto " + (getDifferenceString() ? "text-info" : "text-danger")}>
+          <div className={"small mt-auto " + (getDifferenceString().indexOf("+") >= 0 ? "text-info" : "text-danger")}>
             {getDifferenceString()}
           </div>
         </div>
