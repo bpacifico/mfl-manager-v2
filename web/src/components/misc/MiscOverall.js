@@ -20,10 +20,17 @@ const MiscOverall: React.FC < MiscOverallProps > = ({ player, actualPosition, ca
   return (
     <div>
       {calculatedOvr
-        ? <div>
-          {getCalculatedOverall(player)} {getDifferenceString()}
+        ? <div className="d-flex flex-row">
+          <div style={{ color: getOverallColor(getCalculatedOverall(player)) }}>
+            {getCalculatedOverall(player)}
+          </div>
+          <div className={"small mt-auto " + (getDifferenceString() ? "text-info" : "text-danger")}>
+            {getDifferenceString()}
+          </div>
         </div>
-        : player.overall
+        : <div style={{ color: getOverallColor(player.overall) }}>
+          {player.overall}
+        </div>
       }
     </div>
   );

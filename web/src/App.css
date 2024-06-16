@@ -119,6 +119,10 @@ svg .content .bar text {
   flex-basis: 40px;
 }
 
+.flex-basis-80 {
+  flex-basis: 80px;
+}
+
 @media (min-width: 768px) {
   .flex-basis-200 {
     flex-basis: 200px;

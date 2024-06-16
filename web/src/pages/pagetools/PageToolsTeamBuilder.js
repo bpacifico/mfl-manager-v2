@@ -29,112 +29,112 @@ import { formations } from "utils/formation.js";
 interface PageToolsTeamBuilderProps {}
 
 const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => {
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const [teams, setTeams] = useState(null);
-    const [selectedTeam, setSelectedTeam] = useState(null);
-    const [teamMembers, setTeamMembers] = useState(null);
+  const [teams, setTeams] = useState(null);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [teamMembers, setTeamMembers] = useState(null);
 
-    const fetchTeams = (triggerLoading = true) => {
-      if (triggerLoading) {
-        setIsLoading(true);
-      }
-
-      getTeams({
-        handleSuccess: (v) => {
-          setTeams(v.data.getTeams);
-          setIsLoading(false);
-        }
-      });
+  const fetchTeams = (triggerLoading = true) => {
+    if (triggerLoading) {
+      setIsLoading(true);
     }
 
-    const fetchTeamMembers = () => {
-      getTeamMembers({
+    getTeams({
+      handleSuccess: (v) => {
+        setTeams(v.data.getTeams);
+        setIsLoading(false);
+      }
+    });
+  }
+
+  const fetchTeamMembers = () => {
+    getTeamMembers({
+      handleSuccess: (v) => {
+        setTeamMembers(v.data.getTeamMembers)
+      },
+      params: {
+        team: selectedTeam,
+      }
+    });
+  }
+
+  const addTeamMembersInGroup = (playerIds) => {
+    addTeamMembers({
+      handleSuccess: (v) => {
+        fetchTeamMembers();
+      },
+      params: {
+        teamId: selectedTeam,
+        playerIds,
+      },
+    });
+  }
+
+  const getSelectedTeam = () => {
+    if (selectedTeam) {
+      return teams.filter((t) => t.id === selectedTeam).pop();
+    }
+
+    return null;
+  }
+
+  const saveTeam = (data) => {
+    if (getSelectedTeam) {
+      updateTeam({
         handleSuccess: (v) => {
-          setTeamMembers(v.data.getTeamMembers)
+          fetchTeams(false);
         },
         params: {
-          team: selectedTeam,
-        }
+          id: selectedTeam,
+          ...data,
+        },
       });
     }
+  }
 
-    const addTeamMembersInGroup = (playerIds) => {
-      addTeamMembers({
+  const saveTeamMember = (id, position) => {
+    if (getSelectedTeam) {
+      updateTeamMember({
         handleSuccess: (v) => {
           fetchTeamMembers();
         },
         params: {
-          teamId: selectedTeam,
-          playerIds,
+          id,
+          position,
         },
       });
     }
+  }
 
-    const getSelectedTeam = () => {
-      if (selectedTeam) {
-        return teams.filter((t) => t.id === selectedTeam).pop();
-      }
-
+  const getTeamMemberInPosition = (position) => {
+    if (!teamMembers) {
       return null;
     }
 
-    const saveTeam = (data) => {
-      if (getSelectedTeam) {
-        updateTeam({
-          handleSuccess: (v) => {
-            fetchTeams(false);
-          },
-          params: {
-            id: selectedTeam,
-            ...data,
-          },
-        });
-      }
-    }
+    return teamMembers.filter((tm) => tm.position === position).pop();
+  }
 
-    const saveTeamMember = (id, position) => {
-      if (getSelectedTeam) {
-        updateTeamMember({
-          handleSuccess: (v) => {
-            fetchTeamMembers();
-          },
-          params: {
-            id,
-            position,
-          },
-        });
-      }
-    }
+  useEffect(() => {
+    fetchTeams();
+  }, []);
 
-    const getTeamMemberInPosition = (position) => {
-      if (!teamMembers) {
-        return null;
-      }
-
-      return teamMembers.filter((tm) => tm.position === position).pop();
-    }
-
-    useEffect(() => {
+  useEffect(() => {
+    if (props.assistantUser) {
       fetchTeams();
-    }, []);
+    }
+  }, [props.assistantUser]);
 
-    useEffect(() => {
-      if (props.assistantUser) {
-        fetchTeams();
-      }
-    }, [props.assistantUser]);
+  useEffect(() => {
+    if (selectedTeam === null) {
+      setTeamMembers(null);
+    } else {
+      fetchTeamMembers();
+    }
+  }, [selectedTeam]);
 
-    useEffect(() => {
-      if (selectedTeam === null) {
-        setTeamMembers(null);
-      } else {
-        fetchTeamMembers();
-      }
-    }, [selectedTeam]);
-
-    return (
-        <div id="PageToolsTeamBuilder" className="h-100 w-100">
+  return (
+    <div id="PageToolsTeamBuilder" className="h-100 w-100">
       <div className="container-md h-100 px-2 px-md-4 py-4">
         <div className="d-flex flex-column flex-md-row h-100 w-100 fade-in">
           <div className="d-flex flex-column flex-md-grow-0 flex-basis-300">
@@ -156,11 +156,22 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
 
               <div className="d-flex flex-fill flex-column">
                 {!props.assistantUser
-                  && <ButtonLogin
-                    className="PageNotification-ButtonLogin fade-in h4 mx-4 my-3"
-                    flowUser={props.flowUser}
-                    assistantUser={props.assistantUser}
-                    logout={props.logout}
+                  && <BoxMessage
+                    content={<div className="d-flex flex-column align-items-center py-4 py-md-0">
+                        <div>
+                          <ButtonLogin
+                            className="btn btn-info text-white px-5 mb-3"
+                            flowUser={props.flowUser}
+                            assistantUser={props.assistantUser}
+                            logout={props.logout}
+                          />
+                        </div>
+
+                        <div className="d-flex flex-grow-1 text-center px-4">
+                          Connect your Dapper wallet to create your own teams
+                        </div>
+                      </div>
+                    }
                   />
                 }
 
@@ -392,9 +403,9 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
               </div>
             </div>
           </div>
-        </div>
-      </div> <
-    /div>
+        </div> <
+    /div> < /
+    div >
   );
 };
 
