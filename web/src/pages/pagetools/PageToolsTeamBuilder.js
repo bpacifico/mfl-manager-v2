@@ -319,7 +319,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                       }}>
                         {getTeamMemberInPosition(parseInt(p))
                           ? <div className="d-flex flex-column transform-scale-sm-80" style={{ lineHeight: 1.3 }}>
-                            <div className="text-white">
+                            <div className="text-white" style={{ textShadow: "black 0px 0px 2px" }}>
                               {getTeamMemberInPosition(parseInt(p)).player.lastName}
                             </div>
                             <div className="d-flex flex-row">
