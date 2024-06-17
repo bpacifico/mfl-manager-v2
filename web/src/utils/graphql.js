@@ -2,7 +2,7 @@ export function jsonToParams(params) {
   var paramString = "";
 
   Object.keys(params).forEach((k) => {
-    if (params[k]) {
+    if (params[k] !== null) {
       if (paramString.length > 0) {
         paramString += ",";
       }
@@ -10,7 +10,7 @@ export function jsonToParams(params) {
       paramString += `${k}: `;
 
       if (!Array.isArray(params[k])) {
-        if (typeof params[k] === "number") {
+        if (typeof params[k] === "number" || typeof params[k] === "boolean") {
           paramString += params[k];
         } else {
           paramString += `"${params[k]}"`;

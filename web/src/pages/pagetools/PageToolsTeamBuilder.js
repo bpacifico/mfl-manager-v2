@@ -18,6 +18,7 @@ import { positions } from "utils/player.js";
 import PopupAddTeam from "components/popups/PopupAddTeam.js";
 import PopupSelectPlayer from "components/popups/PopupSelectPlayer.js";
 import PopupAddPlayers from "components/popups/PopupAddPlayers.js";
+import PopupEditTeam from "components/popups/PopupEditTeam.js";
 import ItemTeam from "components/items/ItemTeam.js";
 import ItemRowPlayerAssist from "components/items/ItemRowPlayerAssist.js";
 import MiscFlag from "components/misc/MiscFlag.js";
@@ -179,19 +180,32 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                   && <LoadingSquare />
                 }
 
-                {props.assistantUser && !isLoading && teams.length === 0
+                {props.assistantUser && !isLoading && teams && teams.length === 0
                   && <BoxMessage
                     className={"py-4 py-md-0"}
                     content={"No team found"}
                   />
                 }
 
-                {props.assistantUser && !isLoading && teams
-                  && teams.map((t) => <ItemTeam
-                    team={t}
-                    isSelected={t.id === selectedTeam}
-                    onSelect={(t) => setSelectedTeam(selectedTeam === t.id ? null : t.id)}
-                  />)
+                {props.assistantUser && !isLoading && teams && teams.length > 0
+                  && teams.map((t) =>
+                    <div className="d-flex flex-row">
+                      <div className="d-flex flex-grow-1 me-1">
+                        <ItemTeam
+                          team={t}
+                          isSelected={t.id === selectedTeam}
+                          onSelect={(t) => setSelectedTeam(selectedTeam === t.id ? null : t.id)}
+                        />
+                      </div>
+
+                      <PopupEditTeam
+                        team={t}
+                        trigger={<i className="bi bi-pencil-square"></i>}
+                        onClose={() => fetchTeams()}
+                        onUpdate={() => fetchTeams(false)}
+                      />
+                    </div>
+                  )
                 }
               </div>
             </div>

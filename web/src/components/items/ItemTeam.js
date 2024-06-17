@@ -10,7 +10,7 @@ interface ItemTeamProps {
 
 const ItemTeam: React.FC < ItemTeamProps > = ({ team, isSelected, onSelect, onDelete }) => {
   return (
-    <div className={"Item ItemTeam " + (isSelected ? "selected" : "")}
+    <div className={"Item flex-fill " + (isSelected ? "selected" : "")}
       onClick={() => onSelect(team)}>
       <div className="d-flex flex-column flex-md-row flex-fill pb-1 pb-md-0">
         <div className="d-flex flex-row flex-basis-300">
