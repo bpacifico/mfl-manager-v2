@@ -6,7 +6,7 @@ from utils.db import upsert_vars, get_var_value, upsert_user, build_and_upsert_c
 
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/clubs/"
-max_clubs_to_update = 3
+max_clubs_to_update = 5
 
 last_treated_club_id_var = "last_treated_club_id"
 
@@ -18,6 +18,7 @@ async def main(db):
 
     last_id = await get_var_value(db, last_treated_club_id_var)
     reset_var = False
+    added_clubs = False
 
     if last_id is None:
         last_id = 0
@@ -43,8 +44,13 @@ async def main(db):
             club = await build_and_upsert_club(db, response.json(), user)
         
         if response.status_code == 404:
-            reset_var = True
-            break
+            if not added_clubs:
+                club_ids_to_fetch.append(club_ids_to_fetch[-1] + 1)
+                added_clubs = True
+
+            if added_clubs and club_ids_to_fetch[-1] == i:
+                reset_var = True
+                break
 
     if reset_var:
         await upsert_vars(db, last_treated_club_id_var, 0)
