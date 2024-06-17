@@ -9,7 +9,7 @@ import ChartBarPlayerSales from "components/charts/ChartBarPlayerSales.js";
 import ChartBarPlayerSaleValue from "components/charts/ChartBarPlayerSaleValue.js";
 import ChartScatterPlayerSales from "components/charts/ChartScatterPlayerSales.js";
 import BoxWarning from "components/box/BoxWarning.js";
-import { getTeams, getTeamMembers, addTeamMembers, updateTeam, updateTeamMember } from "services/api-assistant.js";
+import { getTeams, getTeamMembers, addTeamMembers, updateTeam, updateTeamMember, deleteTeamMember } from "services/api-assistant.js";
 import BoxSoonToCome from "components/box/BoxSoonToCome.js";
 import BoxMessage from "components/box/BoxMessage.js";
 import Count from "components/counts/Count.js";
@@ -68,6 +68,17 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
       params: {
         teamId: selectedTeam,
         playerIds,
+      },
+    });
+  }
+
+  const deleteTeamMemberInGroup = (id) => {
+    deleteTeamMember({
+      handleSuccess: (v) => {
+        fetchTeamMembers();
+      },
+      params: {
+        teamMemberId: id,
       },
     });
   }
@@ -200,7 +211,9 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
 
                       <PopupEditTeam
                         team={t}
-                        trigger={<i className="bi bi-pencil-square"></i>}
+                        trigger={<button className="btn btn-small text-info">
+                          <i className="bi bi-pencil-square"/>
+                        </button>}
                         onClose={() => fetchTeams()}
                         onUpdate={() => fetchTeams(false)}
                       />
@@ -420,7 +433,20 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                 {selectedTeam && teamMembers
                   && teamMembers
                     .filter((p) => !p.position)
-                    .map((p) => <ItemRowPlayerAssist p={p.player}/>)
+                    .map((p) => 
+                      <div className="d-flex flex-row">
+                        <div className="d-flex flex-grow-1 me-1">
+                          <ItemRowPlayerAssist p={p.player}/>
+                        </div>
+
+                        <button
+                          className="btn btn-small text-danger"
+                          onClick={() => deleteTeamMemberInGroup(p.id)}
+                        >
+                          <i className="bi bi-x-circle"/>
+                        </button>
+                      </div>
+                    )
                 }
               </div>
             </div>

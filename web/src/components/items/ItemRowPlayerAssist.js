@@ -13,7 +13,7 @@ interface ItemRowPlayerAssistProps {
 const ItemRowPlayerAssist: React.FC < ItemRowPlayerAssistProps > = ({ p, isSelected, onSelect }) => {
   return (
     <div
-      className={"Item ItemRowPlayerAssist " + (isSelected ? "selected" : "")}
+      className={"Item flex-fill " + (isSelected ? "selected" : "")}
       onClick={onSelect ? () => onSelect(p) : undefined}
     >
       <div className="d-flex flex-column flex-md-row flex-fill pb-1 pb-md-0">

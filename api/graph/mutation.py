@@ -201,6 +201,25 @@ class UpdateTeamMember(Mutation):
         return UpdateTeamMember(status=True)
 
 
+class DeleteTeamMember(Mutation):
+    class Arguments:
+        team_member_id = String(required=True)
+
+    status = Boolean()
+
+    @require_token
+    async def mutate(self, info, team_member_id):
+        team_member = info.context["db"].team_members.find_one({
+            "_id": ObjectId(team_member_id)
+        })
+
+        if team_member:
+            info.context["db"].team_members.delete_one({'_id': ObjectId(team_member_id)})
+            return DeleteTeamMember(status=True)
+        else:
+            raise Exception("Team member not found")
+
+
 class Mutation(ObjectType):
     update_logged_user_email = UpdateLoggedUserEmail.Field()
     add_notification_scope = AddNotificationScope.Field()
@@ -211,3 +230,4 @@ class Mutation(ObjectType):
     update_team = UpdateTeam.Field()
     add_team_members = AddTeamMembers.Field()
     update_team_member = UpdateTeamMember.Field()
+    delete_team_member = DeleteTeamMember.Field()

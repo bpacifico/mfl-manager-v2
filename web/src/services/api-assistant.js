@@ -399,6 +399,21 @@ export const updateTeamMember = ({ handleSuccess = null, handleError = null, par
   (e) => defaultHandleError(handleError, e),
 );
 
+export const deleteTeamMember = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `
+      mutation {
+        deleteTeamMember(${jsonToParams(params)}) {
+          status
+        }
+      }
+    `,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
 export const getPlayerNationalities = ({ handleSuccess = null, handleError = null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({
