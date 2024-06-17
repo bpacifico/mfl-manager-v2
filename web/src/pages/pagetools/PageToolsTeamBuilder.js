@@ -37,16 +37,18 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
   const [teamMembers, setTeamMembers] = useState(null);
 
   const fetchTeams = (triggerLoading = true) => {
-    if (triggerLoading) {
-      setIsLoading(true);
-    }
-
-    getTeams({
-      handleSuccess: (v) => {
-        setTeams(v.data.getTeams);
-        setIsLoading(false);
+    if (props.assistantUser) {
+      if (triggerLoading) {
+        setIsLoading(true);
       }
-    });
+
+      getTeams({
+        handleSuccess: (v) => {
+          setTeams(v.data.getTeams);
+          setIsLoading(false);
+        }
+      });
+    }
   }
 
   const fetchTeamMembers = () => {
