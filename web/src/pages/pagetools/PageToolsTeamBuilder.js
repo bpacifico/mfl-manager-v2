@@ -343,7 +343,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                                 />
                               </div>
 
-                              <div className="d-flex flex-grow-1 me-1">
+                              <div className="d-flex flex-grow-1">
                                 <MiscOverall
                                   player={getTeamMemberInPosition(parseInt(p)).player}
                                   actualPosition={formations[getSelectedTeam().formation][getTeamMemberInPosition(parseInt(p)).position].position.toString()}
