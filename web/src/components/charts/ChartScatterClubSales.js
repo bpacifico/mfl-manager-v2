@@ -30,21 +30,15 @@ const ChartScatterClubSales: React.FC < ChartScatterClubSalesProps > = ({ sales,
         data.push({
           x: saleDate,
           y: sales[i].price,
+          color: getDivisionColor(sales[i].club ? sales[i].club.division : null)
         });
       }
     }
 
-    return data;
-  }
-
-  const computeBackgroundColor = () => {
-    const data = [];
-
-    for (let i = 0; i < sales.length; i++) {
-      data.push(getDivisionColor(sales[i].club ? sales[i].club.division : null));
+    return {
+      data,
+      pointBackgroundColor: data.map((d) => d.color),
     }
-
-    return data;
   }
 
   return (
@@ -55,8 +49,7 @@ const ChartScatterClubSales: React.FC < ChartScatterClubSalesProps > = ({ sales,
           data={{
             datasets: [
               {
-                data: computeData(),
-                pointBackgroundColor: computeBackgroundColor(),
+                ...computeData(),
                 pointBorderWidth: 0,
                 pointRadius: 5,
                 pointHoverRadius: 8,
