@@ -16,23 +16,25 @@ const ItemRowClub: React.FC < ItemRowClubProps > = ({ c }) => {
         </div>
 
         <div className="d-flex flex-md-grow-1">
-          {c.country
-            ? <img
-              className="d-inline me-1 my-1 ms-md-1"
-              style={{height: 14}}
-              src={`https://app.playmfl.com/img/flags/${c.country}.svg`}
-            />
-            : ""
-          }
+          <div className="d-flex flex-grow-1">
+            {c.country
+              ? <img
+                className="d-inline me-1 my-1 ms-md-1"
+                style={{height: 14}}
+                src={`https://app.playmfl.com/img/flags/${c.country}.svg`}
+              />
+              : ""
+            }
 
-          {c.city ? c.city : ""}
-        </div>
+            {c.city ? c.city : ""}
+          </div>
 
-        <div className="d-flex flex-row flex-md-grow-0 justify-content-end">
-          <div>
-            <ButtonMflClub
-              clubId={c.id}
-            />
+          <div className="d-flex flex-row flex-md-grow-0 justify-content-end">
+            <div>
+              <ButtonMflClub
+                clubId={c.id}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -435,7 +435,29 @@ export const getPlayers = ({ handleSuccess = null, handleError = null, params })
           lastName,
           overall,
           nationalities,
-          positions
+          positions,
+          pace,
+          shooting,
+          dribbling,
+          passing,
+          defense,
+          physical,
+          goalkeeping,
+          resistance
+        }
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
+export const getUsers = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getUsers(${jsonToParams(params)}) {
+          address,
+          name
         }
       }`,
   }),

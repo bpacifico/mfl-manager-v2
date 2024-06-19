@@ -64,31 +64,28 @@ class Query(ObjectType):
 
     async def resolve_get_clubs(self, info, search=None, skip=0, limit=10, sort="_id", order=1):
 
-        words = [] if search is None else [w for w in search.split(" ") if len(w) > 0]
-
         clubs = info.context["db"].clubs
 
         if search:
-            query = {
-                '$text': {
-                    '$search': search
-                }
-            }
-            projection = {
-                'score': {
-                    '$meta': 'textScore'
-                }
+            words = [] if search is None else [w for w in search.split(" ") if len(w) > 1]
+
+            regex_query = {
+                "$and": [
+                    {
+                        "$or": [
+                            {"name": {"$regex": word, "$options": "i"}},
+                            {"city": {"$regex": word, "$options": "i"}},
+                            {"country": {"$regex": word, "$options": "i"}}
+                        ]
+                    }
+                    for word in words
+                ]
             }
 
-            clubs = clubs \
-                .find(query, projection) \
-                .sort(
-                    [('score', {'$meta': 'textScore'})]
-                )
-        else:
-            clubs = clubs.sort(sort, -1 if order < 0 else 1)
+            clubs = clubs.find(regex_query)
 
         clubs = await clubs \
+            .sort(sort, -1 if order < 0 else 1) \
             .skip(skip) \
             .limit(limit) \
             .to_list(length=None)
@@ -225,9 +222,9 @@ class Query(ObjectType):
 
         return team_members
 
-    get_players = List(PlayerType, min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
+    get_players = List(PlayerType, search=String(), min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
 
-    async def resolve_get_players(self, info, min_ovr=1, max_ovr=100, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
+    async def resolve_get_players(self, info, search=None, min_ovr=1, max_ovr=100, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
 
         filters = {
             "overall": {"$gt": min_ovr, "$lt": max_ovr}
@@ -237,6 +234,28 @@ class Query(ObjectType):
             filters["nationalities"] = {"$in": nationalities}
         if positions is not None:
             filters["positions"] = {"$in": positions}
+
+        if search:
+            words = [] if search is None else [w for w in search.split(" ") if len(w) > 1]
+
+            regex_query = {
+                "$and": [
+                    {
+                        "$or": [
+                            {"first_name": {"$regex": word, "$options": "i"}},
+                            {"last_name": {"$regex": word, "$options": "i"}},
+                        ]
+                    }
+                    for word in words
+                ]
+            }
+
+            filters = {
+                "$and": [
+                    filters,
+                    regex_query
+                ]
+            }
 
         players = await info.context["db"].players \
             .find(filters) \
@@ -260,3 +279,34 @@ class Query(ObjectType):
         result = info.context["db"].players.aggregate(pipeline)
 
         return [doc["_id"] async for doc in result]
+
+    get_users = List(UserType, search=String(), skip=Int(), limit=Int(), sort=String(), order=Int())
+
+    async def resolve_get_users(self, info, search=None, skip=0, limit=10, sort="_id", order=1):
+
+        users = info.context["db"].users
+
+        if search:
+            words = [] if search is None else [w for w in search.split(" ") if len(w) > 1]
+
+            regex_query = {
+                "$and": [
+                    {
+                        "$or": [
+                            {"address": {"$regex": word, "$options": "i"}},
+                            {"name": {"$regex": word, "$options": "i"}},
+                        ]
+                    }
+                    for word in words
+                ]
+            }
+
+            users = users.find(regex_query)
+
+        users = await users \
+            .sort(sort, -1 if order < 0 else 1) \
+            .skip(skip) \
+            .limit(limit) \
+            .to_list(length=None)
+
+        return users

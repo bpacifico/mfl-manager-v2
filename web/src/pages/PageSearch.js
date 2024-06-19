@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import LoadingSquare from "components/loading/LoadingSquare";
 import ButtonMflPlayerInfo from "components/buttons/ButtonMflPlayerInfo.js";
 import ButtonMflPlayer from "components/buttons/ButtonMflPlayer.js";
-import { getPlayers /*, getUsers */ } from "services/api-mfl.js";
-import { getClubs } from "services/api-assistant.js";
-import ItemRowPlayer from "components/items/ItemRowPlayer.js";
+import { getClubs, getPlayers, getUsers } from "services/api-assistant.js";
+import ItemRowPlayerAssist from "components/items/ItemRowPlayerAssist.js";
 import ItemRowClub from "components/items/ItemRowClub.js";
+import ItemRowUser from "components/items/ItemRowUser.js";
 import BoxMessage from "components/box/BoxMessage.js";
 
 interface PageSearchProps {}
@@ -22,14 +22,15 @@ const PageSearch: React.FC < PageSearchProps > = () => {
 
   const [players, setPlayers] = useState(null);
   const [clubs, setClubs] = useState(null);
-  /* const [users, setUsers] = useState(null); */
+  const [users, setUsers] = useState(null);
 
-  const [playerPage, setPlayerPage] = useState(1);
+  const [playerPage, setPlayerPage] = useState(0);
   const [clubPage, setClubPage] = useState(0);
-  /* const [userPage, setUserPage] = useState(1); */
+  const [userPage, setUserPage] = useState(0);
 
   const [canLoadMorePlayers, setCanLoadMorePlayers] = useState(true);
   const [canLoadMoreClubs, setCanLoadMoreClubs] = useState(true);
+  const [canLoadMoreUsers, setCanLoadMoreUsers] = useState(true);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,32 +39,37 @@ const PageSearch: React.FC < PageSearchProps > = () => {
       navigate({ search: '?q=' + searchValue });
 
       flushSync(() => {
+        setIsLoading(true);
+
         setClubs(null);
         setPlayers(null);
-        setIsLoading(true);
-        setPlayerPage(1);
+        setUsers(null);
+
+        setPlayerPage(0);
         setClubPage(0);
+        setUserPage(0);
+
         setCanLoadMorePlayers(true);
         setCanLoadMoreClubs(true);
+        setCanLoadMoreUsers(true);
       });
 
       const promises = [
-        new Promise((resolve, reject) =>
-          getPlayers(
-            (v) => resolve(v),
-            (e) => console.log(e), { name: searchValue },
-          ),
-        ),
         new Promise((resolve, reject) => {
           fetchClubs();
+          resolve();
+        }),
+        new Promise((resolve, reject) => {
+          fetchPlayers();
+          resolve();
+        }),
+        new Promise((resolve, reject) => {
+          fetchUsers();
           resolve();
         }),
       ]
 
       Promise.all(promises).then((values) => {
-        console.log("eee", values);
-        setPlayers(values[0]);
-        /* setUsers(values[1]); */
         setIsLoading(false);
       });
     }
@@ -72,9 +78,7 @@ const PageSearch: React.FC < PageSearchProps > = () => {
   const fetchClubs = () => {
     getClubs({
       handleSuccess: (d) => {
-        console.log(clubs);
         if (!clubs) {
-          console.log(d.data.getClubs);
           setClubs(d.data.getClubs);
         } else {
           setClubs(clubs.concat(d.data.getClubs));
@@ -84,10 +88,47 @@ const PageSearch: React.FC < PageSearchProps > = () => {
           setCanLoadMoreClubs(false);
 
         setClubPage(clubPage + 1)
-        console.log("clubPage", clubPage)
       },
       handleError: (e) => console.log(e),
       params: { search: searchValue, skip: clubPage * 10 },
+    });
+  }
+
+  const fetchPlayers = () => {
+    getPlayers({
+      handleSuccess: (d) => {
+        if (!players) {
+          setPlayers(d.data.getPlayers);
+        } else {
+          setPlayers(players.concat(d.data.getPlayers));
+        }
+
+        if (d.data.getPlayers.length < 10)
+          setCanLoadMorePlayers(false);
+
+        setPlayerPage(playerPage + 1)
+      },
+      handleError: (e) => console.log(e),
+      params: { search: searchValue, skip: playerPage * 10 },
+    });
+  }
+
+  const fetchUsers = () => {
+    getUsers({
+      handleSuccess: (d) => {
+        if (!users) {
+          setUsers(d.data.getUsers);
+        } else {
+          setUsers(users.concat(d.data.getUsers));
+        }
+
+        if (d.data.getUsers.length < 10)
+          setCanLoadMoreUsers(false);
+
+        setUserPage(userPage + 1)
+      },
+      handleError: (e) => console.log(e),
+      params: { search: searchValue, skip: userPage * 10 },
     });
   }
 
@@ -103,19 +144,22 @@ const PageSearch: React.FC < PageSearchProps > = () => {
     if (searchValue && searchValue.length > 2) {
       setClubs(null);
       setPlayers(null);
+      setUsers(null);
       setIsLoading(true);
-      setPlayerPage(1);
+      setPlayerPage(0);
       setClubPage(0);
+      setUserPage(0);
       setCanLoadMorePlayers(true);
       setCanLoadMoreClubs(true);
+      setCanLoadMoreUsers(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
   useEffect(() => {
     if (searchValue && searchValue.length > 2 &&
-      playerPage === 1 && clubPage === 0 &&
-      clubs === null && clubs === null) {
+      playerPage === 0 && clubPage === 0 &&
+      clubs === null && players === null) {
       search();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,7 +175,7 @@ const PageSearch: React.FC < PageSearchProps > = () => {
               className="form-control w-100"
               value={fieldValue}
               onChange={(v) => setFieldValue(v.target.value)}
-              placeholder={"Search players, clubs, ..."}
+              placeholder={"Search players, clubs, users..."}
               autoFocus
             />
           </div>
@@ -179,25 +223,25 @@ const PageSearch: React.FC < PageSearchProps > = () => {
           </div>
         }
 
-        {!isLoading && players && players.items && players.items.length > 0
+        {!isLoading && players && players.length > 0
           && <div className="card d-flex mb-3 p-3 pt-2">
             <div className="d-flex flex-column">
               <div className="d-flex">
                 <div className="h4 flex-grow-1">
-                  Players ({Math.min(players.items.length, playerPage * 10)} / {players.items.length})
+                  Players
                 </div>
               </div>
 
-              {players?.items.slice(0, playerPage * 10).map((p) => (
-                <ItemRowPlayer
-                  p={p}
+              {players.map((c) => (
+                <ItemRowPlayerAssist
+                  p={c}
                 />
               ))}
 
-              {Math.min(players.items.length, playerPage * 10) !== players.items.length
+              {canLoadMorePlayers
                 && <button
-                  className="btn btn-sm btn-link"
-                  onClick={() => { setPlayerPage(playerPage + 1) }}
+                className="btn btn-sm btn-link align-self-start"
+                  onClick={() => { fetchPlayers() }}
                 >
                   Load more
                 </button>
@@ -223,7 +267,7 @@ const PageSearch: React.FC < PageSearchProps > = () => {
 
               {canLoadMoreClubs
                 && <button
-                className="btn btn-sm btn-link"
+                className="btn btn-sm btn-link align-self-start"
                   onClick={() => { fetchClubs() }}
                 >
                   Load more
@@ -233,9 +277,37 @@ const PageSearch: React.FC < PageSearchProps > = () => {
           </div>
         }
 
+        {!isLoading && users && users.length > 0
+          && <div className="card d-flex mb-3 p-3 pt-2">
+            <div className="d-flex flex-column">
+              <div className="d-flex">
+                <div className="h4 flex-grow-1">
+                  Users
+                </div>
+              </div>
+
+              {users.map((c) => (
+                <ItemRowUser
+                  c={c}
+                />
+              ))}
+
+              {canLoadMoreUsers
+                && <button
+                className="btn btn-sm btn-link align-self-start"
+                  onClick={() => { fetchUsers() }}
+                >
+                  Load more
+                </button>
+              }
+            </div>
+          </div>
+        }
+
         {!isLoading
-          && (players && players.items && players.items.length === 0)
           && (clubs && clubs.length === 0)
+          && (players && players.length === 0)
+          && (users && users.length === 0)
           && <div className="my-5">
             <BoxMessage
               content={"No result found"}
