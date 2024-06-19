@@ -5,106 +5,106 @@ import { addNotificationScope, deleteNotificationScope } from "services/api-assi
 import { prettifyId } from "utils/graphql.js";
 
 interface PopupNotificationScopeProps {
-	trigger: Object;
-	item?: Object;
-	assistantUser?: Object;
-	onClose?: func;
-	onDelete?: func;
+  trigger: Object;
+  item ? : Object;
+  assistantUser ? : Object;
+  onClose ? : func;
+  onDelete ? : func;
 }
 
-const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger, item, assistantUser, onClose, onDelete }) => {
-	const readOnly = typeof item?.id !== "undefined";
+const PopupNotificationScope: React.FC < PopupNotificationScopeProps > = ({ trigger, item, assistantUser, onClose, onDelete }) => {
+  const readOnly = typeof item?.id !== "undefined";
 
-	const [showAttributeDetail, setShowAttributeDetail] = useState(false);
+  const [showAttributeDetail, setShowAttributeDetail] = useState(false);
 
-	const [typeValues] = useState(["listing", "sale"]);
-	const [type, setType] = useState(typeValues[0]);
+  const [typeValues] = useState(["listing", "sale"]);
+  const [type, setType] = useState(typeValues[0]);
 
-	const [positions, setPositions] = useState(undefined);
-	const [nationalities, setNationalities] = useState(undefined);
+  const [positions, setPositions] = useState(undefined);
+  const [nationalities, setNationalities] = useState(undefined);
 
-	const [minPrice, setMinPrice] = useState(item?.minPrice ? item.minPrice : "");
-	const [maxPrice, setMaxPrice] = useState(item?.maxPrice ? item.maxPrice : "");
-	const [minAge, setMinAge] = useState(item?.minAge ? item.minAge : "");
-	const [maxAge, setMaxAge] = useState(item?.maxAge ? item.maxAge : "");
-	const [minOvr, setMinOvr] = useState(item?.minOvr ? item.minOvr : "");
-	const [maxOvr, setMaxOvr] = useState(item?.maxOvr ? item.maxOvr : "");
+  const [minPrice, setMinPrice] = useState(item ?.minPrice? item.minPrice : undefined);
+  const [maxPrice, setMaxPrice] = useState(item?.maxPrice ? item.maxPrice : undefined);
+  const [minAge, setMinAge] = useState(item?.minAge ? item.minAge : undefined);
+  const [maxAge, setMaxAge] = useState(item?.maxAge ? item.maxAge : undefined);
+  const [minOvr, setMinOvr] = useState(item?.minOvr ? item.minOvr : undefined);
+  const [maxOvr, setMaxOvr] = useState(item?.maxOvr ? item.maxOvr : undefined);
 
-	const [minPac, setMinPac] = useState(item?.minPac ? item.minPac : "");
-	const [maxPac, setMaxPac] = useState(item?.maxPac ? item.maxPac : "");
-	const [minDri, setMinDri] = useState(item?.minDri ? item.minDri : "");
-	const [maxDri, setMaxDri] = useState(item?.maxDri ? item.maxDri : "");
-	const [minPas, setMinPas] = useState(item?.minPas ? item.minPas : "");
-	const [maxPas, setMaxPas] = useState(item?.maxPas ? item.maxPas : "");
-	const [minSho, setMinSho] = useState(item?.minSho ? item.minSho : "");
-	const [maxSho, setMaxSho] = useState(item?.maxSho ? item.maxSho : "");
-	const [minDef, setMinDef] = useState(item?.minDef ? item.minDef : "");
-	const [maxDef, setMaxDef] = useState(item?.maxDef ? item.maxDef : "");
-	const [minPhy, setMinPhy] = useState(item?.minPhy ? item.minPhy : "");
-	const [maxPhy, setMaxPhy] = useState(item?.maxPhy ? item.maxPhy : "");
+  const [minPac, setMinPac] = useState(item?.minPac ? item.minPac : undefined);
+  const [maxPac, setMaxPac] = useState(item?.maxPac ? item.maxPac : undefined);
+  const [minDri, setMinDri] = useState(item?.minDri ? item.minDri : undefined);
+  const [maxDri, setMaxDri] = useState(item?.maxDri ? item.maxDri : undefined);
+  const [minPas, setMinPas] = useState(item?.minPas ? item.minPas : undefined);
+  const [maxPas, setMaxPas] = useState(item?.maxPas ? item.maxPas : undefined);
+  const [minSho, setMinSho] = useState(item?.minSho ? item.minSho : undefined);
+  const [maxSho, setMaxSho] = useState(item?.maxSho ? item.maxSho : undefined);
+  const [minDef, setMinDef] = useState(item?.minDef ? item.minDef : undefined);
+  const [maxDef, setMaxDef] = useState(item?.maxDef ? item.maxDef : undefined);
+  const [minPhy, setMinPhy] = useState(item?.minPhy ? item.minPhy : undefined);
+  const [maxPhy, setMaxPhy] = useState(item?.maxPhy ? item.maxPhy : undefined);
 
-	const confirm = (close) => {
-		addNotificationScope({
+  const confirm = (close) => {
+    addNotificationScope({
       handleSuccess: (v) => {
-      	if (v.errors) {
-      		nm.warning("Error while adding the scope");
-      		return;
-      	}
+        if (v.errors) {
+          nm.warning("Error while adding the scope");
+          return;
+        }
 
-      	nm.info("The notification scope has been added");
-      	if (onClose) onClose();
-      	close();
+        nm.info("The notification scope has been added");
+        if (onClose) onClose();
+        close();
       },
       params: {
-      	user: assistantUser?.address,
-      	type,
-      	positions,
-      	nationalities,
-      	minPrice,
-      	maxPrice,
-      	minAge,
-      	maxAge,
-      	minOvr,
-      	maxOvr,
-      	minPac,
-      	maxPac,
-      	minDri,
-      	maxDri,
-      	minPas,
-      	maxPas,
-      	minSho,
-      	maxSho,
-      	minDef,
-      	maxDef,
-      	minPhy,
-      	maxPhy,
+        user: assistantUser?.address,
+        type,
+        positions,
+        nationalities,
+        minPrice,
+        maxPrice,
+        minAge,
+        maxAge,
+        minOvr,
+        maxOvr,
+        minPac,
+        maxPac,
+        minDri,
+        maxDri,
+        minPas,
+        maxPas,
+        minSho,
+        maxSho,
+        minDef,
+        maxDef,
+        minPhy,
+        maxPhy,
       },
     });
-	}
+  }
 
-	const deleteScope = (close) => {
-		deleteNotificationScope({
+  const deleteScope = (close) => {
+    deleteNotificationScope({
       handleSuccess: (v) => {
-      	if (v.errors) {
-      		nm.warning("Error while deleting the scope");
-      		if (onDelete) {
-      			onDelete();
-      		}
-      		return;
-      	}
+        if (v.errors) {
+          nm.warning("Error while deleting the scope");
+          if (onDelete) {
+            onDelete();
+          }
+          return;
+        }
 
-      	nm.info("The notification scope has been deleted");
-      	if (onClose) onClose();
-      	close();
+        nm.info("The notification scope has been deleted");
+        if (onClose) onClose();
+        close();
       },
       params: {
-      	scopeId: item.id 
+        scopeId: item.id
       },
     });
-	}
+  }
 
-	const getField = (value, setValue, placeholder="") => {
-		return <input
+  const getField = (value, setValue, placeholder = "") => {
+    return <input
 			className="form-control w-auto flex-grow-0 me-1"
 			disabled={readOnly}
 			value={value}
@@ -115,7 +115,7 @@ const PopupNotificationScope: React.FC<PopupNotificationScopeProps> = ({ trigger
 			max="99"
 			step="1"
 		/>
-	}
+  }
 
   return (
     <div className="PopupNotificationScope">

@@ -2,36 +2,38 @@ export function jsonToParams(params) {
   var paramString = "";
 
   Object.keys(params).forEach((k) => {
-    if (params[k] !== null) {
-      if (paramString.length > 0) {
-        paramString += ",";
-      }
-
-      paramString += `${k}: `;
-
-      if (!Array.isArray(params[k])) {
-        if (typeof params[k] === "number" || typeof params[k] === "boolean") {
-          paramString += params[k];
-        } else {
-          paramString += `"${params[k]}"`;
+    if (typeof params[k] !== undefined) {
+      if (params[k] !== null) {
+        if (paramString.length > 0) {
+          paramString += ",";
         }
-      } else {
-        if (params[k].length === 0) {
-          paramString += `[]`;
-        } else if (typeof params[k][0] === "number") {
-          paramString += `[${params[k].join(",")}]`;
+
+        paramString += `${k}: `;
+
+        if (!Array.isArray(params[k])) {
+          if (typeof params[k] === "number" || typeof params[k] === "boolean") {
+            paramString += params[k];
+          } else {
+            paramString += `"${params[k]}"`;
+          }
         } else {
-          paramString += `["${params[k].join('","')}"]`;
+          if (params[k].length === 0) {
+            paramString += `[]`;
+          } else if (typeof params[k][0] === "number") {
+            paramString += `[${params[k].join(",")}]`;
+          } else {
+            paramString += `["${params[k].join('","')}"]`;
+          }
         }
       }
-    }
 
-    if (params[k] === null) {
-      if (paramString.length > 0) {
-        paramString += ",";
+      if (params[k] === null) {
+        if (paramString.length > 0) {
+          paramString += ",";
+        }
+
+        paramString += `${k}: ${null}`;
       }
-
-      paramString += `${k}: ${null}`;
     }
   })
 

@@ -38,7 +38,6 @@ async def main(db):
 
                 if continue_treatment:
                     if last_treated_sale_datetime is None or convert_unix_to_datetime(s["purchaseDateTime"]) > last_treated_sale_datetime:
-                        logger.critical("collect_sales: Treat: " + str(s["id"]))
                         await _treat_sale(db, s)
                     else:
                         continue_treatment = False

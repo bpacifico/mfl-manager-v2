@@ -45,7 +45,7 @@ const PageNotification: React.FC < PageNotificationProps > = (props) => {
         },
         params: {
           notificationScope: selectedNotificationScope.id,
-          skip: notifications?.length,
+          skip: notifications ? notifications.length : 0,
           limit: 10,
           order: -1,
         }

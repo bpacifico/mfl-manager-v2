@@ -58,6 +58,8 @@ class AddNotificationScope(Mutation):
     class Arguments:
         user = String(required=True)
         type = String(required=True)  # Enum.from_enum(NotificationScopeTypeEnum)(required=True)
+        positions = List(String)
+        nationalities = List(String)
         min_price = Int()
         max_price = Int()
         min_age = Int()
