@@ -93,13 +93,10 @@ services:
     container_name: web
     build:
       context: ../web
-      dockerfile: Dockerfile
-    tty: true
-    command: npm start
+      dockerfile: Dockerfile.prod
+      target: production
     ports:
-      - "3000:3000"
-    expose:
-      - "3000"
+      - "3000:80"
 
 networks:
   default:
