@@ -93,7 +93,7 @@ services:
     container_name: web
     build:
       context: ../web
-      dockerfile: Dockerfile.prod
+      dockerfile: production/Dockerfile.prod
       target: production
     ports:
       - "3000:80"
