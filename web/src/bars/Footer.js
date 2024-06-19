@@ -33,17 +33,11 @@ const Footer: React.FC < FooterProps > = (props) => {
 	      	</div>
 
 	      	<div className="col-6 col-md-2 p-4 p-md-1">
-	      		<h5 className="text-white">MFL Dash</h5>
+	      		<h5 className="text-white">Dashboard</h5>
 
 	      		<div>
 	          	<Link to="/dash/marketplace">
 	            	Marketplace
-	          	</Link>
-	          </div>
-
-	      		<div>
-	      			<Link to="/dash/players">
-	            	Players
 	          	</Link>
 	          </div>
 
@@ -52,20 +46,20 @@ const Footer: React.FC < FooterProps > = (props) => {
 	            	Clubs
 	          	</Link>
 	          </div>
+
+	          <div>
+	      			<Link to="/dash/players">
+	            	Players
+	          	</Link>
+	          </div>
 	      	</div>
 
 	      	<div className="col-6 col-md-2 p-4 p-md-1">
 	      		<h5 className="text-white">Tools</h5>
 
 	      		<div>
-	      			<Link to="/tools/contracts">
-	            	Contracts
-	          	</Link>
-	          </div>
-
-	          <div>
-	          	<Link to="/tools/sales">
-	            	Sales
+	      			<Link to="/tools/team-builder">
+	            	Team builder
 	          	</Link>
 	          </div>
 	      	</div>
