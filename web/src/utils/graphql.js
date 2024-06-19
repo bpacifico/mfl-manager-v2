@@ -2,7 +2,7 @@ export function jsonToParams(params) {
   var paramString = "";
 
   Object.keys(params).forEach((k) => {
-    if (typeof params[k] !== undefined) {
+    if (params[k] !== undefined) {
       if (params[k] !== null) {
         if (paramString.length > 0) {
           paramString += ",";
