@@ -23,7 +23,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
   const [players, setPlayers] = useState(null);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
 
-  const [canLoadMore, setCanLoadMore] = useState(true);
+  const [canLoadMore, setCanLoadMore] = useState(false);
 
   const confirm = (close) => {
     if (onConfirm) {
@@ -42,9 +42,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
           setPlayers(players ? players.concat(v.data.getPlayers) : v.data.getPlayers);
         }
 
-        if (v.data.getPlayers.length < 20) {
-          setCanLoadMore(false);
-        }
+        setCanLoadMore(v.data.getPlayers.length === 20);
       },
       params: {
         nationalities: selectedNationality ? [selectedNationality] : null,
@@ -63,9 +61,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
           setPlayers(players ? players.concat(v.data.getPlayers) : v.data.getPlayers);
         }
 
-        if (v.data.getPlayers.length < 20) {
-          setCanLoadMore(false);
-        }
+        setCanLoadMore(v.data.getPlayers.length === 20);
       },
       params: {
         owners: [userId],
@@ -106,7 +102,6 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
   useEffect(() => {
     setPlayers(null);
     setSelectedPlayers([]);
-    setCanLoadMore(true);
 
     if (selectedTab === "search") {
       fetchPlayers();
@@ -183,7 +178,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
                 </div>
 
                 <div className="d-flex flex-grow-1 flex-column mb-3 overflow-auto">
-                  {players
+                  {players && players.length > 0
                     ? players.map((p) => <div><ItemRowPlayerAssist
                         p={p}
                         isSelected={selectedPlayers.map(p => p.id).indexOf(p.id) >= 0}
@@ -208,7 +203,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
             {selectedTab === "my-players"
               && <div className="d-flex flex-column flex-grow-1 overflow-auto">
                 <div className="d-flex flex-grow-1 flex-column mb-3">
-                  {players
+                  {players && players.length > 0
                     ? players.map((p) => <div><ItemRowPlayerAssist
                         p={p}
                         isSelected={selectedPlayers.map(p => p.id).indexOf(p.id) >= 0}
