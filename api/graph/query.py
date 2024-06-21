@@ -235,7 +235,7 @@ class Query(ObjectType):
         if positions is not None:
             filters["positions"] = {"$in": positions}
         if owners is not None:
-            filters["owner"] = {"$in": [ObjectId(o) for o in owners]}
+            filters["owner"] = {"$in": owners}
 
         if search:
             words = [] if search is None else [w for w in search.split(" ") if len(w) > 1]
