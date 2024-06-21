@@ -67,6 +67,7 @@ a .card:hover {
 
 .popup-overlay {
   background-color: rgba(0, 0, 0, .8);
+  z-index: 8000;
 }
 
 .popup-content {
@@ -297,4 +298,8 @@ button.btn-link:hover {
 
 .nav-tabs button:not(.printable) {
   color: #0dcaf0;
+}
+
+.vh-95 {
+  height: 95vh !important;
 }

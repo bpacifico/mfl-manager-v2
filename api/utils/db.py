@@ -67,14 +67,13 @@ async def build_and_upsert_user(db, mfl_user):
 
     user = {}
 
-    if "metadata" in mfl_user:
-        if "walletAddress" in mfl_user:
-            user["address"] = mfl_user["walletAddress"]
-        if "name" in mfl_user:
-            user["name"] = mfl_user["name"]
+    if "walletAddress" in mfl_user:
+        user["address"] = mfl_user["walletAddress"]
+    if "name" in mfl_user:
+        user["name"] = mfl_user["name"]
 
     return await upsert_user(db, user)
-    
+
 
 async def build_and_upsert_player(db, mfl_player, owner=None):
     if "id" not in mfl_player or mfl_player["id"] is None:
