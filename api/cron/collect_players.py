@@ -1,7 +1,7 @@
 import datetime
 import requests
 import logging
-from utils.db import get_var_value, upsert_vars, upsert_user, build_and_upsert_player 
+from utils.db import get_var_value, upsert_vars, build_and_upsert_user, build_and_upsert_player 
 from utils.date import convert_unix_to_datetime
 
 
@@ -28,10 +28,9 @@ async def main(db):
         if len(players) > 0:
             for p in players:
                 if "ownedBy" in p and "walletAddress" in p["ownedBy"]:
-                    user = await upsert_user(
+                    user = await build_and_upsert_user(
                         db,
-                        p["ownedBy"]["walletAddress"],
-                        p["ownedBy"]["name"]
+                        p["ownedBy"]
                     )
 
                 await build_and_upsert_player(db, p, user)

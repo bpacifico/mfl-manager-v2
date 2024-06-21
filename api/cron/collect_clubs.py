@@ -2,7 +2,7 @@ from bson import ObjectId
 import datetime
 import requests
 import logging
-from utils.db import upsert_vars, get_var_value, upsert_user, build_and_upsert_club
+from utils.db import upsert_vars, get_var_value, build_and_upsert_user, build_and_upsert_club
 
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/clubs/"
@@ -35,10 +35,9 @@ async def main(db):
             user = None
 
             if "ownedBy" in data and "walletAddress" in data["ownedBy"]:
-                user = await upsert_user(
+                user = await build_and_upsert_user(
                     db,
-                    data["ownedBy"]["walletAddress"],
-                    data["ownedBy"]["name"]
+                    data["ownedBy"]
                 )
 
             club = await build_and_upsert_club(db, response.json(), user)
