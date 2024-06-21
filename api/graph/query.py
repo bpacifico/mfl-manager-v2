@@ -49,7 +49,7 @@ class Query(ObjectType):
                 .find({"user": info.context["user"]["_id"]}) \
                 .to_list(length=None)
 
-        notification_scope_ids = [s["_id"] for s in  notification_scopes]
+        notification_scope_ids = [s["_id"] for s in notification_scopes]
 
         notifications = await info.context["db"].notifications \
             .find({"notification_scope": { "$in": notification_scope_ids }}) \
@@ -222,9 +222,9 @@ class Query(ObjectType):
 
         return team_members
 
-    get_players = List(PlayerType, search=String(), min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
+    get_players = List(PlayerType, search=String(), owners=List(String), min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
 
-    async def resolve_get_players(self, info, search=None, min_ovr=1, max_ovr=100, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
+    async def resolve_get_players(self, info, search=None, owners=None, min_ovr=1, max_ovr=100, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
 
         filters = {
             "overall": {"$gt": min_ovr, "$lt": max_ovr}
@@ -234,6 +234,8 @@ class Query(ObjectType):
             filters["nationalities"] = {"$in": nationalities}
         if positions is not None:
             filters["positions"] = {"$in": positions}
+        if owners is not None:
+            filters["owner"] = {"$in": [ObjectId(o) for o in owners]}
 
         if search:
             words = [] if search is None else [w for w in search.split(" ") if len(w) > 1]

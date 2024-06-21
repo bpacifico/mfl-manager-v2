@@ -294,3 +294,7 @@ button.btn-link:hover {
   color: #0dcaf0 !important;
   text-decoration: underline !important;
 }
+
+.nav-tabs button:not(.printable) {
+  color: #0dcaf0;
+}

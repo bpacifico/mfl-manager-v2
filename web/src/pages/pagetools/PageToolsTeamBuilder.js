@@ -409,6 +409,7 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
                       </button>
                     }
                     onConfirm={(players) => addTeamMembersInGroup(players.map((p) => p.id))}
+                    userId={props.assistantUser.id}
                   />
                 }
               </div>
