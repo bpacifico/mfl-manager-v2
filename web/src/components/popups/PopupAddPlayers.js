@@ -5,6 +5,7 @@ import { getPlayers, getPlayerNationalities } from "services/api-assistant.js";
 import { prettifyId } from "utils/graphql.js";
 import ItemRowPlayerAssist from "components/items/ItemRowPlayerAssist.js";
 import BoxMessage from "components/box/BoxMessage.js";
+import LoadingSquare from "components/loading/LoadingSquare.js";
 
 
 interface PopupAddPlayersProps {
@@ -102,6 +103,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
   useEffect(() => {
     setPlayers(null);
     setSelectedPlayers([]);
+    setCanLoadMore(false);
 
     if (selectedTab === "search") {
       fetchPlayers();
@@ -179,13 +181,20 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
 
                 <div className="d-flex flex-grow-1 flex-column mb-3 overflow-auto">
                   {players && players.length > 0
-                    ? players.map((p) => <div><ItemRowPlayerAssist
+                    && players.map((p) => <div><ItemRowPlayerAssist
                         p={p}
                         isSelected={selectedPlayers.map(p => p.id).indexOf(p.id) >= 0}
                         onSelect={(p) => onPlayerSelection(p)}
                       /></div>
                     )
-                    : <BoxMessage content={"No player found"} />
+                  }
+
+                  {players && players.length === 0
+                    && <BoxMessage content={"No player found"} />
+                  }
+
+                  {!players
+                    && <LoadingSquare />
                   }
 
                   {canLoadMore
@@ -204,13 +213,20 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
               && <div className="d-flex flex-column flex-grow-1 overflow-auto">
                 <div className="d-flex flex-grow-1 flex-column mb-3">
                   {players && players.length > 0
-                    ? players.map((p) => <div><ItemRowPlayerAssist
+                    && players.map((p) => <div><ItemRowPlayerAssist
                         p={p}
                         isSelected={selectedPlayers.map(p => p.id).indexOf(p.id) >= 0}
                         onSelect={(p) => onPlayerSelection(p)}
                       /></div>
                     )
-                    : <BoxMessage content={"No player found"} />
+                  }
+
+                  {players && players.length === 0
+                    && <BoxMessage content={"No player found"} />
+                  }
+
+                  {!players
+                    && <LoadingSquare />
                   }
 
                   {canLoadMore
