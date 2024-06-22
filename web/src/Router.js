@@ -11,7 +11,7 @@ import PageDashPlayers from "pages/pagedash/PageDashPlayers.js";
 import PageDashMarketplace from "pages/pagedash/PageDashMarketplace.js";
 import PageDashClubs from "pages/pagedash/PageDashClubs.js";
 import PageDashMap from "pages/pagedash/PageDashMap.js";
-// import PageMercatoContracts from "pages/pagemercato/PageMercatoContracts.js";
+import PageToolsContractEvaluation from "pages/pagetools/PageToolsContractEvaluation.js";
 import PageToolsPlayerPricing from "pages/pagetools/PageToolsPlayerPricing.js";
 import PageToolsTeamBuilder from "pages/pagetools/PageToolsTeamBuilder.js";
 
@@ -111,10 +111,10 @@ const Router: React.FC = (props) => {
                   {...props}
                 />}
               />
-              {/*<Route
-                path="sales"
-                element={<PageMercatoSales />}
-              />*/}
+              <Route
+                path="contract-evaluation"
+                element={<PageToolsContractEvaluation />}
+              />
             </Route>
             <Route
               path="notification"

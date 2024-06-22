@@ -1,5 +1,5 @@
 export const positions = [
-  { name: "goalkeeping" },
+  { name: "GK" },
   { name: "RB" },
   { name: "LB" },
   { name: "CB" },

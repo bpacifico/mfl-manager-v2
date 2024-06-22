@@ -30,15 +30,15 @@ const MenuPageTools: React.FC < MenuPageToolsProps > = (props) => {
             <span className="d-none d-md-inline ms-1">Team builder</span>
           </Link>
         </li>
-        {/* <li className="nav-item align-self-end lh-1 px-2">
+        <li className="nav-item align-self-end lh-1 px-2">
           <Link
-            to="player-pricing"
-            className={"nav-link" + (location.pathname === "/tools/sales" ? " active" : "")}
+            to="contract-evaluation"
+            className={"nav-link" + (location.pathname === "/tools/contract-evaluation" ? " active" : "")}
           >
-            <i className="bi bi-cash-coin mx-1"></i>
-            <span className="d-none d-md-inline ms-1">Sales</span>
+            <i className="bi bi bi-journal-bookmark-fill mx-1"></i>
+            <span className="d-none d-md-inline ms-1">Contract evaluation</span>
           </Link>
-        </li>*/}
+        </li>
       </ul>
     </nav>
   );
