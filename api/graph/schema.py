@@ -66,6 +66,19 @@ class ClubType(ObjectType):
     owner = Field(UserType)
 
 
+class ContractType(ObjectType):
+    id = Int(source='_id')
+    status = String()
+    revenue_share = Int()
+    start_season = Int()
+    number_of_season = Int()
+    auto_renewal = Boolean()
+    creation_date = DateTime()
+    last_computation_date = DateTime()
+    player = Field(PlayerType)
+    club = Field(ClubType)
+
+
 class SaleType(ObjectType):
     id = Int(source='_id')
     price = Float()

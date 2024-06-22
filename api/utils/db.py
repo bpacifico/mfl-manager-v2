@@ -61,6 +61,15 @@ async def upsert_sale(db, sale):
     )
 
 
+async def upsert_contract(db, contract):
+    return await db.contracts.find_one_and_update(
+        {"_id": contract["_id"]},
+        {"$set": contract},
+        upsert=True,
+        return_document=ReturnDocument.AFTER
+    )
+
+
 async def build_and_upsert_user(db, mfl_user):
     if "walletAddress" not in mfl_user or mfl_user["walletAddress"] is None:
         return None
@@ -171,3 +180,35 @@ async def build_and_upsert_sale(db, mfl_sale, player=None, club=None):
         sale["club"] = club["_id"]
     
     return await upsert_sale(db, sale)
+
+
+async def build_and_upsert_contract(db, mfl_contract, player=None, club=None):
+    if "id" not in mfl_contract or mfl_contract["id"] is None:
+        return None
+
+    contract = {
+        "_id": mfl_contract["id"],
+        "last_computation_date": datetime.datetime.now(),
+    }
+
+    if "status" in mfl_contract:
+        contract["status"] = mfl_contract["status"]
+    if "revenueShare" in mfl_contract:
+        contract["revenue_share"] = mfl_contract["revenueShare"]
+    if "startSeason" in mfl_contract:
+        contract["start_season"] = mfl_contract["startSeason"]
+    if "nbSeasons" in mfl_contract:
+        contract["number_of_season"] = mfl_contract["nbSeasons"]
+    if "autoRenewal" in mfl_contract:
+        contract["auto_renewal"] = mfl_contract["autoRenewal"]
+    if "createdDateTime" in mfl_contract:
+        contract["creation_date"] = convert_unix_to_datetime(mfl_contract["createdDateTime"]) \
+            if "createdDateTime" in mfl_contract else None
+
+    if player and "_id" in player:
+        contract["player"] = player["_id"]
+
+    if club and "_id" in club:
+        contract["club"] = club["_id"]
+
+    return await upsert_contract(db, contract)
