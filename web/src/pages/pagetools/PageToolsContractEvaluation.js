@@ -2,53 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
-import LoadingBar from "components/loading/LoadingBar.js";
-import CountSales from "components/counts/CountSales.js";
-import CountSaleValue from "components/counts/CountSaleValue.js";
-import ChartBarPlayerSales from "components/charts/ChartBarPlayerSales.js";
-import ChartBarPlayerSaleValue from "components/charts/ChartBarPlayerSaleValue.js";
-import ChartScatterPlayerSales from "components/charts/ChartScatterPlayerSales.js";
 import BoxWarning from "components/box/BoxWarning.js";
-import { getPlayerSales } from "services/api-mfl.js";
+import { getContracts } from "services/api-assistant.js";
 import BoxSoonToCome from "components/box/BoxSoonToCome.js";
+import BoxMessage from "components/box/BoxMessage.js";
 import Count from "components/counts/Count.js";
-import { positions } from "utils/player.js";
-
+import { positions, scarcity } from "utils/player.js";
+import ChartScatterPlayerContracts from "components/charts/ChartScatterPlayerContracts.js";
 
 interface PageToolsContractEvaluationProps {}
 
-const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps > = ({ initialValue }) => {
+const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps > = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const [overall, setOverall] = useState(null);
-  const [position, setPosition] = useState(null);
-  const [age, setAge] = useState(null);
+  const [overall, setOverall] = useState(undefined);
+  const [position, setPosition] = useState(undefined);
+  const [rate, setRate] = useState(undefined);
 
-  const [data, setData] = useState(null);
+  const [contracts, setContracts] = useState(null);
   const [timeUnit, setTimeUnit] = useState("d");
 
   const getData = (pursue, beforeListingId) => {
     setIsLoading(true);
-    setData(null);
+    setContracts(null);
 
-    /*getMarketplaceData({
+    getContracts({
       handleSuccess: (v) => {
-        setData(v.data)
         setIsLoading(false);
+        setContracts(v.data.getContracts);
       },
       params: {
-        playerSaleTotalProperty: playerSaleTotalProperties[timeUnit]
+        minOvr: scarcity.map((s) => s.overallMin).indexOf(overall) < 0 ? overall - 1 : overall,
+        maxOvr: scarcity.map((s) => s.overallMax).indexOf(overall) < 0 ? overall + 1 : overall,
+        positions: [position],
       }
-    });*/
+    });
   }
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    getData();
-  }, [timeUnit]);
 
   return (
     <div id="PageToolsContractEvaluation" className="h-100 w-100">
@@ -68,7 +57,7 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
                   step="1"
                   className="form-control w-100 mb-1"
                   value={overall}
-                  onChange={(v) => {setOverall(v.target.value)}}
+                  onChange={(v) => {setOverall(parseInt(v.target.value))}}
                   placeholder={"OVR*"}
                   autoFocus
                 />
@@ -79,8 +68,7 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
                   placeholder={"Position*"}
                 >
                   <option value={""} key={null}/>
-                  {positions
-                    .map((p) => (
+                  {positions.map((p) => (
                     <option value={p.name} key={p.name}>
                       {p.name}
                     </option>
@@ -92,12 +80,14 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
                   max="100"
                   step="0.1"
                   className="form-control w-100 mb-1"
-                  value={age}
-                  onChange={(v) => {setAge(v.target.value)}}
+                  value={rate}
+                  onChange={(v) => setRate(v.target.value)}
+                  disabled={true}
                   placeholder={"Contract rate"}
                 />
                 <button
                   className="btn btn-info text-white align-self-end"
+                  onClick={() => getData()}
                   disabled={!overall || !position}
                 >
                   Evaluate
@@ -127,7 +117,12 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
               </div>
 
               <div className="d-flex flex-fill overflow-hidden">
-                bbbb
+                {!contracts && !isLoading
+                  ? <BoxMessage content="No criteria selected"/>
+                  : <ChartScatterPlayerContracts
+                    contracts={contracts}
+                  />
+                }
               </div>
             </div>
 
@@ -139,7 +134,7 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
               </div>
 
               <div className="d-flex flex-fill overflow-hidden">
-                cccc
+                <BoxSoonToCome />
               </div>
             </div>
           </div>

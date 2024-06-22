@@ -78,6 +78,12 @@ class ContractType(ObjectType):
     player = Field(PlayerType)
     club = Field(ClubType)
 
+    async def resolve_player(self, info):
+        return await info.context["db"].players.find_one({"_id": self["player"]})
+
+    async def resolve_club(self, info):
+        return await info.context["db"].clubs.find_one({"_id": self["club"]})
+
 
 class SaleType(ObjectType):
     id = Int(source='_id')

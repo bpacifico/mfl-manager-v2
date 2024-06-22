@@ -464,3 +464,47 @@ export const getUsers = ({ handleSuccess = null, handleError = null, params }) =
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
+
+export const getContracts = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getContracts(${jsonToParams(params)}) {
+          id,
+          status,
+          revenueShare,
+          startSeason,
+          numberOfSeason,
+          autoRenewal,
+          creationDate,
+          club {
+            id,
+            name
+            status,
+            division,
+            city,
+            country,
+            foundationDate
+          },
+          player {
+            id,
+            firstName,
+            lastName,
+            overall,
+            nationalities,
+            positions,
+            pace,
+            shooting,
+            dribbling,
+            passing,
+            defense,
+            physical,
+            goalkeeping,
+            resistance
+          }
+        }
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);

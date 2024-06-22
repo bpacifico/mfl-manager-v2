@@ -1,5 +1,5 @@
 from graphene import ObjectType, String, Int, Schema, Field, List, ID, Boolean
-from graph.schema import UserType, SaleType, NotificationScopeType, NotificationType, CountType, DataPointType, ClubType, TeamType, TeamMemberType, PlayerType
+from graph.schema import UserType, SaleType, ContractType, NotificationScopeType, NotificationType, CountType, DataPointType, ClubType, TeamType, TeamMemberType, PlayerType
 from bson import ObjectId
 from decorator.require_token import require_token
 from fastapi import HTTPException, status
@@ -267,6 +267,28 @@ class Query(ObjectType):
             .to_list(length=None)
 
         return players
+
+    get_contracts = List(ContractType, min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String))
+
+    async def resolve_get_contracts(self, info, min_ovr=1, max_ovr=100, nationalities=None, positions=None):
+
+        player_filters = {
+            "overall": {"$gt": min_ovr, "$lt": max_ovr}
+        }
+
+        if nationalities is not None:
+            player_filters["nationalities"] = {"$in": nationalities}
+        if positions is not None:
+            player_filters["positions"] = {"$in": positions}
+
+        matching_players = await info.context["db"].players.find(player_filters).to_list(None)
+        matching_player_ids = [player["_id"] for player in matching_players]
+
+        contracts = await info.context["db"].contracts \
+            .find({"player": {"$in": matching_player_ids}}) \
+            .to_list(None)
+
+        return contracts
 
     get_player_nationalities = List(String)
 
