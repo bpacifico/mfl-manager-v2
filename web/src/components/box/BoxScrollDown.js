@@ -1,14 +1,13 @@
 import React from 'react';
 import "./BoxScrollDown.css";
 
-interface BoxScrollDownProps {
-}
+interface BoxScrollDownProps {}
 
-const BoxScrollDown: React.FC<BoxScrollDownProps> = () => {
+const BoxScrollDown: React.FC < BoxScrollDownProps > = () => {
   return (
     <div
       className="BoxScrollDown"
-      style={{ zIndex: 1000 }}
+      style={{ zIndex: 200 }}
     >
       <div className="text-white">
         <i className="h1 bi bi-arrow-down-square-fill"></i>

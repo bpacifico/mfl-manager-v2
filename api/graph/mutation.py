@@ -201,7 +201,6 @@ class UpdateTeamMember(Mutation):
         team_member = await info.context["db"].team_members.find_one({
             "_id": ObjectId(id)
         })
-       
 
         if team_member:
             team = await info.context["db"].teams.find_one({"_id": team_member["team"]})
