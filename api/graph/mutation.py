@@ -198,9 +198,26 @@ class UpdateTeamMember(Mutation):
 
     @require_token
     async def mutate(self, info, id, **kwargs):
-        await info.context["db"].team_members.update_many({"position": kwargs["position"]}, {'$set': {"position": None}})
-        await info.context["db"].team_members.update_one({"_id": ObjectId(id)}, {'$set': kwargs})
-        return UpdateTeamMember(status=True)
+        team_member = await info.context["db"].team_members.find_one({
+            "_id": ObjectId(id)
+        })
+       
+
+        if team_member:
+            team = await info.context["db"].teams.find_one({"_id": team_member["team"]})
+
+            if team:
+                if team["user"] != info.context["user"]["_id"]:
+                    raise Exception("You don't have access to this team")
+
+                await info.context["db"].team_members.update_many({"team": team["_id"], "position": kwargs["position"]}, {'$set': {"position": None}})
+                await info.context["db"].team_members.update_one({"team": team["_id"], "_id": ObjectId(id)}, {'$set': kwargs})
+                return UpdateTeamMember(status=True)
+            else:
+                raise Exception("Team not found")
+        else:
+            raise Exception("Team member not found")
+        
 
 
 class DeleteTeamMember(Mutation):
@@ -211,13 +228,21 @@ class DeleteTeamMember(Mutation):
 
     @require_token
     async def mutate(self, info, team_member_id):
-        team_member = info.context["db"].team_members.find_one({
+        team_member = await info.context["db"].team_members.find_one({
             "_id": ObjectId(team_member_id)
         })
 
         if team_member:
-            info.context["db"].team_members.delete_one({'_id': ObjectId(team_member_id)})
-            return DeleteTeamMember(status=True)
+            team = await info.context["db"].teams.find_one({"_id": team_member["team"]})
+
+            if team:
+                if team["user"] != info.context["user"]["_id"]:
+                    raise Exception("You don't have access to this team")
+
+                info.context["db"].team_members.delete_one({'_id': ObjectId(team_member_id), "team": team["_id"]})
+                return DeleteTeamMember(status=True)
+            else:
+                raise Exception("Team not found")
         else:
             raise Exception("Team member not found")
 
