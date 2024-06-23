@@ -83,7 +83,7 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
                   value={rate}
                   onChange={(v) => setRate(v.target.value)}
                   disabled={true}
-                  placeholder={"Contract rate"}
+                  placeholder={/*"Contract rate */"Soon to come!"}
                 />
                 <button
                   className="btn btn-info text-white align-self-end"
