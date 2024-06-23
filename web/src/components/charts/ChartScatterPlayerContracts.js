@@ -4,6 +4,7 @@ import { Chart as ChartJS } from 'chart.js/auto';
 import { Scatter } from 'react-chartjs-2';
 import { divisions, getDivisionColor, getDivisionName } from "utils/division.js";
 import LoadingSquare from "components/loading/LoadingSquare";
+import BoxMessage from "components/box/BoxMessage";
 import { computeLinearRegression } from "utils/chart.js";
 
 interface Player {
@@ -72,8 +73,15 @@ const ChartScatterPlayerContracts: React.FC < ChartScatterPlayerContractsProps >
   return (
     <div className="h-100 w-100">
       {!contracts
-        ? <LoadingSquare />
-        : <Scatter
+        && <LoadingSquare />
+      }
+
+      {contracts && contracts.length === 0
+        && <BoxMessage content="No contract found" />
+      }
+
+      {contracts && contracts.length > 0
+        && <Scatter
           data={{
             datasets: [
               {
