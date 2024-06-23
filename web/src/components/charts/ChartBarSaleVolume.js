@@ -80,6 +80,10 @@ const ChartBarSaleVolume: React.FC < ChartBarSaleVolumeProps > = ({ data }) => {
         	<Bar
 	          data={getData()}
 	          options={{
+	          	animation: {
+                easing: "easeOutQuart",
+                y: {from: 500}
+              },
 	            responsive: true,
 	            maintainAspectRatio: false,
 	            barPercentage: 1.0,

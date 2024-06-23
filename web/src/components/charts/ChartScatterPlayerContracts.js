@@ -2,65 +2,72 @@ import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Scatter } from 'react-chartjs-2';
-import { divisions, getDivisionColor } from "utils/division.js";
+import { divisions, getDivisionColor, getDivisionName } from "utils/division.js";
 import LoadingSquare from "components/loading/LoadingSquare";
 import { computeLinearRegression } from "utils/chart.js";
 
 interface Player {
   id: number;
+
 }
 
 interface ChartScatterPlayerContractsProps {
   contracts: Contract[];
+  hideZeros: boolean;
 }
 
-const ChartScatterPlayerContracts: React.FC < ChartScatterPlayerContractsProps > = ({ contracts }) => {
+const ChartScatterPlayerContracts: React.FC < ChartScatterPlayerContractsProps > = ({ contracts, hideZeros }) => {
 
   const computeData = () => {
+    let tempData = [];
     const data = [];
 
     for (let i = 0; i < contracts.length; i++) {
-      console.log(contracts[i].club.division, contracts[i].revenueShare)
-      if (contracts[i].club && contracts[i].club.division && contracts[i].revenueShare) {
-        let point = data
-          .filter((p) => p.x === contracts[i].revenueShare / 100)
-          .filter((p) => p.y === contracts[i].club.division)
-          .pop();
+      tempData.push({
+        x: contracts[i].revenueShare / 100,
+        y: contracts[i].club.division,
+        color: getDivisionColor(contracts[i].club.division),
+      });
+    }
 
-        if (point) {
-          data.forEach((d) => {
-            if (d.x === point.x && d.y === point.y) {
-              d.count++;
-            }
-          })
-        } else {
-          data.push({
-            x: contracts[i].revenueShare / 100,
-            y: contracts[i].club.division,
-            color: getDivisionColor(contracts[i].club.division),
-            count: 1,
-          });
-        }
-      }
+    if (hideZeros) {
+      tempData = tempData.filter((d) => d.x > 0);
+    }
+
+    while (tempData.length > 0) {
+      let samePoints = tempData.filter((d) => d.x === tempData[0].x && d.y === tempData[0].y);
+
+      data.push({
+        ...tempData[0],
+        count: samePoints.length,
+      });
+
+      tempData = tempData.filter((d) => d.x !== tempData[0].x || d.y !== tempData[0].y);
     }
 
     return {
       data,
       pointBackgroundColor: data.map((d) => d.color),
       pointRadius: data.map((d) => mapValue(d.count)),
-      pointHoverRadius: data.map((d) => mapValue(d.count) + 2),
+      pointHoverRadius: data.map((d) => mapValue(d.count) + 4),
     };
   }
 
-  const mapValue = (x) => {
-    if (x <= 0) throw new Error("x should be greater than 0");
-    const minOutput = 2,
-      maxOutput = 20;
-    const logBase = 10;
-    const scaledX = Math.log(x + 1) / Math.log(logBase);
-    return minOutput + (scaledX * (maxOutput - minOutput) / scaledX);
-  }
+  const mapValue = (input) => {
+    if (input < 1) {
+      return 0;
+    }
 
+    const minOutput = 4;
+    const maxOutput = 20;
+    const base = 10;
+
+    const logInput = Math.log(input) / Math.log(base);
+    const scaledLog = minOutput + ((maxOutput - minOutput) * logInput / Math.log(base));
+    const output = Math.max(minOutput, Math.min(scaledLog, maxOutput));
+
+    return output;
+  }
 
   return (
     <div className="h-100 w-100">
@@ -76,12 +83,18 @@ const ChartScatterPlayerContracts: React.FC < ChartScatterPlayerContractsProps >
             ],
           }}
           options={{
+            animation: {
+              easing: "easeInOutBack"
+            },
             responsive: true,
             maintainAspectRatio: false,
             scales: {
               x: {
                 ticks: {
-                  stepSize: 1
+                  stepSize: 1,
+                  callback: function(val, index) {
+                    return `${val}%`;
+                  },
                 },
                 position: 'bottom',
                 title: {
@@ -90,12 +103,15 @@ const ChartScatterPlayerContracts: React.FC < ChartScatterPlayerContractsProps >
                 grid: {
                   display: false,
                 },
+                offset: true,
               },
-              y:
-                {
+              y: {
                 reverse: true,
                 ticks: {
-                  stepSize: 1
+                  stepSize: 1,
+                  callback: function(val, index) {
+                    return getDivisionName(val);
+                  },
                 },
                 type: 'linear',
                 position: 'left',
@@ -105,6 +121,7 @@ const ChartScatterPlayerContracts: React.FC < ChartScatterPlayerContractsProps >
                 grid: {
                   display: false,
                 },
+                offset: true,
               },
             },
             plugins: {
@@ -114,9 +131,20 @@ const ChartScatterPlayerContracts: React.FC < ChartScatterPlayerContractsProps >
               datalabels: {
                 display: false,
               },
-            }
+              tooltip: {
+                callbacks: {
+                  label: function(point) {
+                    var label = []
+                    label.push(`Division: ${point.raw.y}`);
+                    label.push(`Contract(s): ${point.raw.count}`);
+                    label.push(`Rate: ${point.raw.x}`);
+                    
+                    return label;
+                  }
+                }
+              }
+            },
           }}
-          // plugins={[buildDivisionLegend]}
         />
       }
     </div>

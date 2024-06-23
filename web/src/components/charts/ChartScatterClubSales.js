@@ -57,6 +57,9 @@ const ChartScatterClubSales: React.FC < ChartScatterClubSalesProps > = ({ sales,
             ],
           }}
           options={{
+            animation: {
+              easing: "easeOutExpo"
+            },
             responsive: true,
             maintainAspectRatio: false,
             scales: {

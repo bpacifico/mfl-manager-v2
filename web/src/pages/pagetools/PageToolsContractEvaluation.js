@@ -20,7 +20,7 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
   const [rate, setRate] = useState(undefined);
 
   const [contracts, setContracts] = useState(null);
-  const [timeUnit, setTimeUnit] = useState("d");
+  const [hideZeros, setHideZeros] = useState(false);
 
   const getData = (pursue, beforeListingId) => {
     setIsLoading(true);
@@ -114,6 +114,18 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
                 <div className="d-flex">
                   <h4 className="flex-grow-1">Similar players under contract</h4>
                 </div>
+
+                <div className="d-flex flex-fill overflow-auto justify-content-end align-items-end">
+                  <small>
+                    Hide zero rates
+                    <input
+                      type="checkbox"
+                      className="ms-1"
+                      value={hideZeros}
+                      onChange={() => setHideZeros(!hideZeros)}
+                    />
+                  </small>
+                </div>
               </div>
 
               <div className="d-flex flex-fill overflow-hidden">
@@ -121,6 +133,7 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
                   ? <BoxMessage content="No criteria selected"/>
                   : <ChartScatterPlayerContracts
                     contracts={contracts}
+                    hideZeros={hideZeros}
                   />
                 }
               </div>

@@ -14,8 +14,8 @@ interface ChartBarPlayerSaleValueProps {
   sales: Sale[];
 }
 
-const ChartBarPlayerSaleValue: React.FC<ChartBarPlayerSaleValueProps> = ({ sales }) => {
-  
+const ChartBarPlayerSaleValue: React.FC < ChartBarPlayerSaleValueProps > = ({ sales }) => {
+
   const computeData = () => {
     let data = {};
 
@@ -88,7 +88,7 @@ const ChartBarPlayerSaleValue: React.FC<ChartBarPlayerSaleValueProps> = ({ sales
           />
         }
       </div>
-  	</div>
+    </div>
   );
 };
 

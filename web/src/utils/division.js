@@ -14,3 +14,9 @@ export const getDivisionColor = (division) => {
     .filter((d) => d.number === division)
     .pop()?.color;
 };
+
+export const getDivisionName = (division) => {
+  return divisions
+    .filter((d) => d.number === division)
+    .pop()?.name;
+};
