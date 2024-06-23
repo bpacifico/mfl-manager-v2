@@ -128,7 +128,7 @@ const PageToolsContractEvaluation: React.FC < PageToolsContractEvaluationProps >
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 {!contracts && !isLoading
                   ? <BoxMessage content="No criteria selected"/>
                   : <ChartScatterPlayerContracts
