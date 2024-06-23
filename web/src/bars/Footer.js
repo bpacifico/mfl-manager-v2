@@ -62,6 +62,11 @@ const Footer: React.FC < FooterProps > = (props) => {
 	            	Team builder
 	          	</Link>
 	          </div>
+	          <div>
+	      			<Link to="/tools/contract-evaluation">
+	            	Contract evaluation
+	          	</Link>
+	          </div>
 	      	</div>
 
 	      	<div className="col-12 col-md-6 p-4 p-md-1">
