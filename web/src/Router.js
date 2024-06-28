@@ -101,10 +101,10 @@ const Router: React.FC = (props) => {
                   {...props}
                 />}
               />
-              {/*<Route
+              {<Route
                 path="player-pricing"
                 element={<PageToolsPlayerPricing />}
-              />*/}
+              />}
               <Route
                 path="team-builder"
                 element={<PageToolsTeamBuilder

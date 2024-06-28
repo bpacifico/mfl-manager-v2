@@ -23,7 +23,7 @@ export const unixTimestampToMonthString = (unixTimestamp) => {
   return dateToMonthString(date);
 }
 
-export const subtractDate = (date, unit) => {
+export const substractDate = (date, unit) => {
   let resultDate = new Date(date);
 
   switch (unit) {
@@ -41,6 +41,32 @@ export const subtractDate = (date, unit) => {
       break;
     case 'y':
       resultDate.setFullYear(resultDate.getFullYear() - 1);
+      break;
+    default:
+      return null;
+  }
+
+  return resultDate;
+}
+
+export const addDate = (date, unit) => {
+  let resultDate = new Date(date);
+
+  switch (unit) {
+    case 'd':
+      resultDate.setDate(resultDate.getDate() + 1);
+      break;
+    case 'w':
+      resultDate.setDate(resultDate.getDate() + 7);
+      break;
+    case 'm':
+      resultDate.setMonth(resultDate.getMonth() + 1);
+      break;
+    case 'q':
+      resultDate.setMonth(resultDate.getMonth() + 3);
+      break;
+    case 'y':
+      resultDate.setFullYear(resultDate.getFullYear() + 1);
       break;
     default:
       return null;

@@ -6,7 +6,7 @@ import { enUS } from 'date-fns/locale';
 import { Scatter } from 'react-chartjs-2';
 import LoadingSquare from "components/loading/LoadingSquare";
 import { getDivisionColor } from "utils/division.js";
-import { subtractDate } from "utils/date.js";
+import { substractDate } from "utils/date.js";
 
 interface Sale {
   id: number;
@@ -21,7 +21,7 @@ const ChartScatterClubSales: React.FC < ChartScatterClubSalesProps > = ({ sales,
 
   const computeData = () => {
     const data = [];
-    const minDate = subtractDate(new Date(), unit)
+    const minDate = substractDate(new Date(), unit)
 
     for (let i = 0; i < sales.length; i++) {
       const saleDate = new Date(sales[i].executionDate);
@@ -68,7 +68,7 @@ const ChartScatterClubSales: React.FC < ChartScatterClubSalesProps > = ({ sales,
                 },
                 type: "time",
                 time: {
-                  unit: ["w", "m"].indexOf(unit) ? "day" : "month",
+                  unit: ["w", "m"].indexOf(unit) >= 0 ? "day" : "month",
                 },
                 adapters: { 
                   date: {

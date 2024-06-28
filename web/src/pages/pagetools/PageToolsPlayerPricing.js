@@ -9,46 +9,50 @@ import ChartBarPlayerSales from "components/charts/ChartBarPlayerSales.js";
 import ChartBarPlayerSaleValue from "components/charts/ChartBarPlayerSaleValue.js";
 import ChartScatterPlayerSales from "components/charts/ChartScatterPlayerSales.js";
 import BoxWarning from "components/box/BoxWarning.js";
-import { getPlayerSales } from "services/api-mfl.js";
+import BoxMessage from "components/box/BoxMessage.js";
+import { getPlayerSales } from "services/api-assistant.js";
 import BoxSoonToCome from "components/box/BoxSoonToCome.js";
 import Count from "components/counts/Count.js";
-import { positions } from "utils/player.js";
+import { positions, scarcity } from "utils/player.js";
 
 
 interface PageToolsPlayerPricingProps {}
 
-const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ initialValue }) => {
+const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [overall, setOverall] = useState(null);
   const [position, setPosition] = useState(null);
   const [age, setAge] = useState(null);
 
-  const [data, setData] = useState(null);
-  const [timeUnit, setTimeUnit] = useState("d");
+  const [sales, setSales] = useState(null);
+  const [hideOneAndLower, setHideOneAndLower] = useState(false);
+  const [timeUnit, setTimeUnit] = useState("m");
 
   const getData = (pursue, beforeListingId) => {
     setIsLoading(true);
-    setData(null);
+    setSales(null);
 
-    /*getMarketplaceData({
+    getPlayerSales({
       handleSuccess: (v) => {
-        setData(v.data)
+        setSales(v.data.getPlayerSales);
         setIsLoading(false);
       },
       params: {
-        playerSaleTotalProperty: playerSaleTotalProperties[timeUnit]
+        type: "PLAYER",
+        limit: 1000000,
+        minOvr: scarcity.map((s) => s.overallMin).indexOf(overall) < 0 ? overall - 1 : overall,
+        maxOvr: scarcity.map((s) => s.overallMax).indexOf(overall) < 0 ? overall + 1 : overall,
+        positions: [position],
+        minAge: age - 1,
+        maxAge: age + 1,
       }
-    });*/
+    });
   }
 
   useEffect(() => {
-    getData();
+    setSales();
   }, []);
-
-  useEffect(() => {
-    getData();
-  }, [timeUnit]);
 
   return (
     <div id="PageToolsPlayerPricing" className="h-100 w-100">
@@ -68,7 +72,7 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ init
                   step="1"
                   className="form-control w-100 mb-1"
                   value={overall}
-                  onChange={(v) => {setOverall(v.target.value)}}
+                  onChange={(v) => {setOverall(parseInt(v.target.value))}}
                   placeholder={"OVR"}
                   autoFocus
                 />
@@ -93,11 +97,12 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ init
                   step="1"
                   className="form-control w-100 mb-1"
                   value={age}
-                  onChange={(v) => {setAge(v.target.value)}}
+                  onChange={(v) => {setAge(parseInt(v.target.value))}}
                   placeholder={"Age"}
                 />
                 <button
-                  className="btn btn-info text-white"
+                  className="btn btn-info text-white align-self-end"
+                  onClick={getData}
                   disabled={!overall || !position || !age}
                 >
                   Run
@@ -124,10 +129,56 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ init
                 <div className="d-flex">
                   <h4 className="flex-grow-1">Recent sales</h4>
                 </div>
+
+                <div className="d-flex flex-fill overflow-auto justify-content-end align-items-end">
+                  <small className="me-md-3">
+                    Hide 1$ and lower
+                    <input
+                      type="checkbox"
+                      className="ms-1"
+                      value={hideOneAndLower}
+                      onChange={() => setHideOneAndLower(!hideOneAndLower)}
+                    />
+                  </small>
+
+                  <button
+                    className={"btn btn-small" + (timeUnit === "w" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setTimeUnit("w")}
+                  >
+                    W
+                  </button>
+                  <button
+                    className={"btn btn-small" + (timeUnit === "m" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setTimeUnit("m")}
+                  >
+                    M
+                  </button>
+                  <button
+                    className={"btn btn-small" + (timeUnit === "q" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setTimeUnit("q")}
+                  >
+                    Q
+                  </button>
+                  <button
+                    className={"btn btn-small" + (timeUnit === "y" ? " btn-info text-white" : " text-info")}
+                    onClick={() => setTimeUnit("y")}
+                  >
+                    Y
+                  </button>
+                </div>
               </div>
 
               <div className="d-flex flex-fill overflow-hidden">
-                bbbb
+                <div className="d-flex flex-fill overflow-hidden">
+                  {!sales && !isLoading
+                    ? <BoxMessage content="No criteria selected"/>
+                    : <ChartScatterPlayerSales
+                      sales={sales}
+                      timeUnit={timeUnit}
+                      hideOneAndLower={hideOneAndLower}
+                    />
+                  }
+                </div>
               </div>
             </div>
 
@@ -139,7 +190,7 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = ({ init
               </div>
 
               <div className="d-flex flex-fill overflow-hidden">
-                cccc
+                <BoxSoonToCome />
               </div>
             </div>
           </div>

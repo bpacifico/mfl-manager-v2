@@ -1,4 +1,4 @@
-from graphene import ObjectType, String, Int, Schema, Field, List, ID, Boolean
+from graphene import ObjectType, String, Int, Schema, Field, List, ID, Boolean, Date
 from graph.schema import UserType, SaleType, ContractType, NotificationScopeType, NotificationType, CountType, DataPointType, ClubType, TeamType, TeamMemberType, PlayerType
 from bson import ObjectId
 from decorator.require_token import require_token
@@ -92,16 +92,61 @@ class Query(ObjectType):
 
         return clubs
 
-    get_sales = List(SaleType, type=String(), skip=Int(), limit=Int(), sort=String(), order=Int())
+    get_sales = List(SaleType, type=String(), min_date=Date(), max_date=Date(), min_ovr=Int(), max_ovr=Int(), positions=List(String), min_age=Int(), max_age=Int(), skip=Int(), limit=Int(), sort=String(), order=Int())
 
-    async def resolve_get_sales(self, info, type=None, skip=0, limit=10, sort="execution_date", order=-1):
+    async def resolve_get_sales(self, info, type=None, min_date=None, max_date=None, min_ovr=0, max_ovr=99, positions=None, min_age=0, max_age=99, skip=0, limit=10, sort="execution_date", order=-1):
 
         sales = info.context["db"].sales
 
         if type == "PLAYER":
             sales = sales.find({"player": {"$exists": True, "$ne": None}})
+
+            player_filters = {
+                "overall": {"$gte": min_ovr, "$lte": max_ovr},
+                "age_at_mint": {"$gte": min_age, "$lte": max_age}
+            }
+
+            if positions is not None:
+                player_filters["positions"] = {"$in": positions}
+
+            matching_players = await info.context["db"].players.find(player_filters).to_list(None)
+            matching_player_ids = [player["_id"] for player in matching_players]
+
+            filters = {
+                "player": {"$in": matching_player_ids},
+            }
+
+            execution_date_filter = {}
+
+            if min_date:
+                execution_date_filter["$gte"] = min_date
+            if max_date:
+                execution_date_filter["$lte"] = max_date
+
+            if execution_date_filter:
+                filters["execution_date"] = execution_date_filter
+
+            sales = await info.context["db"].sales \
+                .find(filters) \
+                .to_list(None)
+
+            return sales
         elif type == "CLUB":
-            sales = sales.find({"club": {"$exists": True, "$ne": None}})
+            filters = {
+                "club": {"$exists": True, "$ne": None},
+            }
+
+            execution_date_filter = {}
+
+            if min_date:
+                execution_date_filter["$gte"] = min_date
+            if max_date:
+                execution_date_filter["$lte"] = max_date
+
+            if execution_date_filter:
+                filters["execution_date"] = execution_date_filter
+
+            sales = sales.find(filters)
 
         sales = await sales \
             .skip(skip) \

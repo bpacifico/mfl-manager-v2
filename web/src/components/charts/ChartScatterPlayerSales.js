@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
+import { enUS } from 'date-fns/locale';
 import { Scatter } from 'react-chartjs-2';
+import { divisions, getDivisionColor, getDivisionName } from "utils/division.js";
 import LoadingSquare from "components/loading/LoadingSquare";
-import { getOverallColor } from "utils/player.js";
+import BoxMessage from "components/box/BoxMessage";
+import { computeLinearRegression } from "utils/chart.js";
+import { substractDate, addDate } from "utils/date.js";
 
 interface Sale {
   id: number;
@@ -11,89 +16,181 @@ interface Sale {
 
 interface ChartScatterPlayerSalesProps {
   sales: Sale[];
+  timeUnit: String;
+  hideOneAndLower: boolean;
 }
 
-const ChartScatterPlayerSales: React.FC<ChartScatterPlayerSalesProps> = ({ sales }) => {
-  
+const ChartScatterPlayerSales: React.FC < ChartScatterPlayerSalesProps > = ({ sales, timeUnit, hideOneAndLower }) => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   const computeData = () => {
-    const data = [];
+    let data = sales;
 
-    for (let i = 0; i < sales.length; i++) {
-      data.push({
-        x: sales[i].player?.metadata?.overall,
-        y: sales[i].price,
-      });
+    if (hideOneAndLower) {
+      data = data.filter((d) => d.price > 1);
     }
 
-    return data;
+    data = data
+      .filter((d) => startDate < d.executionDate < endDate)
+      .map((d) => ({
+        ...d,
+        x: d.executionDate,
+        y: d.price,
+      }));
+
+    return {
+      data,
+    };
   }
 
-  const computeBackgroundColor = () => {
-    const data = [];
+  const extendLeft = () => {
+    setStartDate(substractDate(startDate, timeUnit));
+  }
 
-    for (let i = 0; i < sales.length; i++) {
-      data.push(getOverallColor(sales[i].player?.metadata?.overall));
+  const extendRight = () => {
+    setEndDate(addDate(endDate, timeUnit));
+  }
+
+  const moveLeft = () => {
+    setStartDate(substractDate(startDate, timeUnit));
+    setEndDate(substractDate(endDate, timeUnit));
+  }
+
+  const moveRight = () => {
+    setStartDate(addDate(startDate, timeUnit));
+    setEndDate(addDate(endDate, timeUnit));
+  }
+
+  useEffect(() => {
+    if (sales) {
+      setStartDate(substractDate(new Date(), timeUnit));
+      setEndDate(new Date());
+    } else {
+      setStartDate(null);
+      setEndDate(null);
     }
-
-    return data;
-  }
+  }, [sales, timeUnit]);
 
   return (
-    <div className="mb-4 py-2 px-1 px-md-3">
-      <div className="ratio ratio-16x9 w-100">
-        {!sales
-          ? <LoadingSquare />
-          : <Scatter
+    <div className="h-100 w-100 position-relative">
+      {!sales
+        && <LoadingSquare />
+      }
+
+      {sales && sales.length === 0
+        && <BoxMessage content="No sale found" />
+      }
+
+      {sales && sales.length > 0
+        && <div className="h-100 w-100">
+          <div className="position-absolute top-0 start-0">
+            <button className={"btn btn-small"} onClick={extendLeft}>
+              <i className="bi bi-arrow-bar-left text-info"></i>
+            </button>
+            <button className={"btn btn-small"} onClick={moveLeft}>
+              <i className="bi bi-caret-left-fill text-info"></i>
+            </button>
+          </div>
+          <div className="position-absolute top-0 end-0">
+            <button className={"btn btn-small"} onClick={moveRight}>
+              <i className="bi bi-caret-right-fill text-info"></i>
+            </button>
+            <button className={"btn btn-small"} onClick={extendRight}>
+              <i className="bi bi-arrow-bar-right text-info"></i>
+            </button>
+          </div>
+
+          <Scatter
             data={{
               datasets: [
                 {
-                  data: computeData(),
-                  pointBackgroundColor: computeBackgroundColor(),
-                  pointBorderWidth : 0,
+                  ...computeData(),
+                  pointBackgroundColor:"#0dcaf0",
+                  pointBorderWidth: 0,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
                 },
               ],
             }}
             options={{
+              animation: {
+                easing: "easeOutExpo"
+              },
+              responsive: true,
+              maintainAspectRatio: false,
               scales: {
                 x: {
-                	ticks: {
-                    color: "#AAA",
+                  type: "time",
+                  time: {
+                    unit: ["w", "m"].indexOf(timeUnit) >= 0 ? "day" : "month",
                   },
-                  type: 'linear',
+                  adapters: { 
+                    date: {
+                      locale: enUS, 
+                    },
+                  },
+                  min: startDate,
+                  max: endDate,
                   position: 'bottom',
                   title: {
-                    display: true,
-                    text: 'Player overall score',
+                    display: false,
                   },
                   grid: {
-                    color: '#333',
+                    display: false,
                   },
                 },
                 y: {
-                	ticks: {
-                    color: "#AAA",
+                  ticks: {
+                    /*stepSize: 1,
+                    callback: function(val, index) {
+                      return getDivisionName(val);
+                    },*/
                   },
                   type: 'linear',
                   position: 'left',
                   title: {
-                    display: true,
-                    text: 'Price',
+                    display: false,
                   },
                   grid: {
-                    color: '#333',
+                    display: false,
                   },
                 },
+              },
+              layout: {
+                padding: {
+                  top: 40,
+                }
               },
               plugins: {
                 legend: {
                   display: false,
+                },
+                datalabels: {
+                  display: false,
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function(point) {
+                      var label = []
+                      label.push(`Price: ${point.raw.y}`);
+                      label.push(`Date: ${point.raw.x}`);
+                      label.push(``);
+                      label.push(`${point.raw.player.firstName} ${point.raw.player.lastName}`);
+                      label.push(`OVR: ${point.raw.player.overall} - Age: ${point.raw.player.ageAtMint}`);
+                      label.push(`Positions: ${point.raw.player.positions.join(",")}`);
+                      label.push(``);
+                      
+                      return label;
+                    }
+                  }
                 }
-              }
+              },
             }}
           />
-        }
-      </div>
-  	</div>
+        </div>
+      }
+    </div>
   );
 };
 
