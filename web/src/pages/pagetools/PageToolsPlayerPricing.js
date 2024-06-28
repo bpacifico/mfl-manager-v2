@@ -127,7 +127,7 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
             <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto flex-basis-0 m-2 p-3 pt-2">
               <div className="d-flex flex-row">
                 <div className="d-flex">
-                  <h4 className="flex-grow-1">Recent sales</h4>
+                  <h4 className="flex-grow-1">Player sales</h4>
                 </div>
 
                 <div className="d-flex flex-fill overflow-auto justify-content-end align-items-end">

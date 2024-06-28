@@ -149,6 +149,7 @@ const ChartScatterPlayerSales: React.FC < ChartScatterPlayerSalesProps > = ({ sa
                   },
                   type: 'linear',
                   position: 'left',
+                  beginAtZero: true,
                   title: {
                     display: false,
                   },
