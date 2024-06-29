@@ -54,12 +54,17 @@ const Footer: React.FC < FooterProps > = (props) => {
 	          </div>
 	      	</div>
 
-	      	<div className="col-6 col-md-2 p-4 p-md-1">
+	      	<div className="col-6 col-md-3 p-4 p-md-1">
 	      		<h5 className="text-white">Tools</h5>
 
 	      		<div>
 	      			<Link to="/tools/team-builder">
 	            	Team builder
+	          	</Link>
+	          </div>
+	          <div>
+	      			<Link to="/tools/player-pricing">
+	            	Player pricing
 	          	</Link>
 	          </div>
 	          <div>
@@ -69,7 +74,7 @@ const Footer: React.FC < FooterProps > = (props) => {
 	          </div>
 	      	</div>
 
-	      	<div className="col-12 col-md-6 p-4 p-md-1">
+	      	<div className="col-12 col-md-5 p-4 p-md-1">
 	      		<div className="w-100 d-flex justify-content-center justify-content-md-end pt-4">
 	      			<BoxSocials />
 	      		</div>

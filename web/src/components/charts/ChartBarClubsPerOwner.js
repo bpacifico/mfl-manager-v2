@@ -58,7 +58,8 @@ const ChartBarClubsPerOwner: React.FC < ChartBarClubsPerOwnerProps > = ({ data }
                 font: {
                   weight: 'bold',
                   size: 16,
-                }
+                },
+                formatter: (val) => (val > 0 ? val : '')
               }
             },
             scales: {
