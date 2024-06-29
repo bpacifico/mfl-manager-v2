@@ -269,6 +269,7 @@ export const getMarketplaceData = ({ handleSuccess = null, handleError = null, p
           price,
           club {
             status,
+            name,
             division,
             city,
             country,
@@ -479,7 +480,7 @@ export const getContracts = ({ handleSuccess = null, handleError = null, params 
           creationDate,
           club {
             id,
-            name
+            name,
             status,
             division,
             city,

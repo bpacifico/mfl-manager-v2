@@ -154,7 +154,22 @@ const ChartScatterClubSales: React.FC < ChartScatterClubSalesProps > = ({ sales,
                 datalabels: {
                   display: false,
                 },
-              }
+                tooltip: {
+                  callbacks: {
+                    label: function(point) {
+                      var label = []
+                      label.push(`Price: ${point.raw.y}`);
+                      label.push(`Date: ${point.raw.x}`);
+                      label.push(``);
+                      label.push(`${point.raw.club.name}`);
+                      label.push(`${point.raw.club.country} - ${point.raw.club.city}`);
+                      label.push(`Division: ${point.raw.club.division}`);
+                      label.push(``);
+                      return label;
+                    }
+                  }
+                },
+              },
             }}
           />
         </div>
