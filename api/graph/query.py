@@ -176,6 +176,94 @@ class Query(ObjectType):
 
         return [c["count"] async for c in info.context["db"].clubs.aggregate(query)][0]
 
+    get_player_count = Int(exclude_mfl_players=Boolean(), min_ovr=Int(), max_ovr=Int(), min_age=Int(), max_age=Int(), nationalities=List(String), positions=List(String))
+
+    async def resolve_get_player_count(self, info, exclude_mfl_players=True, min_ovr=1, max_ovr=100, min_age=1, max_age=100, nationalities=None, positions=None):
+        query = []
+
+        player_match = {"$match": {}}
+
+        player_match["$match"]["overall"] = {"$gte": min_ovr, "$lte": max_ovr}
+        player_match["$match"]["age_at_mint"] = {"$gte": min_age, "$lte": max_age}
+
+        if nationalities and len(nationalities) > 0:
+            player_match["$match"]["nationalities"] = {"$in": nationalities}
+        if positions and len(positions) > 0:
+            player_match["$match"]["positions"] = {"$in": positions}
+
+        query.append(player_match)
+
+        if exclude_mfl_players:
+            query.append({
+                "$lookup": {
+                    "from": "users",
+                    "localField": "owner",
+                    "foreignField": "_id",
+                    "as": "owner_info"
+                }
+            })
+            query.append({
+                "$match": {"owner_info.address": {"$ne": "0xf45dfaa6233fae44"}}
+            })
+
+        query.append({"$count": "count"})
+
+        print([c["count"] async for c in info.context["db"].players.aggregate(query)])
+
+        return [c["count"] async for c in info.context["db"].players.aggregate(query)][0]
+
+    get_player_count_by_criteria = List(CountType, criteria=String(), exclude_mfl_players=Boolean(), min_ovr=Int(), max_ovr=Int(), min_age=Int(), max_age=Int(), nationalities=List(String), positions=List(String))
+
+    async def resolve_get_player_count_by_criteria(self, info, criteria=None, exclude_mfl_players=True, min_ovr=1, max_ovr=100, min_age=1, max_age=100, nationalities=None, positions=None):
+        query = []
+
+        match_stage = {"$match": {}}
+
+        if exclude_mfl_players:
+            query.append({
+                "$lookup": {
+                    "from": "users",
+                    "localField": "owner",
+                    "foreignField": "_id",
+                    "as": "owner_info"
+                }
+            })
+            match_stage["$match"]["owner_info.address"] = {"$ne": "0xf45dfaa6233fae44"}
+
+        match_stage["$match"]["overall"] = {"$gte": min_ovr, "$lte": max_ovr}
+        match_stage["$match"]["age_at_mint"] = {"$gte": min_age, "$lte": max_age}
+
+        if nationalities:
+            match_stage["$match"]["nationalities"] = {"$in": nationalities}
+        if positions:
+            match_stage["$match"]["positions"] = {"$in": positions}
+
+        c = None
+
+        if criteria == "OVR":
+            c = "$overall"
+        elif criteria == "AGE":
+            c = "$age_at_mint"
+        elif criteria == "POS":
+            c = {"$arrayElemAt": ["$positions", 0]}
+        elif criteria == "NAT":
+            c = {"$arrayElemAt": ["$nationalities", 0]}
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Criteria parameter must be one of: OVR, AGE, POS, NAT",
+            )
+
+        query.append(match_stage)
+        query.append({
+            "$group": {
+                "_id": c,
+                "count": {"$sum": 1}
+            }
+        })
+
+        return [CountType(key=c["_id"], count=c["count"]) async for c in info.context["db"].players.aggregate(query)]
+
     get_club_division_counts = List(CountType, founded_only=Boolean())
 
     async def resolve_get_club_division_counts(self, info, founded_only=True):

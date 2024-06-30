@@ -282,6 +282,33 @@ export const getMarketplaceData = ({ handleSuccess = null, handleError = null, p
   (e) => defaultHandleError(handleError, e),
 );
 
+export const getPlayerDashboardData = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+        getPlayerCount(${jsonToParams(params)}),
+        NAT: getPlayerCountByCriteria(criteria: "NAT", ${jsonToParams(params)}) {
+          key,
+          count
+        },
+        AGE: getPlayerCountByCriteria(criteria: "AGE", ${jsonToParams(params)}) {
+          key,
+          count
+        },
+        OVR: getPlayerCountByCriteria(criteria: "OVR", ${jsonToParams(params)}) {
+          key,
+          count
+        },
+        POS: getPlayerCountByCriteria(criteria: "POS", ${jsonToParams(params)}) {
+          key,
+          count
+        }
+      }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
 export const getTeams = ({ handleSuccess = null, handleError = null }) => post(
   getGraphQLEndpoint(),
   JSON.stringify({

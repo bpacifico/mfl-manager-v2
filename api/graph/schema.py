@@ -24,6 +24,13 @@ class SaleTypeEnum(enum.Enum):
     CLUB = "CLUB"
 
 
+class PlayerCriteriaTypeEnum(enum.Enum):
+    AGE = "AGE"
+    OVR = "OVR"
+    POS = "POS"
+    NAT = "NAT"
+
+
 class UserType(ObjectType):
     id = ID(source='_id')
     address = String()

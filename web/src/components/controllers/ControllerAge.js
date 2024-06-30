@@ -1,59 +1,48 @@
 import React from 'react';
 
 interface ControllerAgeProps {
-  ageAtMintMin ? : int;
-  ageAtMintMax ? : int;
+  minAge ? : int;
+  maxAge ? : int;
   onChange: func;
 }
 
-const ControllerAge: React.FC < ControllerAgeProps > = ({ ageAtMintMin, ageAtMintMax, onChange }) => {
-  const minAge = 16;
-  const maxAge = 40;
-
-  const getAgeTextValue = () => {
-    if (ageAtMintMin || ageAtMintMax) {
-      let text = [];
-
-      text.push(<span>{ageAtMintMin || <>- <i className="bi bi-infinity"></i></>}</span>);
-      text.push(<i className="bi bi-arrow-right small mx-2"></i>);
-      text.push(<span>{ageAtMintMax || <i className="bi bi-infinity"></i>}</span>);
-
-      return text;
-    }
-
-    return "All";
-  }
-
+const ControllerAge: React.FC < ControllerAgeProps > = ({ minAge, maxAge, onChange }) => {
   return (
     <div className="row">
       <div className="col-12 mb-3">
         <h4>Age</h4>
       </div>
-      <div className="col-12 text-center text-white">
-        <h3>{getAgeTextValue()}</h3>
+      <div className="col-6">
+        <label htmlFor="minAge">Min</label>
+        <select
+          className="form-control w-100 text-white"
+          value={maxAge ? minAge.toString() : null}
+          onChange={(v) => onChange(v.target.value ? parseInt(v.target.value) : undefined, maxAge)}
+        >
+          <option value={""} key={null}/>
+          {Array.from({ length: Math.min(40, maxAge ? maxAge : 40) - 15 + 1 }, (_, i) => 15 + i)
+            .map((p) => (
+            <option value={p.toString()} key={p.toString()}>
+              {p}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="col">
-        <input
-          className="w-100"
-          type="range"
-          value={ageAtMintMin || minAge}
-          min={minAge.toString()}
-          max={ageAtMintMax ? Math.min(maxAge, ageAtMintMax) : maxAge}
-          step="1"
-          onChange={(v) => onChange(v.target.value, ageAtMintMax)}
+      <div className="col-6">
+        <label htmlFor="maxAge">Max</label>
+        <select
+          className="form-control w-100 text-white"
+          value={maxAge ? maxAge.toString() : null}
+          onChange={(v) => onChange(minAge, v.target.value ? parseInt(v.target.value) : undefined)}
         >
-        </input>
-
-        <input
-          className="w-100 text-primary bg-dark"
-          type="range"
-          value={ageAtMintMax || maxAge}
-          min={ageAtMintMin ? Math.max(minAge, ageAtMintMin) : minAge}
-          max={maxAge.toString()}
-          step="1"
-          onChange={(v) => onChange(ageAtMintMin, v.target.value)}
-        >
-        </input>
+          <option value={""} key={null}/>
+          {Array.from({ length: 40 - Math.max(30, minAge ? minAge : 15) + 1 }, (_, i) => Math.max(15, minAge ? minAge : 15) + i)
+            .map((p) => (
+            <option value={p.toString()} key={p.toString()}>
+              {p}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

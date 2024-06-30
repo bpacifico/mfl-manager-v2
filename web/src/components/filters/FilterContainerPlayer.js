@@ -10,107 +10,80 @@ import { convertDictToUrlParams } from "utils/url.js";
 
 
 interface FilterContainerPlayerProps {
-	filters: dict;
-	onChange: func;
-	onClose?: func;
-  showPositions?: boolean;
-  showOverallScore?: boolean;
-  showAge?: boolean;
+  trigger: Object;
+  filters: dict;
+  onChange: func;
+  onClose ? : func;
+  showPositions ? : boolean;
+  showOverallScore ? : boolean;
+  showAge ? : boolean;
 }
 
-const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, onChange, onClose, showPositions, showOverallScore, showAge }) => {
-	const navigate = useNavigate();
+const FilterContainerPlayer: React.FC < FilterContainerPlayerProps > = ({ trigger, filters, onChange, onClose, showPositions, showOverallScore, showAge }) => {
+    const navigate = useNavigate();
 
-	const getPositionTextValue = () => {
-		if (filters.positions) {
-			const p = positions.filter((p) => filters.positions.indexOf(p.name) >= 0)
+    const getPositionTextValue = () => {
+      if (filters.positions) {
+        const p = positions.filter((p) => filters.positions.indexOf(p.name) >= 0)
 
-			if (p.length === positions.length) {
-				return "All";
-			}
+        if (p.length === positions.length) {
+          return "All";
+        }
 
-			if (p.length > 0) {
-				return p.map((p) => p.name).join(",");
-			}
+        if (p.length > 0) {
+          return p.map((p) => p.name).join(",");
+        }
 
-			return "All";
-		}
+        return "All";
+      }
 
-		return "All";
-	}
-
-	const getOverallScoreTextValue = () => {
-		if (filters.overallMin || filters.overallMax) {
-			let text = [];
-
-			text.push(<>{filters.overallMin || <>- <i className="bi bi-infinity"></i></>}</>);
-			text.push(<i className="bi bi-arrow-right small mx-1"></i>);
-			text.push(<>{filters.overallMax || <i className="bi bi-infinity"></i>}</>);
-
-			return text;
-		}
-
-		return "All";
-	}
-
-	const getAgeTextValue = () => {
-    if (filters.ageAtMintMin || filters.ageAtMintMax) {
-      let text = [];
-
-      text.push(<span>{filters.ageAtMintMin || <>- <i className="bi bi-infinity"></i></>}</span>);
-      text.push(<i className="bi bi-arrow-right small mx-2"></i>);
-      text.push(<span>{filters.ageAtMintMax || <i className="bi bi-infinity"></i>}</span>);
-
-      return text;
+      return "All";
     }
 
-    return "All";
-  }
+    const getOverallScoreTextValue = () => {
+        if (filters.minOvr || filters.maxOvr) {
+          let text = [];
 
-	const onPopupClose = () => {
-		navigate({ search: '?' + convertDictToUrlParams(filters) });
+          text.push( < > {
+              filters.minOvr || < > -<i className="bi bi-infinity"></i> < />}</ > ); text.push(<i className="bi bi-arrow-right small mx-1"></i>); text.push( < > { filters.maxOvr || <i className="bi bi-infinity"></i> } < />);
 
-		if (onClose) {
-			onClose();
-		}
-	}
+              return text;
+            }
 
-	useEffect(() => {
-    navigate({ search: '?' + convertDictToUrlParams(filters) });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+            return "All";
+          }
 
-  return (
-    <div className="FilterContainerPlayer">
+          const getAgeTextValue = () => {
+            if (filters.minAge || filters.maxAge) {
+              let text = [];
+
+              text.push(<span>{filters.minAge || <>- <i className="bi bi-infinity"></i></>}</span>);
+              text.push(<i className="bi bi-arrow-right small mx-2"></i>);
+              text.push(<span>{filters.maxAge || <i className="bi bi-infinity"></i>}</span>);
+
+              return text;
+            }
+
+            return "All";
+          }
+
+          const onPopupClose = () => {
+            navigate({ search: '?' + convertDictToUrlParams(filters) });
+
+            if (onClose) {
+              onClose();
+            }
+          }
+
+          useEffect(() => {
+            navigate({ search: '?' + convertDictToUrlParams(filters) });
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+          }, []);
+
+          return (
+            <div className="FilterContainerPlayer">
     	<Popup
-				trigger={
-					<div className="big-filter-box flex-row bg-body d-flex border btn border-info border-3 text-white p-1">
-						<div className="d-flex align-items-center mx-3 my-2 h5">
-							<i className="bi bi-filter-square-fill text-info"></i>
-						</div>
-
-						{showPositions && getPositionTextValue() !== "All"
-							&& <div className="mx-2">
-								<div className="text-white-50 lh-0">POS</div>
-								<div>{getPositionTextValue()}</div>
-							</div>
-						}
-
-						{showOverallScore && getOverallScoreTextValue() !== "All"
-							&& <div className="mx-2">
-								<div className="text-white-50">OVR</div>
-								<div>{getOverallScoreTextValue()}</div>
-							</div>
-						}
-
-						{showAge && getAgeTextValue() !== "All"
-							&& <div className="mx-2">
-								<div className="text-white-50">AGE</div>
-								<div>{getAgeTextValue()}</div>
-							</div>
-						}
-					</div>
-				}
+				trigger={trigger}
 				modal
 				closeOnDocumentClick
 				onClose={onPopupClose}
@@ -144,24 +117,24 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 
 							<div className="col-md-12 mb-4">
 				    		{showOverallScore && <ControllerOverallScore
-				    			overallMin={filters.overallMin}
-				    			overallMax={filters.overallMax}
+				    			minOvr={filters.minOvr}
+				    			maxOvr={filters.maxOvr}
 									onChange={(min, max) => onChange({
 										...filters,
-										overallMin: min,
-										overallMax: max,
+										minOvr: min,
+										maxOvr: max,
 									})}
 								/>}
 			    		</div>
 
 			    		<div className="col-md-12 mb-4">
 				    		{showAge && <ControllerAge
-				    			ageAtMintMin={filters.ageAtMintMin}
-				    			ageAtMintMax={filters.ageAtMintMax}
+				    			minAge={filters.minAge}
+				    			maxAge={filters.maxAge}
 									onChange={(min, max) => onChange({
 										...filters,
-										ageAtMintMin: min,
-										ageAtMintMax: max,
+										minAge: min,
+										maxAge: max,
 									})}
 								/>}
 			    		</div>
@@ -183,7 +156,7 @@ const FilterContainerPlayer: React.FC<FilterContainerPlayerProps> = ({ filters, 
 				)}
 			</Popup>
     </div>
-  );
-};
+          );
+        };
 
-export default FilterContainerPlayer;
+        export default FilterContainerPlayer;

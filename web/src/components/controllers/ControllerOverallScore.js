@@ -1,57 +1,48 @@
 import React from 'react';
 
 interface ControllerOverallScoreProps {
-  overallMin?: int;
-  overallMax?: int;
+  minOvr ? : int;
+  maxOvr ? : int;
   onChange: func;
 }
 
-const ControllerOverallScore: React.FC<ControllerOverallScoreProps> = ({ overallMin, overallMax, onChange }) => {
-  
-  const getOverallScoreTextValue = () => {
-    if (overallMin || overallMax) {
-      let text = [];
-
-      text.push(<span>{overallMin || <>- <i className="bi bi-infinity"></i></>}</span>);
-      text.push(<i className="bi bi-arrow-right small mx-2"></i>);
-      text.push(<span>{overallMax || <i className="bi bi-infinity"></i>}</span>);
-
-      return text;
-    }
-
-    return "All";
-  }
-
+const ControllerOverallScore: React.FC < ControllerOverallScoreProps > = ({ minOvr, maxOvr, onChange }) => {
   return (
     <div className="row">
       <div className="col-12 mb-3">
-        <h4>Overall score</h4>
+        <h4>Overall</h4>
       </div>
-      <div className="col-12 text-center text-white">
-        <h3>{getOverallScoreTextValue()}</h3>
+      <div className="col-6">
+        <label htmlFor="minOvr">Min</label>
+        <select
+          className="form-control w-100 text-white"
+          value={maxOvr ? minOvr.toString() : null}
+          onChange={(v) => onChange(v.target.value ? parseInt(v.target.value) : undefined, maxOvr)}
+        >
+          <option value={""} key={null}/>
+          {Array.from({ length: Math.min(99, maxOvr ? maxOvr : 99) - 30 + 1 }, (_, i) => 30 + i)
+            .map((p) => (
+            <option value={p.toString()} key={p.toString()}>
+              {p}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="col">
-    	  <input
-          className="w-100"
-          type="range"
-          value={overallMin || 40}
-          min="40"
-          max={Math.min(94, overallMax)}
-          step="1"
-          onChange={(v) => onChange(v.target.value, overallMax)}
+      <div className="col-6">
+        <label htmlFor="maxOvr">Max</label>
+        <select
+          className="form-control w-100 text-white"
+          value={maxOvr ? maxOvr.toString() : null}
+          onChange={(v) => onChange(minOvr, v.target.value ? parseInt(v.target.value) : undefined)}
         >
-        </input>
-
-        <input
-          className="w-100 text-primary bg-dark"
-          type="range"
-          value={overallMax || 94}
-          min={Math.max(40, overallMin)}
-          max="94"
-          step="1"
-          onChange={(v) => onChange(overallMin, v.target.value)}
-        >
-        </input>
+          <option value={""} key={null}/>
+          {Array.from({ length: 99 - Math.max(30, minOvr ? minOvr : 30) + 1 }, (_, i) => Math.max(30, minOvr ? minOvr : 30) + i)
+            .map((p) => (
+            <option value={p.toString()} key={p.toString()}>
+              {p}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
