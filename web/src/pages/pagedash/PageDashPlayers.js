@@ -51,7 +51,7 @@ const PageDashPlayers: React.FC < PageDashPlayersProps > = () => {
           <div className="d-flex flex-column flex-md-row flex-md-grow-0 flex-basis-300">
             <div className="card d-flex flex-column flex-md-grow-0 flex-basis-300 m-2 p-3 pt-2">
               <div className="d-flex flex-column flex-md-grow-1">
-                <div className="d-flex flex-row flex-grow-0 flex-basis-0 justify-content-end py-4 py-md-0">
+                <div className="d-flex flex-row flex-grow-0 flex-basis-0 justify-content-end pb-4 py-md-0">
                   {Object.keys(filters)
                     .filter((k) => Array.isArray(filters[k]) ? filters[k].length > 0 : filters[k])
                     .length > 0
@@ -70,7 +70,7 @@ const PageDashPlayers: React.FC < PageDashPlayersProps > = () => {
                       </button>
                     }
                     filters={filters}
-                    onChange={(f) => { console.log(f); setFilters(f)}}
+                    onChange={(f) => setFilters(f)}
                     showPositions={true}
                     showOverallScore={true}
                     showAge={true}
@@ -102,7 +102,7 @@ const PageDashPlayers: React.FC < PageDashPlayersProps > = () => {
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden py-5 py-md-0">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <ChartBarKeyCount
                  data={data && data[selectedCriteria]}
                 />
@@ -112,13 +112,13 @@ const PageDashPlayers: React.FC < PageDashPlayersProps > = () => {
 
           <div className="d-flex flex-column flex-md-row flex-md-grow-1">
             <div className="card d-flex flex-md-grow-1 flex-md-shrink-1 flex-md-basis-0 m-2 p-3 pt-2">
-              <div className="d-flex flex-fill overflow-hidden py-5 py-md-0">
+              <div className="d-flex flex-fill overflow-hidden  ratio-sm ratio-sm-4x3">
                 <BoxSoonToCome />
               </div>
             </div>
 
             <div className="card d-flex flex-md-grow-1 flex-md-shrink-1 m-2 p-3 pt-2">
-              <div className="d-flex flex-fill overflow-hidden py-5 py-md-0">
+              <div className="d-flex flex-fill overflow-hidden ratio-sm ratio-sm-4x3">
                 <BoxSoonToCome />
               </div>
             </div>
