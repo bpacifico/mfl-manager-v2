@@ -76,11 +76,6 @@ const ChartBarKeyCount: React.FC < ChartBarKeyCountProps > = ({ data }) => {
                 },
               },
             },
-            layout: {
-              padding: {
-                top: 30,
-              }
-            }
           }}
         />
       }

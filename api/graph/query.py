@@ -208,8 +208,6 @@ class Query(ObjectType):
 
         query.append({"$count": "count"})
 
-        print([c["count"] async for c in info.context["db"].players.aggregate(query)])
-
         return [c["count"] async for c in info.context["db"].players.aggregate(query)][0]
 
     get_player_count_by_criteria = List(CountType, criteria=String(), exclude_mfl_players=Boolean(), min_ovr=Int(), max_ovr=Int(), min_age=Int(), max_age=Int(), nationalities=List(String), positions=List(String))
