@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import LoadingBar from "components/loading/LoadingBar.js";
@@ -14,16 +14,21 @@ import { getPlayerSales } from "services/api-assistant.js";
 import BoxSoonToCome from "components/box/BoxSoonToCome.js";
 import Count from "components/counts/Count.js";
 import { positions, scarcity } from "utils/player.js";
+import { convertDictToUrlParams } from "utils/url.js";
+import { copyTextToClipboard } from "utils/clipboard.js";
 
 
 interface PageToolsPlayerPricingProps {}
 
 const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(false);
 
-  const [overall, setOverall] = useState(null);
-  const [position, setPosition] = useState(null);
-  const [age, setAge] = useState(null);
+  const [overall, setOverall] = useState(searchParams.get("overall") ? parseInt(searchParams.get("overall")) : null);
+  const [position, setPosition] = useState(searchParams.get("position") ? searchParams.get("position") : null);
+  const [age, setAge] = useState(searchParams.get("age") ? parseInt(searchParams.get("age")) : null);
 
   const [sales, setSales] = useState(null);
   const [hideOneAndLower, setHideOneAndLower] = useState(false);
@@ -32,6 +37,14 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
   const getData = (pursue, beforeListingId) => {
     setIsLoading(true);
     setSales(null);
+
+    navigate({
+      search: "?" + convertDictToUrlParams({
+        overall,
+        position,
+        age
+      })
+    });
 
     getPlayerSales({
       handleSuccess: (v) => {
@@ -51,7 +64,9 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
   }
 
   useEffect(() => {
-    setSales();
+    if (overall && position && age) {
+      getData();
+    }
   }, []);
 
   return (
@@ -61,7 +76,20 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
           <div className="d-flex flex-column flex-md-grow-0 flex-basis-300">
             <div className="card d-flex flex-column flex-md-grow-0 m-2 p-3 pt-2">
               <div className="d-flex flex-row flex-md-grow-1">
-                <h4 className="flex-grow-1">Player profile</h4>
+                <h4 className="flex-grow-1">
+                  Player profile
+                </h4>
+
+                {sales
+                  && <div className="flex-glow-0">
+                    <button
+                      className="btn btn-sm btn-link align-self-start"
+                      onClick={() => copyTextToClipboard(window.location.href)}
+                    >
+                      <i className="bi bi-share-fill"/>
+                    </button>
+                  </div>
+                }
               </div>
 
               <div className="d-flex flex-fill flex-column">
@@ -72,7 +100,7 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
                   step="1"
                   className="form-control w-100 mb-1"
                   value={overall}
-                  onChange={(v) => {setOverall(parseInt(v.target.value))}}
+                  onChange={(v) => setOverall(parseInt(v.target.value))}
                   placeholder={"OVR"}
                   autoFocus
                 />
@@ -97,7 +125,7 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
                   step="1"
                   className="form-control w-100 mb-1"
                   value={age}
-                  onChange={(v) => {setAge(parseInt(v.target.value))}}
+                  onChange={(v) => setAge(parseInt(v.target.value))}
                   placeholder={"Age"}
                 />
                 <button
