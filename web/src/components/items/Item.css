@@ -3,7 +3,7 @@
   padding: 1px 4px;
 }
 
-.Item.no-hover {
+.Item.no-hover:hover {
   background-color: unset !important;
   color: unset !important;
   cursor: unset !important;
