@@ -14,7 +14,7 @@ const ItemTeam: React.FC < ItemTeamProps > = ({ team, isSelected, onSelect, onDe
       onClick={() => onSelect(team)}>
       <div className="d-flex flex-column flex-md-row flex-fill pb-1 pb-md-0">
         <div className="d-flex flex-row flex-basis-300">
-          <i class="bi bi-clipboard2-check-fill me-1"/>
+          <i className="bi bi-clipboard2-check-fill me-1"/>
 
           <div className="d-flex fill">
             {team.name}

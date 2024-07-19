@@ -18,7 +18,7 @@ const ItemRowPlayerAssist: React.FC < ItemRowPlayerAssistProps > = ({ p, isSelec
     >
       <div className="d-flex flex-column flex-md-row flex-fill pb-1 pb-md-0">
         <div className="d-flex flex-row flex-basis-300">
-          <i class="bi bi-person-badge-fill me-1"/>
+          <i className="bi bi-person-badge-fill me-1"/>
 
           <div className="d-flex flex-fill">
             <span className="d-inline-block text-truncate">

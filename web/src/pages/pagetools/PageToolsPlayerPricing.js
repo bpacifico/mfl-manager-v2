@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { NotificationManager as nm } from "react-notifications";
 import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 import LoadingBar from "components/loading/LoadingBar.js";
+import LoadingSquare from "components/loading/LoadingSquare.js"
 import CountSales from "components/counts/CountSales.js";
 import CountSaleValue from "components/counts/CountSaleValue.js";
 import ChartBarPlayerSales from "components/charts/ChartBarPlayerSales.js";
@@ -16,6 +17,8 @@ import Count from "components/counts/Count.js";
 import { positions, scarcity } from "utils/player.js";
 import { convertDictToUrlParams } from "utils/url.js";
 import { copyTextToClipboard } from "utils/clipboard.js";
+import ItemRowPlayerAssist from "components/items/ItemRowPlayerAssist.js";
+import ItemSale from "components/items/ItemSale.js";
 
 
 interface PageToolsPlayerPricingProps {}
@@ -210,15 +213,46 @@ const PageToolsPlayerPricing: React.FC < PageToolsPlayerPricingProps > = () => {
               </div>
             </div>
 
-            <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex - basis - 400 m-2 p-3 pt-2">
-              <div className="d-flex flex-row">
+            <div className="card d-flex flex-column flex-md-grow-1 flex-md-shrink-1 flex-md-basis-auto flex-basis-0 m-2 p-3 pt-2 max-height-md-200">
+              <div className="d-flex flex-row flex-md-grow-0">
                 <div className="d-flex">
                   <h4 className="flex-grow-1">Player list</h4>
                 </div>
               </div>
 
-              <div className="d-flex flex-fill overflow-hidden">
-                <BoxSoonToCome />
+              <div className="d-flex flex-fill flex-column overflow-auto">
+                {!sales && !isLoading
+                  && <BoxMessage
+                    className={"py-4 py-md-0"}
+                    content={"No selection"}
+                  />
+                }
+
+                {isLoading
+                  && <LoadingSquare />
+                }
+
+                {sales?.length === 0
+                  && <BoxMessage
+                    className={"py-4 py-md-0"}
+                    content={"No sales found"}
+                  />
+                }
+
+                {sales && !isLoading
+                  && sales
+                    .sort((a, b) => b.executionDate.localeCompare(a.executionDate))
+                    .map((p) => 
+                      <div className="d-flex flex-column">
+                        <div className="d-flex flex-grow-1 me-1">
+                          <ItemSale s={p}/>
+                        </div>
+                        <div className="d-flex flex-grow-1 me-1">
+                          <ItemRowPlayerAssist p={p.player}/>
+                        </div>
+                      </div>
+                    )
+                }
               </div>
             </div>
           </div>

@@ -303,3 +303,7 @@ button.btn-link:hover {
 .vh-95 {
   height: 95vh !important;
 }
+
+.text-main {
+  color: #0dcaf0 !important;
+}

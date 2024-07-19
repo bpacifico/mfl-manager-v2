@@ -3,11 +3,16 @@
   padding: 1px 4px;
 }
 
+.Item.no-hover {
+  background-color: unset !important;
+  color: unset !important;
+  cursor: unset !important;
+}
+
 .Item:hover {
   background-color: rgba(13, 202, 240, .2) !important;
   color: white;
   cursor: pointer;
-
 }
 
 .Item.selected {

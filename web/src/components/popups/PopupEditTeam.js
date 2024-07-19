@@ -88,7 +88,7 @@ const PopupEditTeam: React.FC < PopupEditTeamProps > = ({ trigger, team, onClose
 
 						<div className="d-flex flex-row align-items-middle mt-3">
 							<input
-								class="form-check-input me-2"
+								className="form-check-input me-2"
 								type="checkbox"
 								checked={isPublic}
 								onChange={() => {

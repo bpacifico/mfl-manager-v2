@@ -97,7 +97,7 @@ const Router: React.FC = (props) => {
             >
               <Route
                 index
-                element={<PageToolsTeamBuilder
+                element={<PageToolsPlayerPricing
                   {...props}
                 />}
               />

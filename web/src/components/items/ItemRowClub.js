@@ -11,7 +11,7 @@ const ItemRowClub: React.FC < ItemRowClubProps > = ({ c }) => {
     <div className="Item ItemRowPlayer">
       <div className="d-flex flex-column flex-md-row flex-fill pb-1 pb-md-0">
         <div className="d-flex flex-basis-300">
-          <i class="bi bi-buildings-fill me-1"/>
+          <i className="bi bi-buildings-fill me-1"/>
           {c.name ? c.name : "Non-established club"}
         </div>
 

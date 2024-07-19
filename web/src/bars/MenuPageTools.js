@@ -12,18 +12,9 @@ const MenuPageTools: React.FC < MenuPageToolsProps > = (props) => {
       <ul className="navbar-nav flex-row h6 ps-md-3">
         <li className="nav-item align-self-end lh-1 px-2">
           <Link
-            to="team-builder"
-            className={"nav-link"
-              + (["/tools", "/tools/", "/tools/team-builder"].indexOf(location.pathname) >= 0 ? " active" : "")}
-          >
-            <i className="bi bi-clipboard2-check-fill mx-1"></i>
-            <span className="d-none d-md-inline ms-1">Team builder</span>
-          </Link>
-        </li>
-        <li className="nav-item align-self-end lh-1 px-2">
-          <Link
             to="player-pricing"
-            className={"nav-link" + (location.pathname === "/tools/player-pricing" ? " active" : "")}
+            className={"nav-link"
+              + (["/tools", "/tools/", "/tools/player-pricing"].indexOf(location.pathname) >= 0 ? " active" : "")}
           >
             <i className="bi bi-currency-exchange mx-1"></i>
             <span className="d-none d-md-inline ms-1">Player pricing</span>
@@ -36,6 +27,15 @@ const MenuPageTools: React.FC < MenuPageToolsProps > = (props) => {
           >
             <i className="bi bi bi-journal-bookmark-fill mx-1"></i>
             <span className="d-none d-md-inline ms-1">Contract evaluation</span>
+          </Link>
+        </li>
+        <li className="nav-item align-self-end lh-1 px-2">
+          <Link
+            to="team-builder"
+            className={"nav-link" + (location.pathname === "/tools/team-builder" ? " active" : "")}
+          >
+            <i className="bi bi-clipboard2-check-fill mx-1"></i>
+            <span className="d-none d-md-inline ms-1">Team builder</span>
           </Link>
         </li>
       </ul>
