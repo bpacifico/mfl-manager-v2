@@ -14,12 +14,14 @@ interface FilterContainerPlayerProps {
   filters: dict;
   onChange: func;
   onClose ? : func;
+  onApply ? : func;
   showPositions ? : boolean;
   showOverallScore ? : boolean;
   showAge ? : boolean;
+  deactivateNavigate ? : boolean;
 }
 
-const FilterContainerPlayer: React.FC < FilterContainerPlayerProps > = ({ trigger, filters, onChange, onClose, showPositions, showOverallScore, showAge }) => {
+const FilterContainerPlayer: React.FC < FilterContainerPlayerProps > = ({ trigger, filters, onChange, onClose, onApply, showPositions, showOverallScore, showAge, deactivateNavigate }) => {
     const navigate = useNavigate();
 
     const getPositionTextValue = () => {
@@ -68,15 +70,31 @@ const FilterContainerPlayer: React.FC < FilterContainerPlayerProps > = ({ trigge
           }
 
           const onPopupClose = () => {
-            navigate({ search: '?' + convertDictToUrlParams(filters) });
+            if (!deactivateNavigate) {
+              navigate({ search: '?' + convertDictToUrlParams(filters) });
+            }
 
             if (onClose) {
               onClose();
             }
           }
 
+          const onPopupApply = (close) => {
+            if (!deactivateNavigate) {
+              navigate({ search: '?' + convertDictToUrlParams(filters) });
+            }
+
+            if (onApply) {
+              onApply();
+            }
+
+            close();
+          }
+
           useEffect(() => {
-            navigate({ search: '?' + convertDictToUrlParams(filters) });
+            if (!deactivateNavigate) {
+              navigate({ search: '?' + convertDictToUrlParams(filters) });
+            }
             // eslint-disable-next-line react-hooks/exhaustive-deps
           }, []);
 
@@ -85,7 +103,6 @@ const FilterContainerPlayer: React.FC < FilterContainerPlayerProps > = ({ trigge
     	<Popup
 				trigger={trigger}
 				modal
-				closeOnDocumentClick
 				onClose={onPopupClose}
 				className={"slide-in"}
 			>
@@ -145,7 +162,7 @@ const FilterContainerPlayer: React.FC < FilterContainerPlayerProps > = ({ trigge
 								<div className="float-end">
 									<button
 										className="btn btn-info text-white"
-										onClick={close}
+										onClick={() => onPopupApply(close)}
 									>
 										Apply
 									</button>

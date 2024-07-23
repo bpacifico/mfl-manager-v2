@@ -6,6 +6,7 @@ import { prettifyId } from "utils/graphql.js";
 import ItemRowPlayerAssist from "components/items/ItemRowPlayerAssist.js";
 import BoxMessage from "components/box/BoxMessage.js";
 import LoadingSquare from "components/loading/LoadingSquare.js";
+import FilterContainerPlayer from "components/filters/FilterContainerPlayer.js";
 
 
 interface PopupAddPlayersProps {
@@ -18,8 +19,15 @@ interface PopupAddPlayersProps {
 const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, onConfirm, userId }) => {
   const [selectedTab, setSelectedTab] = useState("search");
 
-  const [nationalities, setNationalities] = useState(null);
-  const [selectedNationality, setSelectedNationality] = useState(null);
+  const [defaultFilters] = useState({
+    search: undefined,
+    positions: undefined,
+    minAge: undefined,
+    maxAge: undefined,
+    minOvr: undefined,
+    maxOvr: undefined,
+  })
+  const [filters, setFilters] = useState(defaultFilters);
 
   const [players, setPlayers] = useState(null);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
@@ -35,6 +43,10 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
   }
 
   const fetchPlayers = (page = 1) => {
+    if (page === 1) {
+      setPlayers(null);
+    }
+
     getPlayers({
       handleSuccess: (v) => {
         if (page === 1) {
@@ -46,7 +58,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
         setCanLoadMore(v.data.getPlayers.length === 20);
       },
       params: {
-        nationalities: selectedNationality ? [selectedNationality] : null,
+        ...filters,
         limit: 20,
         skip: 20 * (page - 1),
       }
@@ -88,17 +100,15 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
     }
   }
 
-  useEffect(() => {
-    getPlayerNationalities({
-      handleSuccess: (v) => {
-        setNationalities(v.data.getPlayerNationalities);
+  const countFilters = (p) => {
+    return Object.keys(filters).reduce((count, key) => {
+      if (key !== "search" && filters[key] != null && filters[key] !== '' &&
+        (!Array.isArray(filters[key]) || filters[key].length > 0)) {
+        return count + 1;
       }
-    });
-  }, []);
-
-  useEffect(() => {
-    fetchPlayers();
-  }, [selectedNationality]);
+      return count;
+    }, 0);
+  }
 
   useEffect(() => {
     setPlayers(null);
@@ -117,7 +127,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
       <Popup
         trigger={trigger}
         modal
-        closeOnDocumentClick
+        closeOnDocumentClick={false}
         onClose={onClose}
         className={"fade-in popup-xl"}
       >
@@ -163,23 +173,45 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
             {selectedTab === "search"
               && <div className="d-flex flex-column flex-grow-1 overflow-auto">
                 <div className="d-flex flex-row flex-grow-0 mb-3">
-                  <select
-                    className="form-select w-100 mb-1"
-                    value={selectedNationality}
-                    onChange={(v) => setSelectedNationality(v.target.value)}
-                    placeholder={"Nationality"}
+                  <input
+                    type="text"
+                    className="form-control me-1"
+                    value={filters.search}
+                    onChange={(v) => setFilters({ ...filters, search: v.target.value})}
+                    placeholder={"Name"}
+                    autoFocus
+                  />
+                  <FilterContainerPlayer
+                    trigger={
+                      <button className="d-flex flex-row btn btn-info text-white me-1">
+                        <i className="bi bi-filter-square-fill"/>{countFilters() > 0 ? <div className="ms-2">{countFilters()}</div> : ""}
+                      </button>
+                    }
+                    filters={filters}
+                    onChange={(f) => setFilters(f)}
+                    onApply={() => fetchPlayers()}
+                    showPositions={true}
+                    showOverallScore={true}
+                    showAge={true}
+                    deactivateNavigate={true}
+                  />
+                  {(countFilters() > 0 || filters.search)
+                    && <button
+                      className="btn btn-warning text-white me-1"
+                      onClick={() => setFilters(defaultFilters)}
+                    >
+                      <i className="bi bi-x-square-fill text-white"></i>
+                    </button>
+                  }
+                  <button
+                    className="btn btn-info text-white"
+                    onClick={() => fetchPlayers()}
                   >
-                    <option value={""} key={null}/>
-                    {nationalities && nationalities
-                      .map((n) => (
-                      <option value={n} key={n}>
-                        {n}
-                      </option>
-                    ))}
-                  </select>
+                    <i className="bi bi-search text-white"></i>
+                  </button>
                 </div>
 
-                <div className="d-flex flex-grow-1 flex-column mb-3 overflow-auto">
+                <div className="d-flex flex-grow-1 flex-column overflow-auto">
                   {players && players.length > 0
                     && players.map((p) => <div><ItemRowPlayerAssist
                         p={p}
@@ -244,12 +276,12 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
             <div className="d-flex flex-grow-0 flex-row justify-content-end mt-3">
               <div>
                 <button
-                    className="btn btn-info text-white"
-                    disabled={selectedPlayers.length <= 0}
-                    onClick={() => confirm(close)}
-                  >
-                    Confirm
-                  </button>
+                  className="btn btn-info text-white"
+                  disabled={selectedPlayers.length <= 0}
+                  onClick={() => confirm(close)}
+                >
+                  Confirm
+                </button>
               </div>
             </div>
           </div>
