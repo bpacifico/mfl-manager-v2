@@ -46,7 +46,7 @@ async def main(db):
                         .find_one({"player": player["_id"]})
 
                     if existing_contract and existing_contract["_id"] != p["activeContract"]["id"]:
-                        await db.contracts.remove({"player": player["_id"]})
+                        await db.contracts.delete_one({"player": player["_id"]})
 
                     user = await build_and_upsert_contract(
                         db,
