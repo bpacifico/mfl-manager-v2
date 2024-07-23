@@ -353,12 +353,13 @@ class Query(ObjectType):
 
         return team_members
 
-    get_players = List(PlayerType, search=String(), owners=List(String), min_ovr=Int(), max_ovr=Int(), nationalities=List(String), positions=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
+    get_players = List(PlayerType, search=String(), owners=List(String), min_ovr=Int(), max_ovr=Int(), min_age=Int(), max_age=Int(), nationalities=List(String), positions=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
 
-    async def resolve_get_players(self, info, search=None, owners=None, min_ovr=1, max_ovr=100, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
+    async def resolve_get_players(self, info, search=None, owners=None, min_ovr=1, max_ovr=100, min_age=1, max_age=99, nationalities=None, positions=None, skip=0, limit=10, sort="overall", order=-1):
 
         filters = {
-            "overall": {"$gt": min_ovr, "$lt": max_ovr}
+            "overall": {"$gte": min_ovr, "$lte": max_ovr},
+            "age_at_mint": {"$gte": min_age, "$lte": max_age}
         }
 
         if nationalities is not None:

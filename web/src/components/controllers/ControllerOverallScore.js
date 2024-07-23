@@ -16,7 +16,7 @@ const ControllerOverallScore: React.FC < ControllerOverallScoreProps > = ({ minO
         <label htmlFor="minOvr">Min</label>
         <select
           className="form-control w-100 text-white"
-          value={maxOvr ? minOvr.toString() : null}
+          value={minOvr ? minOvr.toString() : null}
           onChange={(v) => onChange(v.target.value ? parseInt(v.target.value) : undefined, maxOvr)}
         >
           <option value={""} key={null}/>

@@ -20,7 +20,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
   const [selectedTab, setSelectedTab] = useState("search");
 
   const [defaultFilters] = useState({
-    search: undefined,
+    search: "",
     positions: undefined,
     minAge: undefined,
     maxAge: undefined,
