@@ -16,7 +16,7 @@ const ControllerAge: React.FC < ControllerAgeProps > = ({ minAge, maxAge, onChan
         <label htmlFor="minAge">Min</label>
         <select
           className="form-control w-100 text-white"
-          value={maxAge ? minAge.toString() : null}
+          value={minAge ? minAge.toString() : null}
           onChange={(v) => onChange(v.target.value ? parseInt(v.target.value) : undefined, maxAge)}
         >
           <option value={""} key={null}/>

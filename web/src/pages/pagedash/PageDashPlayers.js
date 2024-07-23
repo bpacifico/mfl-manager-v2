@@ -17,19 +17,22 @@ const PageDashPlayers: React.FC < PageDashPlayersProps > = () => {
     const [selectedCriteria, setSelectedCriteria] = useState("OVR");
     const [filters, setFilters] = useState({
       positions: searchParams.get("positions") ? searchParams.get("positions").split(",") : [],
-      minAge: searchParams.get("minAge") ? searchParams.get("minAge").split(",") : undefined,
-      maxAge: searchParams.get("maxAge") ? searchParams.get("maxAge").split(",") : undefined,
-      minOvr: searchParams.get("minOvr") ? searchParams.get("minOvr") : undefined,
-      maxOvr: searchParams.get("maxOvr") ? searchParams.get("maxOvr") : undefined,
+      minAge: searchParams.get("minAge") ? parseInt(searchParams.get("minAge")) : undefined,
+      maxAge: searchParams.get("maxAge") ? parseInt(searchParams.get("maxAge")) : undefined,
+      minOvr: searchParams.get("minOvr") ? parseInt(searchParams.get("minOvr")) : undefined,
+      maxOvr: searchParams.get("maxOvr") ? parseInt(searchParams.get("maxOvr")) : undefined,
     });
 
     const fetchData = () => {
+      setData(null);
+
       getPlayerDashboardData({
         handleSuccess: (v) => {
           setData(v.data)
         },
         params: {
           ...filters,
+          forceFetch: undefined,
         }
       });
     };
@@ -37,12 +40,16 @@ const PageDashPlayers: React.FC < PageDashPlayersProps > = () => {
     useEffect(() => {
       fetchData();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters]);
+    }, []);
 
     useEffect(() => {
-      fetchData();
+      if (filters.forceFetch) {
+        fetchData();
+        setFilters({ ...filters, forceFetch: undefined });
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [filters]);
+
 
     return (
         <div id="PageDashPlayers" className="h-100 w-100">
@@ -57,7 +64,7 @@ const PageDashPlayers: React.FC < PageDashPlayersProps > = () => {
                     .length > 0
                     && <button
                       className="btn btn-warning text-white align-self-end me-2"
-                      onClick={() => setFilters({ positions: [] })}
+                      onClick={() => setFilters({ positions: [], forceFetch: true })}
                     >
                       <i className="bi bi-x-square-fill"/>
                     </button>
@@ -71,6 +78,7 @@ const PageDashPlayers: React.FC < PageDashPlayersProps > = () => {
                     }
                     filters={filters}
                     onChange={(f) => setFilters(f)}
+                    onApply={() => fetchData()}
                     showPositions={true}
                     showOverallScore={true}
                     showAge={true}
