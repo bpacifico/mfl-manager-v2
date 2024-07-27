@@ -71,11 +71,11 @@ a .card:hover {
 }
 
 .popup-content {
-  max-height: 100vh;
+  max-height: 100%;
 }
 
 .popup-content>.container {
-  max-height: 100vh;
+  max-height: 95vh;
 }
 
 .popup-xl-content {
@@ -298,10 +298,6 @@ button.btn-link:hover {
 
 .nav-tabs button:not(.printable) {
   color: #0dcaf0;
-}
-
-.vh-95 {
-  height: 95vh !important;
 }
 
 .text-main {
