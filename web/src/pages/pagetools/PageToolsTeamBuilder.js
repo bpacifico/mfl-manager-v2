@@ -52,6 +52,8 @@ const PageToolsTeamBuilder: React.FC < PageToolsTeamBuilderProps > = (props) => 
   }
 
   const fetchTeamMembers = () => {
+    setTeamMembers(null);
+
     getTeamMembers({
       handleSuccess: (v) => {
         setTeamMembers(v.data.getTeamMembers)
