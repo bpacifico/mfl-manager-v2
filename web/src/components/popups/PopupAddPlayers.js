@@ -39,6 +39,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
       onConfirm(selectedPlayers);
     }
 
+    setSelectedPlayers([]);
     close();
   }
 
@@ -128,6 +129,7 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
         trigger={trigger}
         modal
         closeOnDocumentClick={false}
+        onOpen={() => setSelectedTab("search")}
         onClose={onClose}
         className={"fade-in popup-xl"}
       >
@@ -275,12 +277,22 @@ const PopupAddPlayers: React.FC < PopupAddPlayersProps > = ({ trigger, onClose, 
 
             <div className="d-flex flex-grow-0 flex-row justify-content-end mt-3">
               <div>
+                {selectedPlayers.length > 0
+                 && <button
+                    className="btn btn-warning text-white me-1"
+                    onClick={() => setSelectedPlayers([])}
+                  >
+                    <i className="bi bi-x-square-fill text-white"></i>
+                  </button>
+                }
                 <button
                   className="btn btn-info text-white"
                   disabled={selectedPlayers.length <= 0}
                   onClick={() => confirm(close)}
                 >
-                  Confirm
+                  Confirm {selectedPlayers.length > 0
+                    && `(${selectedPlayers.length})`
+                  }
                 </button>
               </div>
             </div>
