@@ -44,9 +44,22 @@ export const formations = {
     "3": { "x": 50, "y": 75, "position": "CB" },
     "4": { "x": 75, "y": 75, "position": "CB" },
     "5": { "x": 15, "y": 40, "position": "LM" },
-    "6": { "x": 25, "y": 55, "position": "CM" },
+    "6": { "x": 28, "y": 52, "position": "CM" },
     "7": { "x": 50, "y": 60, "position": "CDM" },
-    "8": { "x": 75, "y": 55, "position": "CM" },
+    "8": { "x": 72, "y": 52, "position": "CM" },
+    "9": { "x": 85, "y": 40, "position": "RM" },
+    "10": { "x": 40, "y": 25, "position": "ST" },
+    "11": { "x": 60, "y": 25, "position": "ST" }
+  },
+  "3-5-2 (B)": {
+    "1": { "x": 50, "y": 88, "position": "GK" },
+    "2": { "x": 25, "y": 75, "position": "CB" },
+    "3": { "x": 50, "y": 75, "position": "CB" },
+    "4": { "x": 75, "y": 75, "position": "CB" },
+    "5": { "x": 15, "y": 40, "position": "LM" },
+    "6": { "x": 30, "y": 60, "position": "CDM" },
+    "7": { "x": 50, "y": 45, "position": "CAM" },
+    "8": { "x": 70, "y": 60, "position": "CDM" },
     "9": { "x": 85, "y": 40, "position": "RM" },
     "10": { "x": 40, "y": 25, "position": "ST" },
     "11": { "x": 60, "y": 25, "position": "ST" }
@@ -77,6 +90,32 @@ export const formations = {
     "10": { "x": 35, "y": 20, "position": "ST" },
     "11": { "x": 65, "y": 20, "position": "ST" }
   },
+  "4-1-4-1": {
+    "1": { "x": 50, "y": 88, "position": "GK" },
+    "2": { "x": 15, "y": 75, "position": "LB" },
+    "3": { "x": 37, "y": 75, "position": "CB" },
+    "4": { "x": 63, "y": 75, "position": "CB" },
+    "5": { "x": 85, "y": 75, "position": "RB" },
+    "6": { "x": 50, "y": 60, "position": "CDM" },
+    "7": { "x": 15, "y": 38, "position": "LM" },
+    "8": { "x": 35, "y": 45, "position": "CM" },
+    "9": { "x": 65, "y": 45, "position": "CM" },
+    "10": { "x": 85, "y": 38, "position": "RM" },
+    "11": { "x": 50, "y": 20, "position": "ST" }
+  },
+  "4-1-3-2": {
+    "1": { "x": 50, "y": 88, "position": "GK" },
+    "2": { "x": 15, "y": 75, "position": "LB" },
+    "3": { "x": 37, "y": 75, "position": "CB" },
+    "4": { "x": 63, "y": 75, "position": "CB" },
+    "5": { "x": 85, "y": 75, "position": "RB" },
+    "6": { "x": 50, "y": 60, "position": "CDM" },
+    "7": { "x": 25, "y": 40, "position": "LM" },
+    "8": { "x": 50, "y": 40, "position": "CM" },
+    "9": { "x": 75, "y": 40, "position": "RM" },
+    "10": { "x": 40, "y": 20, "position": "ST" },
+    "11": { "x": 60, "y": 20, "position": "ST" }
+  },
   "4-2-2-2": {
     "1": { "x": 50, "y": 88, "position": "GK" },
     "2": { "x": 15, "y": 75, "position": "LB" },
@@ -102,6 +141,19 @@ export const formations = {
     "9": { "x": 50, "y": 40, "position": "CAM" },
     "10": { "x": 75, "y": 40, "position": "RM" },
     "11": { "x": 50, "y": 20, "position": "ST" }
+  },
+  "4-2-4": {
+    "1": { "x": 50, "y": 88, "position": "GK" },
+    "2": { "x": 15, "y": 75, "position": "LB" },
+    "3": { "x": 37, "y": 75, "position": "CB" },
+    "4": { "x": 63, "y": 75, "position": "CB" },
+    "5": { "x": 85, "y": 75, "position": "RB" },
+    "6": { "x": 35, "y": 52, "position": "CDM" },
+    "7": { "x": 65, "y": 52, "position": "CDM" },
+    "8": { "x": 20, "y": 30, "position": "LW" },
+    "9": { "x": 40, "y": 20, "position": "ST" },
+    "10": { "x": 60, "y": 20, "position": "ST" },
+    "11": { "x": 80, "y": 30, "position": "RW" }
   },
   "4-3-1-2": {
     "1": { "x": 50, "y": 88, "position": "GK" },
@@ -137,6 +189,19 @@ export const formations = {
     "5": { "x": 85, "y": 75, "position": "RB" },
     "6": { "x": 25, "y": 55, "position": "CM" },
     "7": { "x": 50, "y": 55, "position": "CM" },
+    "8": { "x": 75, "y": 55, "position": "CM" },
+    "9": { "x": 20, "y": 30, "position": "LW" },
+    "10": { "x": 80, "y": 30, "position": "RW" },
+    "11": { "x": 50, "y": 20, "position": "ST" }
+  },
+  "4-3-3 (att)": {
+    "1": { "x": 50, "y": 88, "position": "GK" },
+    "2": { "x": 15, "y": 75, "position": "LB" },
+    "3": { "x": 37, "y": 75, "position": "CB" },
+    "4": { "x": 63, "y": 75, "position": "CB" },
+    "5": { "x": 85, "y": 75, "position": "RB" },
+    "6": { "x": 25, "y": 55, "position": "CM" },
+    "7": { "x": 50, "y": 45, "position": "CAM" },
     "8": { "x": 75, "y": 55, "position": "CM" },
     "9": { "x": 20, "y": 30, "position": "LW" },
     "10": { "x": 80, "y": 30, "position": "RW" },
