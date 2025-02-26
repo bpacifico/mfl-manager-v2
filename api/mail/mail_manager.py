@@ -18,7 +18,7 @@ async def send_confirmation_mail(mail, address, confirmation_code):
     body = _load_template(body)
 
     message = MessageSchema(
-        subject="[MFL-A] Email address confirmation",
+        subject="[MFL-M] Email address confirmation",
         recipients=[address],
         subtype="html",
         body=body,
@@ -28,83 +28,3 @@ async def send_confirmation_mail(mail, address, confirmation_code):
         await mail.send_message(message)
     except Exception as e:
         raise
-
-
-async def send_listing_email(db, mail, notification, user, player_ids):
-    body = open("mail/templates/listing_notification.html", 'r').read()
-    body = body.format(
-        host=HOST,
-        player_section=build_player_section(player_ids),
-        webapp_url=get_webapp_url()
-    )
-    body = _load_template(body)
-
-    message = MessageSchema(
-        subject="[MFL-A] New listing notification",
-        recipients=[user["email"]],
-        subtype="html",
-        body=body,
-    )
-
-    try:
-        await mail.send_message(message)
-
-        filters = {"_id": ObjectId(notification.inserted_id)}
-        update_data = {
-            "status": "sent",
-            "sending_date": datetime.datetime.now(),
-        }
-
-        await db.notifications.update_one(filters, {"$set": update_data})
-
-        return {"message": "Email sent successfully"}
-    except Exception:
-        raise
-
-
-async def send_sale_email(db, mail, notification, user, player_ids):
-    body = open("mail/templates/sale_notification.html", 'r').read()
-    body = body.format(
-        host=HOST,
-        player_section=build_player_section(player_ids),
-        webapp_url=get_webapp_url()
-    )
-    body = _load_template(body)
-
-    message = MessageSchema(
-        subject="[MFL-A] New sale notification",
-        recipients=[user["email"]],
-        subtype="html",
-        body=body,
-    )
-
-    try:
-        await mail.send_message(message)
-
-        filters = {"_id": ObjectId(notification.inserted_id)}
-        update_data = {
-            "status": "sent",
-            "sending_date": datetime.datetime.now(),
-        }
-
-        await db.notifications.update_one(filters, {"$set": update_data})
-
-        return {"message": "Email sent successfully"}
-    except Exception:
-        raise
-
-
-def build_player_section(player_ids):
-    player_section = "<div>"
-
-    for i in player_ids:
-        player_section += f"<img" \
-                          f" src='https://d13e14gtps4iwl.cloudfront.net/players/{i}/card_512.png'" \
-                          f" style='width: 150px'" \
-                          f"/>" \
-                          f"<a href='https://app.playmfl.com/players/{i}' target='_blank'>See on MFL</button>" \
-                          f"<a href='https://mflplayer.info/player/{i}' target='_blank'>See on MFL Player Info</button>"
-
-    player_section += "</div>"
-
-    return player_section

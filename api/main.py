@@ -9,8 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
 from graph.mutation import Mutation
 import config
-from cron import compute_notifications, collect_clubs, collect_sales, collect_players, \
-    compute_club_count_per_day, compute_sale_total
+from cron import collect_players
 from endpoint.generate_nonce import generate_nonce
 from utils.jwt import create_access_token
 from utils.cookie import set_cookie
@@ -36,21 +35,6 @@ app.add_middleware(
 db = AsyncIOMotorClient(config.DB_URL)[config.DB_CONFIG["database"]]
 mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
 
-# Setup indexes
-
-db.clubs.create_index(
-    [
-        ('name', 'text'),
-        ('city', 'text'),
-        ('country', 'text')
-    ],
-    weights={
-        'name': 10,
-        'city': 5,
-        'country': 2
-    }
-)
-
 # Setup GraphQL
 
 def get_context_value(request: Request) -> dict:
@@ -61,11 +45,6 @@ def get_context_value(request: Request) -> dict:
     }
 
 graphql = GraphQLApp(
-    schema=Schema(query=Query, mutation=Mutation),
-    on_get=make_graphiql_handler(),
-    context_value=get_context_value,
-)
-graphql_admin = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
     on_get=make_graphiql_handler(),
     context_value=get_context_value,
@@ -123,18 +102,12 @@ async def logout(request: Request, response: Response):
 # Manage routes
 
 app.add_route("/graphql", graphql)
-app.add_route("/graphql/admin", graphql_admin)
 app.add_route("/api/generate_nonce", generate_nonce)
 app.add_route("/api/confirm_email", confirm_email)
 
 # Manage cron
 
 scheduler = AsyncIOScheduler()
-scheduler.add_job(compute_notifications.main,       'interval', args=[db, mail],    seconds=60)
-scheduler.add_job(compute_club_count_per_day.main,  'interval', args=[db],          seconds=60)
-scheduler.add_job(compute_sale_total.main,          'interval', args=[db],          seconds=30)
-scheduler.add_job(collect_clubs.main,               'interval', args=[db],          seconds=60)
-scheduler.add_job(collect_sales.main,               'interval', args=[db],          seconds=30)
 scheduler.add_job(collect_players.main,             'interval', args=[db],          seconds=30)
 scheduler.start()
 

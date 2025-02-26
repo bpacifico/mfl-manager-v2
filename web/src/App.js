@@ -8,7 +8,7 @@ import "react-notifications/lib/notifications.css";
 import { BrowserRouter } from "react-router-dom";
 import Router from "Router";
 import * as fcl from "@onflow/fcl";
-import { login, logout, getLoggedUser, addLoggedUser, updateLoggedUserEmail } from "services/api-assistant.js";
+import { login, logout, getLoggedUser, addLoggedUser, updateLoggedUserEmail } from "services/api-manager.js";
 import { getApiEndpoint } from "utils/env.js";
 import { verifyServiceData } from "utils/flow.js";
 
@@ -23,7 +23,7 @@ const App: React.FC < AppProps > = (props) => {
     const { nonce } = await response.json();
 
     return {
-      appIdentifier: "mfl-assistant",
+      appIdentifier: "mfl-manager",
       nonce,
     };
   };
@@ -87,7 +87,7 @@ const App: React.FC < AppProps > = (props) => {
     fcl.currentUser().subscribe(setFlowUser);
     fcl.config({
       "flow.network": "mainnet",
-      "app.detail.title": "mfl-assistant",
+      "app.detail.title": "mfl-manager",
       "accessNode.api": "https://rest-mainnet.onflow.org",
       "discovery.wallet": "https://fcl-discovery.onflow.org/authn",
       "discovery.authn.endpoint": "https://fcl-discovery.onflow.org/api/authn",

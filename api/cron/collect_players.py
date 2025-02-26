@@ -1,7 +1,7 @@
 import datetime
 import requests
 import logging
-from utils.db import get_var_value, upsert_vars, build_and_upsert_user, build_and_upsert_club, build_and_upsert_player, build_and_upsert_contract
+from utils.db import get_var_value, upsert_vars, build_and_upsert_user, build_and_upsert_player
 from utils.date import convert_unix_to_datetime
 
 
@@ -34,26 +34,6 @@ async def main(db):
                     )
 
                 player = await build_and_upsert_player(db, p, user)
-
-                if "activeContract" in p and "id" in p["activeContract"]:
-                    if "club" in p["activeContract"]:
-                        club = await build_and_upsert_club(
-                            db,
-                            p["activeContract"]["club"]
-                        )
-
-                    existing_contract = await db.contracts \
-                        .find_one({"player": player["_id"]})
-
-                    if existing_contract and existing_contract["_id"] != p["activeContract"]["id"]:
-                        await db.contracts.delete_one({"player": player["_id"]})
-
-                    user = await build_and_upsert_contract(
-                        db,
-                        p["activeContract"],
-                        player,
-                        club
-                    )
 
             await upsert_vars(db, last_treated_player_id_var, players[-1]["id"])
         else:

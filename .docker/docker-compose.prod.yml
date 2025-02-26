@@ -1,5 +1,5 @@
 version: "3.8"
-name: mfl-assistant_prod
+name: mfl-manager_prod
 
 services:
   mongodb:
@@ -8,19 +8,19 @@ services:
     env_file: mongodb.prod.env
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_DATABASE: mfl-assistant
+      MONGO_INITDB_DATABASE: mfl-manager
     ports:
       - "27017:27017"
     expose:
       - "27017"
     volumes:
-      - /var/www/mfl-assistant/database/data:/data
+      - /var/www/mfl-manager/database/data:/data
 
   mailserver:
     image: docker.io/mailserver/docker-mailserver:latest
     container_name: mailserver
     hostname: mail
-    domainname: mfl-assistant.com
+    domainname: mflmanager.fr
     env_file: mail-server.prod.env
     ports:
       - "25:25"
@@ -29,11 +29,11 @@ services:
       - "587:587"
       - "993:993"
     volumes:
-      - /var/www/mfl-assistant/mail/dms/mail-data/:/var/mail/
-      - /var/www/mfl-assistant/mail/dms/mail-state/:/var/mail-state/
-      - /var/www/mfl-assistant/mail/dms/mail-logs/:/var/log/mail/
-      - /var/www/mfl-assistant/mail/dms/config/:/tmp/docker-mailserver/
-      - /var/www/mfl-assistant/mail/letsencrypt:/etc/letsencrypt
+      - /var/www/mfl-manager/mail/dms/mail-data/:/var/mail/
+      - /var/www/mfl-manager/mail/dms/mail-state/:/var/mail-state/
+      - /var/www/mfl-manager/mail/dms/mail-logs/:/var/log/mail/
+      - /var/www/mfl-manager/mail/dms/config/:/tmp/docker-mailserver/
+      - /var/www/mfl-manager/mail/letsencrypt:/etc/letsencrypt
       - /etc/localtime:/etc/localtime:ro
     restart: always
     stop_grace_period: 1m
@@ -50,30 +50,30 @@ services:
     ports:
       - "80:80"
     volumes: 
-      - /var/www/mfl-assistant/mail/letsencrypt:/etc/letsencrypt
-      - /var/www/mfl-assistant/certbot/logs:/var/log/letsencrypt/
-    command: certonly --standalone --force-renewal --email team@mfl-assistant.com -d mail.mfl-assistant.com --agree-tos
+      - /var/www/mfl-manager/mail/letsencrypt:/etc/letsencrypt
+      - /var/www/mfl-manager/certbot/logs:/var/log/letsencrypt/
+    command: certonly --standalone --force-renewal --email team@mflmanager.fr -d mail.mflmanager.fr --agree-tos
 
   api:
-    image: mfl-assistant_api:local
+    image: mfl-manager_api:local
     container_name: api
     build:
       context: ../api
       dockerfile: Dockerfile
     env_file: api.prod.env
     environment:
-      ORIGINS: "https://mfl-assistant.com,https://www.mfl-assistant.com"
-      HOST: "https://api.mfl-assistant.com/"
-      WEBAPP_ENDPOINT: "https://mfl-assistant.com"
+      ORIGINS: "https://mflmanager.fr,https://www.mflmanager.fr"
+      HOST: "https://api.mflmanager.fr/"
+      WEBAPP_ENDPOINT: "https://mflmanager.fr"
       DB_HOSTNAME: "mongodb"
-      DB_NAME: "mfl-assistant"
+      DB_NAME: "mfl-manager"
       DB_USERNAME: "root"
       DB_PORT: "27017"
       DB_DRIVER: "mongodb"
-      MAIL_SERVER: "mail.mfl-assistant.com"
-      MAIL_USERNAME: "team@mfl-assistant.com"
+      MAIL_SERVER: "mail.mflmanager.fr"
+      MAIL_USERNAME: "team@mflmanager.fr"
       MAIL_PORT: "465"
-      MAIL_FROM: "team@mfl-assistant.com"
+      MAIL_FROM: "team@mflmanager.fr"
       MAIL_FROM_NAME: "MFL Assistant"
       MAIL_STARTTLS: false
       MAIL_SSL_TLS: true
@@ -89,7 +89,7 @@ services:
       - mailserver
 
   web:
-    image: mfl-assistant_web:local
+    image: mfl-manager_web:local
     container_name: web
     build:
       context: ../web
@@ -100,4 +100,4 @@ services:
 
 networks:
   default:
-    name: mfl-assistant
+    name: mfl-manager

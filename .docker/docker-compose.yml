@@ -1,5 +1,5 @@
 version: "3.8"
-name: mfl-assistant_dev
+name: mfl-manager_dev
 
 services:
   mongodb:
@@ -8,7 +8,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: mfl-assistant
+      MONGO_INITDB_DATABASE: mfl-manager
     ports:
       - "27017:27017"
     expose:
@@ -21,13 +21,13 @@ services:
       - "1080:1080"
 
   api:
-    image: mfl-assistant_api:local
+    image: mfl-manager_api:local
     build:
       context: ../api
       dockerfile: Dockerfile
     environment:
       DB_HOSTNAME: "mongodb"
-      DB_NAME: "mfl-assistant"
+      DB_NAME: "mfl-manager"
       DB_USERNAME: "root"
       DB_PASSWORD: "password"
       DB_PORT: "27017"
@@ -48,7 +48,7 @@ services:
       - ../api:/app
 
   web:
-    image: mfl-assistant_web:local
+    image: mfl-manager_web:local
     build:
       context: ../web
       dockerfile: Dockerfile
@@ -66,4 +66,4 @@ services:
 
 networks:
   default:
-    name: mfl-assistant
+    name: mfl-manager
