@@ -74,7 +74,7 @@ services:
       MAIL_USERNAME: "team@mflmanager.fr"
       MAIL_PORT: "465"
       MAIL_FROM: "team@mflmanager.fr"
-      MAIL_FROM_NAME: "MFL Assistant"
+      MAIL_FROM_NAME: "MFL Manager"
       MAIL_STARTTLS: false
       MAIL_SSL_TLS: true
       USE_CREDENTIALS: true

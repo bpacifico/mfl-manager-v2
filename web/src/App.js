@@ -16,7 +16,7 @@ interface AppProps {}
 
 const App: React.FC < AppProps > = (props) => {
   const [flowUser, setFlowUser] = useState();
-  const [assistantUser, setAssistantUser] = useState();
+  const [managerUser, setManagerUser] = useState();
 
   const accountProofDataResolver = async () => {
     const response = await fetch(getApiEndpoint() + "api/generate_nonce");
@@ -39,7 +39,7 @@ const App: React.FC < AppProps > = (props) => {
           nm.error(verifyServiceData(service));
         } else {
           login({
-            handleSuccess: (v) => { getAssistantUser() },
+            handleSuccess: (v) => { getManagerUser() },
             handleError: () => { fcl.unauthenticate(); },
             body: JSON.stringify(service.data),
           });
@@ -48,24 +48,24 @@ const App: React.FC < AppProps > = (props) => {
     }
   }
 
-  const getAssistantUser = () => {
+  const getManagerUser = () => {
     getLoggedUser({
       handleSuccess: (v) => {
         if (!v.data.getLoggedUser) {
           setFlowUser(null);
-          setAssistantUser(null);
+          getManagerUser(null);
         } else {
-          setAssistantUser(v.data.getLoggedUser);
+          getManagerUser(v.data.getLoggedUser);
         }
       },
       handleError: (v) => { return; },
     });
   }
 
-  const updateAssistantUser = (email) => {
+  const updateManagerUser = (email) => {
     updateLoggedUserEmail({
       handleSuccess: (v) => {
-        getAssistantUser();
+        getManagerUser();
         nm.info("The confirmation link has been sent via email");
       },
       params: {
@@ -76,7 +76,7 @@ const App: React.FC < AppProps > = (props) => {
 
   const clearUsers = () => {
     setFlowUser(null);
-    setAssistantUser(null);
+    setManagerUser(null);
 
     logout({
       handleSuccess: (v) => { nm.info("You have been logged out with success") },
@@ -98,7 +98,7 @@ const App: React.FC < AppProps > = (props) => {
     if (flowUser && flowUser.loggedIn) {
       getToken();
     } else {
-      getAssistantUser();
+      getManagerUser();
     }
   }, []);
 
@@ -113,8 +113,8 @@ const App: React.FC < AppProps > = (props) => {
       <BrowserRouter>
         <Router
           flowUser={flowUser}
-          assistantUser={assistantUser}
-          updateAssistantUser={updateAssistantUser}
+          managerUser={managerUser}
+          updateManagerUser={updateManagerUser}
           logout={clearUsers}
           {...props}
         />

@@ -108,7 +108,7 @@ app.add_route("/api/confirm_email", confirm_email)
 # Manage cron
 
 scheduler = AsyncIOScheduler()
-scheduler.add_job(collect_players.main,             'interval', args=[db],          seconds=30)
+# scheduler.add_job(collect_players.main,             'interval', args=[db],          seconds=30)
 scheduler.start()
 
 

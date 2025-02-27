@@ -22,7 +22,7 @@ async def verify_signature(service):
 
         fields = encode(
             [
-                "mfl-assistant",
+                "mfl-manager",
                 account.address,
                 bytes.fromhex(nonce)
             ]
