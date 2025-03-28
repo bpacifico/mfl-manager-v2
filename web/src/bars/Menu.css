@@ -1,6 +1,8 @@
 #Menu {
-  background-color: #0B0C0D;
+  background-color: #0B0C0D; 
 }
+
+
 
 #Menu .nav-link span {
   color: #0000;
@@ -66,7 +68,7 @@
   }
 
   #Menu .nav-link-search {
-    position: fixed;
+    position: static;
     top: 0px;
     left: 0px;
   }
@@ -78,22 +80,26 @@
 
 @media (min-width: 768px) {
   #Menu {
-    height: 100%;
-    width: auto;
+    height: auto;
+    width: 100%;
+  }
+
+  #Menu .nav-link div {
+    display: inline;
   }
 
   #Menu .nav-link span {
-    writing-mode: vertical-rl;
+    transform: none;
   }
 
   #Menu .nav-link-search {
-    position: fixed;
+    position: static;
     top: 0px;
-    left: 64px;
+    left: 0px;
   }
 
   #Menu .nav-link-login {
-    border-top: 2px solid #adb5bd;
+    border-left: 2px solid #adb5bd;
   }
 }
 

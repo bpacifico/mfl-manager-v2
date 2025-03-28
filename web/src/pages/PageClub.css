@@ -1,0 +1,65 @@
+.responsive-logo {
+  width: 100%; /* Pleine largeur par défaut */
+  max-width: 300px; /* Taille max pour les grands écrans */
+}
+
+@media (max-width: 768px) { /* Pour les écrans < md */
+  .responsive-logo {
+    max-width: 100%; /* Prend toute la largeur */
+  }
+}
+
+
+.transparent-box {
+  background: rgba(0, 0, 0, 0.6); /* Noir avec 60% de transparence */
+  border-radius: 12px; /* Arrondi des bords */
+  padding: 20px; /* Espace intérieur */
+  color: white; /* Texte blanc pour contraste */
+  border: 2px solid darkblue;
+  width: 100%; /* Par défaut, prendre toute la largeur disponible */
+  max-width: 100%; /* Limite à la largeur de l'écran */
+  margin: 0 auto; /* Centrer la div */
+}
+
+.trophy-container {
+  display: flex;
+  flex-wrap: wrap; /* Permet le passage à la ligne si besoin */
+  gap: 10px; /* Espacement entre les trophées */
+  max-width: 600px; /* Ajuste selon ton design */
+  margin: 0; /* Centre le conteneur */
+  justify-content: flex-end; /* Centre les trophées */
+  width: 100%;
+  list-style: none; 
+  padding: 0;
+}
+
+
+.trophy-container li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trophy {
+  width: auto; /* Taille fixe ajustable */
+  height: 4em;
+}
+
+.export-button-container {
+  margin-top: -15px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%; /* Par défaut, prendre toute la largeur disponible */
+  max-width: 100%; /* Limite à la largeur de l'écran */
+}
+
+@media (min-width: 1300px) {
+  .transparent-box {
+    width: 1300px; /* Largeur fixe sur les écrans >= md */
+    max-width: 100%; /* Assure qu'elle ne dépasse pas la largeur de l'écran */
+  }
+  .export-button-container {
+    width: 1300px; /* Largeur fixe sur les écrans >= md */
+    max-width: 100%; /* Assure qu'elle ne dépasse pas la largeur de l'écran */
+  }
+}

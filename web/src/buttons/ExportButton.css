@@ -1,0 +1,11 @@
+.export-button {
+  background: inherit;
+  color: darkblue;
+  border: none;
+  cursor: pointer;
+}
+
+.export-button:hover {
+  background-color: #0056b3;
+  border-radius: 20px; 
+}

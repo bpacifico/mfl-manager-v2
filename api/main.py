@@ -17,6 +17,9 @@ from fastapi.responses import HTMLResponse
 import json
 from datetime import datetime, timedelta
 from utils.flow import verify_signature
+from endpoint.proxy import proxy_image
+
+
 
 
 # FastAPI setup
@@ -30,19 +33,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
 # Plugins
 
 db = AsyncIOMotorClient(config.DB_URL)[config.DB_CONFIG["database"]]
 mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
 
+db.clubs.create_index(
+    [
+        ('name', 'text'),
+        ('city', 'text'),
+        ('country', 'text')
+    ],
+    weights={
+        'name': 10,
+        'city': 5,
+        'country': 2
+    }
+)
+
 # Setup GraphQL
 
 def get_context_value(request: Request) -> dict:
+    print("Vérification du contexte GraphQL")
+    print("Base de données active ?", db is not None)
     return {
         "request": request,
         "mail": mail,
         "db": db,
     }
+
 
 graphql = GraphQLApp(
     schema=Schema(query=Query, mutation=Mutation),
@@ -104,11 +125,12 @@ async def logout(request: Request, response: Response):
 app.add_route("/graphql", graphql)
 app.add_route("/api/generate_nonce", generate_nonce)
 app.add_route("/api/confirm_email", confirm_email)
+app.add_route("/proxy", proxy_image, methods=["GET"])
 
 # Manage cron
 
 scheduler = AsyncIOScheduler()
-# scheduler.add_job(collect_players.main,             'interval', args=[db],          seconds=30)
+scheduler.add_job(collect_players.main,             'interval', args=[db],          seconds=30)
 scheduler.start()
 
 

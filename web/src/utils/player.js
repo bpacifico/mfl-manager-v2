@@ -1,19 +1,19 @@
 export const positions = [
-  { name: "GK" },
-  { name: "RB" },
-  { name: "LB" },
-  { name: "CB" },
-  { name: "RWB" },
-  { name: "LWB" },
-  { name: "CDM" },
-  { name: "RM" },
-  { name: "LM" },
-  { name: "CM" },
-  { name: "CAM" },
-  { name: "RW" },
-  { name: "LW" },
-  { name: "CF" },
-  { name: "ST" },
+  { name: "GK", rowIndex:6, columnIndex:1 },
+  { name: "RB", rowIndex:5, columnIndex:2 },
+  { name: "LB", rowIndex:5, columnIndex:0},
+  { name: "CB", rowIndex:5, columnIndex:1},
+  { name: "RWB", rowIndex:4, columnIndex:2},
+  { name: "LWB", rowIndex:4, columnIndex:0 },
+  { name: "CDM", rowIndex:4, columnIndex:1 },
+  { name: "RM", rowIndex:3, columnIndex:2 },
+  { name: "LM", rowIndex:3, columnIndex:0 },
+  { name: "CM", rowIndex:3, columnIndex:1 },
+  { name: "CAM", rowIndex:2, columnIndex:1 },
+  { name: "RW", rowIndex:1, columnIndex:2 },
+  { name: "LW", rowIndex:1, columnIndex:0 },
+  { name: "CF", rowIndex:1, columnIndex:1 },
+  { name: "ST", rowIndex:0, columnIndex:1 },
 ];
 
 export const scarcity = [
@@ -22,6 +22,7 @@ export const scarcity = [
   { name: "Rare", overallMin: 75, overallMax: 84, color: "#0047ff" },
   { name: "Legendary", overallMin: 85, overallMax: 99, color: "#fa53ff" },
 ];
+
 
 export const positionAttributes = {
   "ST": { "passing": 0.10, "shooting": 0.46, "defense": 0.00, "dribbling": 0.29, "pace": 0.10, "physical": 0.05, "goalkeeping": 0.00 },
@@ -43,20 +44,20 @@ export const positionAttributes = {
 
 export const familiarity = {
   "GK": { "GK": 1, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 4, "CM": 4, "CAM": 4, "RM": 4, "LM": 4, "RW": 4, "LW": 4, "CF": 4, "ST": 4 },
-  "CB": { "GK": 4, "CB": 1, "RB": 2, "LB": 2, "RWB": 3, "LWB": 3, "CDM": 2, "CM": 3, "CAM": 4, "RM": 4, "LM": 4, "RW": 4, "LW": 4, "CF": 4, "ST": 4 },
-  "RB": { "GK": 4, "CB": 3, "RB": 1, "LB": 3, "RWB": 2, "LWB": 3, "CDM": 3, "CM": 3, "CAM": 4, "RM": 2, "LM": 3, "RW": 3, "LW": 4, "CF": 4, "ST": 4 },
-  "LB": { "GK": 4, "CB": 3, "RB": 3, "LB": 1, "RWB": 3, "LWB": 2, "CDM": 3, "CM": 3, "CAM": 4, "RM": 3, "LM": 2, "RW": 4, "LW": 3, "CF": 4, "ST": 4 },
-  "RWB": { "GK": 4, "CB": 4, "RB": 2, "LB": 3, "RWB": 1, "LWB": 3, "CDM": 3, "CM": 3, "CAM": 4, "RM": 2, "LM": 3, "RW": 3, "LW": 4, "CF": 4, "ST": 4 },
-  "LWB": { "GK": 4, "CB": 4, "RB": 3, "LB": 2, "RWB": 3, "LWB": 1, "CDM": 3, "CM": 3, "CAM": 4, "RM": 3, "LM": 2, "RW": 4, "LW": 3, "CF": 4, "ST": 4 },
-  "CDM": { "GK": 4, "CB": 2, "RB": 3, "LB": 3, "RWB": 3, "LWB": 3, "CDM": 1, "CM": 2, "CAM": 3, "RM": 3, "LM": 3, "RW": 4, "LW": 4, "CF": 4, "ST": 4 },
-  "CM": { "GK": 4, "CB": 4, "RB": 3, "LB": 3, "RWB": 3, "LWB": 3, "CDM": 2, "CM": 1, "CAM": 2, "RM": 2, "LM": 2, "RW": 3, "LW": 3, "CF": 4, "ST": 4 },
-  "CAM": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 3, "CM": 2, "CAM": 1, "RM": 2, "LM": 2, "RW": 2, "LW": 2, "CF": 3, "ST": 4 },
-  "RM": { "GK": 4, "CB": 4, "RB": 3, "LB": 3, "RWB": 2, "LWB": 3, "CDM": 3, "CM": 2, "CAM": 2, "RM": 1, "LM": 3, "RW": 2, "LW": 3, "CF": 4, "ST": 4 },
-  "LM": { "GK": 4, "CB": 4, "RB": 3, "LB": 2, "RWB": 3, "LWB": 2, "CDM": 3, "CM": 2, "CAM": 2, "RM": 3, "LM": 1, "RW": 3, "LW": 2, "CF": 4, "ST": 4 },
-  "RW": { "GK": 4, "CB": 4, "RB": 3, "LB": 4, "RWB": 3, "LWB": 4, "CDM": 4, "CM": 3, "CAM": 2, "RM": 2, "LM": 3, "RW": 1, "LW": 2, "CF": 3, "ST": 4 },
-  "LW": { "GK": 4, "CB": 4, "RB": 4, "LB": 3, "RWB": 4, "LWB": 3, "CDM": 4, "CM": 3, "CAM": 2, "RM": 3, "LM": 2, "RW": 2, "LW": 1, "CF": 3, "ST": 4 },
-  "CF": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 4, "CM": 4, "CAM": 3, "RM": 3, "LM": 3, "RW": 3, "LW": 3, "CF": 1, "ST": 2 },
-  "ST": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 4, "CM": 4, "CAM": 4, "RM": 4, "LM": 4, "RW": 3, "LW": 3, "CF": 2, "ST": 1 }
+  "CB": { "GK": 4, "CB": 1, "RB": 3, "LB": 3, "RWB": 4, "LWB": 4, "CDM": 3, "CM": 4, "CAM": 4, "RM": 4, "LM": 4, "RW": 4, "LW": 4, "CF": 4, "ST": 4 },
+  "RB": { "GK": 4, "CB": 3, "RB": 1, "LB": 3, "RWB": 2, "LWB": 4, "CDM": 4, "CM": 4, "CAM": 4, "RM": 3, "LM": 4, "RW": 4, "LW": 4, "CF": 4, "ST": 4 },
+  "LB": { "GK": 4, "CB": 3, "RB": 3, "LB": 1, "RWB": 4, "LWB": 2, "CDM": 4, "CM": 4, "CAM": 4, "RM": 4, "LM": 3, "RW": 4, "LW": 4, "CF": 4, "ST": 4 },
+  "RWB": { "GK": 4, "CB": 4, "RB": 2, "LB": 4, "RWB": 1, "LWB": 3, "CDM": 4, "CM": 4, "CAM": 4, "RM": 3, "LM": 4, "RW": 3, "LW": 4, "CF": 4, "ST": 4 },
+  "LWB": { "GK": 4, "CB": 4, "RB": 4, "LB": 2, "RWB": 3, "LWB": 1, "CDM": 4, "CM": 4, "CAM": 4, "RM": 4, "LM": 3, "RW": 4, "LW": 3, "CF": 4, "ST": 4 },
+  "CDM": { "GK": 4, "CB": 3, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 1, "CM": 2, "CAM": 3, "RM": 4, "LM": 4, "RW": 4, "LW": 4, "CF": 4, "ST": 4 },
+  "CM": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 2, "CM": 1, "CAM": 2, "RM": 3, "LM": 3, "RW": 4, "LW": 4, "CF": 4, "ST": 4 },
+  "CAM": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 3, "CM": 2, "CAM": 1, "RM": 4, "LM": 4, "RW": 4, "LW": 4, "CF": 2, "ST": 4 },
+  "RM": { "GK": 4, "CB": 4, "RB": 3, "LB": 4, "RWB": 3, "LWB": 4, "CDM": 4, "CM": 3, "CAM": 4, "RM": 1, "LM": 3, "RW": 2, "LW": 4, "CF": 4, "ST": 4 },
+  "LM": { "GK": 4, "CB": 4, "RB": 4, "LB": 3, "RWB": 4, "LWB": 3, "CDM": 4, "CM": 3, "CAM": 4, "RM": 3, "LM": 1, "RW": 4, "LW": 2, "CF": 4, "ST": 4 },
+  "RW": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 3, "LWB": 4, "CDM": 4, "CM": 4, "CAM": 4, "RM": 2, "LM": 4, "RW": 1, "LW": 3, "CF": 4, "ST": 4 },
+  "LW": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 3, "CDM": 4, "CM": 4, "CAM": 4, "RM": 4, "LM": 2, "RW": 3, "LW": 1, "CF": 4, "ST": 4 },
+  "CF": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 4, "CM": 4, "CAM": 2, "RM": 4, "LM": 4, "RW": 4, "LW": 4, "CF": 1, "ST": 2 },
+  "ST": { "GK": 4, "CB": 4, "RB": 4, "LB": 4, "RWB": 4, "LWB": 4, "CDM": 4, "CM": 4, "CAM": 4, "RM": 4, "LM": 4, "RW": 4, "LW": 4, "CF": 2, "ST": 1 }
 }
 
 export const getOverallColor = (overall) => {
@@ -87,7 +88,28 @@ export const getCalculatedOverall = (player, position) => {
       if (f === 2) {
         overall += -5;
       } else if (f === 3) {
+        overall += -8;
+      } else {
+        overall += -20;
+      }
+    }
+  }
+
+  return overall;
+}
+
+export const getMalus = (player, position) => {
+  let overall = 0;
+  if (player.positions.indexOf(position) !== 0) {
+    if (player.positions.indexOf(position) > 0) {
+      overall += -1;
+    } else {
+      let f = familiarity[player.positions[0]][position];
+
+      if (f === 2) {
         overall += -5;
+      } else if (f === 3) {
+        overall += -8;
       } else {
         overall += -20;
       }

@@ -1,0 +1,38 @@
+.tabs-container {
+  display: flex;
+  flex-direction: column; 
+  width: 100%;
+}
+
+.tabs {
+  display: flex;
+  justify-content: flex-start;
+/* Largeur des onglets */
+}
+
+.tab {
+  padding: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.tab.active {
+  font-weight: bold;
+}
+
+.tab-content {
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.position-depth {
+  border: 2px solid white;
+  border-radius: 15px;        /* Coins arrondis de 15px */
+    width: 80%;                /* Prendre toute la largeur du parent */
+  height: 80%;  
+             /* Un peu d'espace à l'intérieur */
+}
