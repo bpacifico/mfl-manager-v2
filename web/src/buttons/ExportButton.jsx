@@ -68,7 +68,7 @@ const ExportButton = ({ targetRef, fileName = "exported-image.png" }) => {
         }
     };
 
-    return <button className="export-button" onClick={handleExport}>download club profile</button>;
+    return <button className="py-2 transparent-button export-button" onClick={handleExport}>Download</button>;
 };
 
 export default ExportButton;

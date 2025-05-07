@@ -5,6 +5,7 @@ import PageHome from "pages/PageHome";
 import Page404 from "pages/Page404";
 import PageClub from "pages/PageClub";
 import PageProjection from "pages/PageProjection";
+import PageDivision from "pages/PageDivision";
 
 
 
@@ -33,6 +34,10 @@ const Router: React.FC = (props) => {
             <Route 
               path="/club" 
               element={<PageClub />}
+            />
+            <Route 
+              path="/division" 
+              element={<PageDivision />}
             />
             <Route path="/club/:clubId" element={<PageClub />} />
             <Route 

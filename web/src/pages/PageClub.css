@@ -21,6 +21,17 @@
   margin: 0 auto; /* Centrer la div */
 }
 
+
+.transparent-button {
+  background: rgba(0, 0, 0, 0.6); /* Noir avec 60% de transparence */
+  border-radius: 12px; /* Arrondi des bords */
+  padding: 20px; /* Espace intérieur */
+  color: white; /* Texte blanc pour contraste */
+  border: 2px solid darkblue;
+  margin: 0 auto; /* Centrer la div */
+}
+
+
 .trophy-container {
   display: flex;
   flex-wrap: wrap; /* Permet le passage à la ligne si besoin */

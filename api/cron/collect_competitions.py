@@ -12,7 +12,6 @@ logger.setLevel(logging.INFO)
 
 
 async def main(db):
-    logger.critical("competitions fetch")
     response = requests.get(
         url=base_url
     )

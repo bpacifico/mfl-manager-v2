@@ -11,13 +11,11 @@ competition_id_list_var = "competition_id_list"
 
 logger = logging.getLogger("collect_competition_data")
 logger.setLevel(logging.INFO)
-logger.critical("competition data")
+
 
 async def main(db):
 
-    logger.critical("competition data start ??")
     competition_id_list = await get_var_value(db, competition_id_list_var)
-    logging.critical(competition_id_list)
 
     if competition_id_list is not None :
 
@@ -57,7 +55,6 @@ async def main(db):
             
         else : 
             ### re-initialize the list of competitions to fetch 
-            logger.critical("competition id list empty")
             live_competitions_cursor = db.competitions.find({"status": "LIVE"}, {"_id": 1})
             live_competition_ids = [comp["_id"] async for comp in live_competitions_cursor]
             await upsert_vars(db, competition_id_list_var, live_competition_ids)
@@ -65,7 +62,6 @@ async def main(db):
 
     else : 
         ### initialize the list of competitions to fetch 
-        logger.critical("no competition id list")
         live_competitions_cursor = db.competitions.find({"status": "LIVE"}, {"_id": 1})
         live_competition_ids = [comp["_id"] async for comp in live_competitions_cursor]
         await upsert_vars(db, competition_id_list_var, live_competition_ids)

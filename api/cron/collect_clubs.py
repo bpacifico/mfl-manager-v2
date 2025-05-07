@@ -12,11 +12,10 @@ max_clubs_to_update = 5
 club_id_list_var = "club_id_list"
 
 logger = logging.getLogger("collect_clubs")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 async def main(db):
-	logging.critical('début get club')
 	club_id_list = await get_var_value(db, club_id_list_var)
 
 	if club_id_list is not None :
@@ -24,7 +23,6 @@ async def main(db):
 
 			club_ids_to_fetch = club_id_list[:max_clubs_to_update]
 			await upsert_vars(db, club_id_list_var, club_id_list[max_clubs_to_update:])
-			logger.critical(f"Club IDs to treat: {club_ids_to_fetch}")
 
 			for i in club_ids_to_fetch:
 				response = requests.get(url=base_url + str(i))
@@ -32,7 +30,6 @@ async def main(db):
 
 				if response.status_code == 200:
 					data = response.json()
-					logging.critical(data)
 					user = None
 
 					if "ownedBy" in data and "walletAddress" in data["ownedBy"]:
@@ -40,14 +37,11 @@ async def main(db):
 							db,
 							data["ownedBy"]
 						)
-
-					logging.critical(f"club fetch : id {data['id']}")
 					
 
 					response = requests.get(url=base_url + str(i)+"/players")
 					if response.status_code == 200:
 
-						logger.critical(f"players of club id {i} collected")
 						players = response.json()
 						data['playerNb']=len(players)
 
@@ -78,23 +72,19 @@ async def main(db):
 
 		else : 
 				### initialize the list of competitions to fetch 
-				logger.critical("club id list empty")
 				live_competitions_cursor = db.competitions.find({"status": "LIVE"}, 
 					{"_id": 1,"participants":1}
 					)
 				clubs_id = []
 				async for comp in live_competitions_cursor : 
-					logging.critical(comp)
 					if "participants" in comp :
 						for participant in comp['participants'] :
 							if "_id" in participant :				
 								clubs_id.append(participant["_id"])
-				logging.critical(clubs_id)
 				await upsert_vars(db, club_id_list_var, clubs_id)
 
 	else : 
 		### initialize the list of competitions to fetch 
-		logger.critical("no club id list")
 		live_competitions_cursor = db.competitions.find({"status": "LIVE"}, {"_id": 1})
 		clubs_id = []
 		async for comp in live_competitions_cursor : 

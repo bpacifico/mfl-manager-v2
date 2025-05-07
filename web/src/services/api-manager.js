@@ -167,6 +167,9 @@ export const getClubs = ({
           division,
           city,
           country,
+          MMR,
+          IG11,
+          B11,
         }
       }`,
     }),

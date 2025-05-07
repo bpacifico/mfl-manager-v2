@@ -200,8 +200,8 @@ const PageClub: React.FC = () => {
 
     )}
     {data && dataCompet && dataClub && dataTrophies && (
-      <div className="export-button-container">
-        <ExportButton targetRef={clubSnippet} fileName="mon-export.png" />
+      <div className="export-button-container py-2">
+        <ExportButton targetRef={clubSnippet} fileName="myclub.png" />
       </div>
     )}
 

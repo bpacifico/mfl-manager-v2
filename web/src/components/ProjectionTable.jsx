@@ -181,7 +181,7 @@ const ProjectionTable = ({ competition,clubId }) => {
     </div>
     </div>
     </section>
-    <div className="export-button-container">
+    <div className="export-button-container py-4 mx-auto">
         <ExportButton targetRef={projectionDiv} fileName="projection.png" />
       </div>
     </div>

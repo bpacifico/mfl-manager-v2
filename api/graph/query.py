@@ -213,13 +213,15 @@ class Query(ObjectType):
         return result
 
 
-    get_clubs = List(ClubType, search=String(), owners=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
+    get_clubs = List(ClubType, division=Int(), search=String(), owners=List(String), skip=Int(), limit=Int(), sort=String(), order=Int())
 
-    async def resolve_get_clubs(self, info, search=None, owners=None, skip=0, limit=500, sort="_id", order=1):
+    async def resolve_get_clubs(self, info, division=None, search=None, owners=None, skip=0, limit=500, sort="_id", order=1):
 
         clubs = info.context["db"].clubs
 
         filters = {}
+        if division:
+            filters["division"] = division
 
         if owners is not None:
             filters["owner"] = {"$in": [ObjectId(o) for o in owners]}
