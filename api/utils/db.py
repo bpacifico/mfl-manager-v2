@@ -107,3 +107,87 @@ async def build_and_upsert_player(db, mfl_player, owner=None):
         player["owner"] = owner["_id"]
 
     return await upsert_player(db, player)
+
+
+async def upsert_club(db, club):
+    return await db.clubs.find_one_and_update(
+        {"_id": club["_id"]},
+        {"$set": club},
+        upsert=True,
+        return_document=ReturnDocument.AFTER
+    )
+
+async def build_and_upsert_club(db, mfl_club, owner=None):
+    if "id" not in mfl_club or mfl_club["id"] is None:
+        return None
+
+    club = {
+        "_id": mfl_club["id"],
+        "last_computation_date": datetime.datetime.now(),
+    }
+
+    if "status" in mfl_club:
+        club["status"] = mfl_club["status"]
+    if "name" in mfl_club:
+        club["name"] = mfl_club["name"]
+    if "division" in mfl_club:
+        club["division"] = mfl_club["division"]
+    if "city" in mfl_club:
+        club["city"] = mfl_club["city"]
+    if "country" in mfl_club:
+        club["country"] = mfl_club["country"]
+    if "B11" in mfl_club:
+        club["B11"] = mfl_club["B11"]
+    if "B16A" in mfl_club:
+        club["B16A"] = mfl_club["B16A"]
+    if "IG11" in mfl_club:
+        club["IG11"] = mfl_club["IG11"]
+    if "MMR" in mfl_club:
+        club["MMR"] = mfl_club["MMR"]
+    if "playerNb" in mfl_club:
+        club["playerNb"] = mfl_club["playerNb"]    
+    if "foundationDate" in mfl_club:
+        club["foundation_date"] = convert_unix_to_datetime(mfl_club["foundationDate"]) \
+            if "foundationDate" in mfl_club else None
+    if "logoVersion" in mfl_club :    
+        club["logoVersion"] = mfl_club["logoVersion"]     
+    if owner and "_id" in owner:
+        club["owner"] = owner["_id"]
+
+    return await upsert_club(db, club)
+
+
+##### a faire 
+async def upsert_competition(db, competition):
+    return await db.competitions.find_one_and_update(
+        {"_id": competition["_id"]},
+        {"$set": competition},
+        upsert=True,
+        return_document=ReturnDocument.AFTER
+    )
+
+async def build_and_upsert_competition(db, mfl_competition, owner=None):
+    if "id" not in mfl_competition or mfl_competition["id"] is None:
+        return None
+
+    competition = {
+        "_id": mfl_competition["id"],
+        "last_computation_date": datetime.datetime.now(),
+    }
+    
+    if "type" in mfl_competition :
+        competition["type"] = mfl_competition["type"]
+    if "participants" in mfl_competition :
+        competition['participants'] = mfl_competition['participants']
+    if "status" in mfl_competition:
+        competition["status"] = mfl_competition["status"]
+    if "season" in mfl_competition:
+        competition["season"] = mfl_competition["season"]['id']
+        competition["seasonName"] = mfl_competition["season"]['name']
+    if "name" in mfl_competition :
+        competition["name"] = mfl_competition["name"]        
+    if "startingDate" in mfl_competition:
+        competition["starting_date"] = convert_unix_to_datetime(mfl_competition["startingDate"])
+
+
+    return await upsert_competition(db, competition)

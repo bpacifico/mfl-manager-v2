@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
 from graph.mutation import Mutation
 import config
-from cron import collect_players
+from cron import collect_players, collect_competitions, collect_competition_data, collect_clubs#, club0
 from endpoint.generate_nonce import generate_nonce
 from utils.jwt import create_access_token
 from utils.cookie import set_cookie
@@ -22,7 +22,7 @@ from endpoint.proxy import proxy_image
 
 
 
-# FastAPI setup
+####### FastAPI setup
 
 app = FastAPI()
 app.add_middleware(
@@ -39,6 +39,10 @@ app.add_middleware(
 
 db = AsyncIOMotorClient(config.DB_URL)[config.DB_CONFIG["database"]]
 mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
+
+
+from endpoint.competitions import get_competition
+
 
 db.clubs.create_index(
     [
@@ -127,12 +131,19 @@ app.add_route("/api/generate_nonce", generate_nonce)
 app.add_route("/api/confirm_email", confirm_email)
 app.add_route("/proxy", proxy_image, methods=["GET"])
 
+app.add_api_route("/competitions/{competition_id}", 
+                 endpoint=get_competition, 
+                 methods=["GET"])
+
 # Manage cron
 
-scheduler = AsyncIOScheduler()
-scheduler.add_job(collect_players.main,             'interval', args=[db],          seconds=30)
-scheduler.start()
 
+scheduler = AsyncIOScheduler()
+scheduler.add_job(collect_competitions.main, 'date', run_date=datetime.now(), args=[db])
+#scheduler.add_job(club0.main, 'date', run_date=datetime.now(), args=[db], misfire_grace_time=10)
+scheduler.add_job(collect_clubs.main,             'interval', args=[db],          seconds=30, misfire_grace_time=10 )
+scheduler.add_job(collect_competition_data.main,             'interval', args=[db],          seconds=30, misfire_grace_time=10 )
+scheduler.start()
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=config.PORT)

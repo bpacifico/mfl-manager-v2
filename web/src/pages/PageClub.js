@@ -2,12 +2,13 @@ import React, { useState,useEffect, useRef } from 'react';
 import SearchBar from 'bars/SearchBar';
 import { calculateSumOfTop11, calculateSumOfTop16, divisions } from 'utils/calculate';
 import RankingChart from 'charts/RankingChart.jsx'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import ClubTabs from 'components/ClubTabs';
 import ExportButton from 'buttons/ExportButton';
 import { CalculateOverallList } from 'utils/AllOveralls.jsx'
 import { positions, familiarity , getCalculatedOverall } from 'utils/player.js';
 import "./PageClub.css";
+import Search from 'components/Search.js'
 
 
 const PageClub: React.FC = () => {
@@ -37,6 +38,13 @@ const PageClub: React.FC = () => {
     ))}
   </div>
 );
+
+  useEffect(() => {
+    if (clubIdFromUrl !== clubId) {
+      setClubId(clubIdFromUrl); // Mise à jour de l'état clubId
+    }
+  }, [clubIdFromUrl]);
+
 
   useEffect(() => {
     if (!clubId) return;
@@ -115,23 +123,11 @@ const PageClub: React.FC = () => {
       });
   }, [clubId]);
 
-  const handleSearchChange = (event) => {
-    const newClubId = event.target.value;
-    setClubId(newClubId);
-
-    if (newClubId) {
-      navigate(`/club/${newClubId}`); // Met à jour l'URL
-    }
-  };
 
   return (
     <div className="container py-3 d-flex flex-column justify-content-center align-items-center">
       <h1>Club Info</h1>
-      <SearchBar
-        placeholder="Enter a club Id"
-        value={clubId}
-        onChange={handleSearchChange}
-      />
+      <Search mode = "clubInfo"/>
     {loading && <p>Chargement des données...</p>}
 
     {/* Afficher les erreurs */}
@@ -151,7 +147,7 @@ const PageClub: React.FC = () => {
             <h5>Owner :  <a href={`https://app.playmfl.com/fr/users/${dataClub.ownedBy.walletAddress}`} target="_blank"  rel="noopener noreferrer">{dataClub.ownedBy.name}</a></h5>
             <br/>
             <h3> {dataCompet[0].name} : {dataCompet[0].stats && dataCompet[0].stats.ranking}</h3>
-            <a href={`https://mflmanager.fr/projections.html?club=${clubId}` } target="_blank"  rel="noopener noreferrer"><p>Voir projections</p></a>
+            <Link to={`/projections/${dataCompet[0].id}?club=${clubId}`}><p>Projections</p></Link>
             <p>Best 11 : {sum}</p>
              <p> Best 11 average : {(sum / 11).toFixed(2)}</p>
              <p> Best 16 average : {(A16).toFixed(2)}</p>

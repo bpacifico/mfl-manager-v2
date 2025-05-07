@@ -1,0 +1,71 @@
+/* La table a un fond transparent pour hériter de celui du parent */
+
+/* Centrer le contenu de certaines colonnes */
+.center-column {
+    text-align: center; /* Centrer le texte */
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-color: transparent;
+  --bs-table-striped-bg: transparent;
+  --bs-table-active-color: transparent;
+  --bs-table-active-bg: transparent;
+  --bs-table-hover-color: transparent;
+  --bs-table-hover-bg: transparent;
+  width: 100%;
+  margin-bottom: 1rem;
+  color: transparent;
+  vertical-align: middle;
+
+}
+
+.club-button:hover {
+  background-color: darkblue;
+  border-radius: 20px; 
+  cursor: pointer;
+}
+
+
+tr.highlighted-row td {
+  color: black;
+  background-color: rgba(0,0,0,0.2);
+}
+
+tr.non-highlighted-row td {
+  color: white;
+}
+
+.proj-div{
+	padding : 2px;
+}
+
+.division-title{
+  margin-top: 20px;     /* Espace au-dessus du titre */
+  margin-bottom: 20px;  /* Espace en dessous */
+  font-size: 2.5rem;    /* Taille du texte */
+  font-weight: bold;    /* Optionnel : rend le texte plus épais */
+  text-align: right;   /* Optionnel : centre le titre */
+  margin-right: 20px;
+  color:black;
+}
+
+.projection-title{
+  margin-top: 20px;     /* Espace au-dessus du titre */
+  margin-bottom: 20px;  /* Espace en dessous */
+  font-size: 2.5rem;    /* Taille du texte */
+  font-weight: bold;    /* Optionnel : rend le texte plus épais */
+  text-align: left;   /* Optionnel : centre le titre */
+  color:black;
+  margin-left: 20px;
+}
+
+.unstyled-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.unstyled-link:hover {
+  text-decoration: underline; /* Ou autre effet visuel de ton choix */
+}

@@ -4,6 +4,7 @@ import Menu from "bars/Menu";
 import PageHome from "pages/PageHome";
 import Page404 from "pages/Page404";
 import PageClub from "pages/PageClub";
+import PageProjection from "pages/PageProjection";
 
 
 
@@ -34,6 +35,11 @@ const Router: React.FC = (props) => {
               element={<PageClub />}
             />
             <Route path="/club/:clubId" element={<PageClub />} />
+            <Route 
+              path="/projections" 
+              element={<PageProjection />}
+            />
+            <Route path="/projections/:competitionId" element={<PageProjection />} />
             {/* 404 */}
             <Route
               element={<Page404 />}

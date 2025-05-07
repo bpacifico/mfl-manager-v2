@@ -127,3 +127,82 @@ export const getPlayers = ({ handleSuccess = null, handleError = null, params })
   (v) => defaultHandleSuccess(handleSuccess, v),
   (e) => defaultHandleError(handleError, e),
 );
+
+export const getCompetition = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `query{ 
+  competition(${jsonToParams(params)}){id 
+  name
+  participants{
+    id
+    name
+    country
+    city
+    logoVersion
+    B11
+    B16A
+    IG11
+    playerNb
+    MMR
+  }}
+}`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);
+
+export const getClubs = ({
+    handleSuccess = null,
+    handleError = null,
+    params,
+  }) =>
+  post(
+    getGraphQLEndpoint(),
+    JSON.stringify({
+      query: `{
+        getClubs(${jsonToParams(params)}) {
+          id,
+          name,
+          division,
+          city,
+          country,
+        }
+      }`,
+    }),
+    (v) => defaultHandleSuccess(handleSuccess, v),
+    (e) => defaultHandleError(handleError, e)
+  );
+
+export const getCompetitionByClub = ({
+    handleSuccess = null,
+    handleError = null,
+    params,
+  }) =>
+  post(
+    getGraphQLEndpoint(),
+    JSON.stringify({
+      query: `{
+        competitionsByClub(${jsonToParams(params)}) {
+          id,
+        }
+      }`,
+    }),
+    (v) => defaultHandleSuccess(handleSuccess, v),
+    (e) => defaultHandleError(handleError, e)
+  );
+
+
+export const getCompetitions = ({ handleSuccess = null, handleError = null, params }) => post(
+  getGraphQLEndpoint(),
+  JSON.stringify({
+    query: `{
+      competitions(${jsonToParams(params)}) {
+        id
+        name
+      }
+    }`,
+  }),
+  (v) => defaultHandleSuccess(handleSuccess, v),
+  (e) => defaultHandleError(handleError, e),
+);

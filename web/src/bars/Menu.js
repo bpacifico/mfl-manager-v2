@@ -44,20 +44,24 @@ return (
             </Link>
           </div>
         </li>
-
+      </ul>
         {/* Autres éléments comme "Club" alignés à droite */}
-        {location.pathname !== "/club" && (
-          <li className="nav-item">
+        <div id="Menu" className="d-flex justify-content-end align-items-center">
+        {!location.pathname.startsWith("/club") && (
             <Link
               to="/club"
-              className={"nav-link px-5" + (location.pathname === "/club" ? " active" : "")}
+              className="nav-link nav-link-search d-flex align-items-center gap-2 py-2 px-3"
             >
-              <i className="bi bi-people-fill me-2"></i>
-              {getMenuLabel("Club", "d-md-inline")}
+            <i className="bi bi-building"></i> {getMenuLabel("Club", "d-md-inline")}
             </Link>
-          </li>
         )}
-      </ul>
+        { !location.pathname.startsWith("/projection") && (
+            <Link to="/projections" className="nav-link nav-link-search d-flex align-items-center gap-2 py-2 px-3">
+                <i className="bi bi-trophy"></i> {getMenuLabel("Projections", "d-md-inline")}
+            </Link>
+          )}
+        </div>
+
     </div>
   </nav>
 );

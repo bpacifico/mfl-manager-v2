@@ -1,0 +1,13 @@
+.btn {
+	background-color: #00001f;
+	border-color: darkblue;
+}
+
+.btn:hover {
+	background-color: #00004e;
+}
+
+.form-control {
+	background-color: #00001f;
+	border-color: = darkblue;
+}
