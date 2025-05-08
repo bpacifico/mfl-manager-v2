@@ -13,7 +13,8 @@ export const getApiEndpoint = () => {
 	if (isLocalEnv()) {
 		return "http://127.0.0.1:5000/";
 	}
-	return "https://api." + window.location.hostname.replace("www.", "") + "/";
+	//return "https://api." + window.location.hostname.replace("www.", "") + "/";
+	return "https://api.mflmanager.fr/";
 }
 
 export const getGraphQLEndpoint = () => {

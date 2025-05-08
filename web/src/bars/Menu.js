@@ -60,6 +60,11 @@ return (
                 <i className="bi bi-trophy"></i> {getMenuLabel("Projections", "d-md-inline")}
             </Link>
           )}
+        { !location.pathname.startsWith("/division") && (
+            <Link to="/division" className="nav-link nav-link-search d-flex align-items-center gap-2 py-2 px-3">
+                <i className="bi bi-diagram-2"></i> {getMenuLabel("Division", "d-md-inline")}
+            </Link>
+          )}
         </div>
 
     </div>
