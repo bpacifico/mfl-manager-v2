@@ -69,3 +69,72 @@ tr.non-highlighted-row td {
 .unstyled-link:hover {
   text-decoration: underline; /* Ou autre effet visuel de ton choix */
 }
+
+
+.desktop-table {
+  display: table;
+}
+
+
+
+.mobile-table {
+  display: none;
+}
+
+
+
+@media (max-width: 768px) {
+
+    .projection-title{
+      display: none;
+    }
+
+    .division-title {
+      text-align: center;
+    }
+
+    .desktop-table {
+      display: none;
+    }
+    .mobile-table {
+      display: table;
+    }
+
+
+
+  .mobile-card {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: white;
+  }
+
+  .mobile-card .club-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  .mobile-card .card-line {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+  }
+
+  .mobile-card-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-right: 0.5rem;
+  }
+
+  .mobile-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .export-button-container {
+    text-align: center;
+  }
+}

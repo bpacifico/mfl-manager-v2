@@ -41,8 +41,6 @@ db = AsyncIOMotorClient(config.DB_URL)[config.DB_CONFIG["database"]]
 mail = FastMail(ConnectionConfig(**config.MAIL_CONFIG))
 
 
-from endpoint.competitions import get_competition
-
 
 db.clubs.create_index(
     [
@@ -131,17 +129,15 @@ app.add_route("/api/generate_nonce", generate_nonce)
 app.add_route("/api/confirm_email", confirm_email)
 app.add_route("/proxy", proxy_image, methods=["GET"])
 
-app.add_api_route("/competitions/{competition_id}", 
-                 endpoint=get_competition, 
-                 methods=["GET"])
 
 # Manage cron
 
 
 scheduler = AsyncIOScheduler()
-scheduler.add_job(collect_competitions.main, 'date', run_date=datetime.now(), args=[db])
+#scheduler.add_job(collect_competitions.main, 'date', run_date=datetime.now(), args=[db])
+scheduler.add_job(collect_competitions.main, 'interval', args=[db],          days=1, misfire_grace_time=10 )
 #scheduler.add_job(club0.main, 'date', run_date=datetime.now(), args=[db], misfire_grace_time=10)
-scheduler.add_job(collect_clubs.main,             'interval', args=[db],          seconds=30, misfire_grace_time=10 )
+scheduler.add_job(collect_clubs.main,             'interval', args=[db],          seconds=60, misfire_grace_time=10 )
 scheduler.add_job(collect_competition_data.main,             'interval', args=[db],          seconds=30, misfire_grace_time=10 )
 scheduler.start()
 

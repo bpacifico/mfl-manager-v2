@@ -5,17 +5,14 @@
 
 
 #Menu .nav-link span {
-  color: #0000;
+  color: white;
   background:
     linear-gradient(white 0 0) no-repeat,
     linear-gradient(white 0 0) no-repeat;
   background-size: 0% 100%;
   -webkit-background-clip: padding-box, text;
   background-clip: padding-box, text;
-  animation:
-    in-out 2s,
-    t .3s .2s both,
-    b .3s .3s both;
+  animation: none;
   transform: rotate(-180deg);
 }
 
@@ -117,28 +114,3 @@
   color: #0dcaf0;
 }
 
-@keyframes in-out {
-  0% {
-    max-height: 0;
-  }
-
-  20% {
-    max-height: 50vh;
-  }
-
-  100% {
-    max-height: 100vh;
-  }
-}
-
-@keyframes t {
-  to {
-    background-size: 150% 100%
-  }
-}
-
-@keyframes b {
-  to {
-    background-position: -200% 0, 0 0
-  }
-}

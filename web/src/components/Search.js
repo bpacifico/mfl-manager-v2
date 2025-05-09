@@ -132,7 +132,6 @@ const Search: React.FC < SearchProps > = ( model ) => {
       });
     });
   };
-  console.log(mode);
   const fetchCompetitionsByClub = (clubId) => {
   return new Promise((resolve, reject) => {
     getCompetitionByClub({

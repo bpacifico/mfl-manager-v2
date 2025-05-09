@@ -73,7 +73,6 @@ const PageClub: React.FC = () => {
           setData(data);
 
           const calculated = CalculateOverallList(data, positions);
-          console.log(calculated);
           setAllOveralls(calculated);
         } else {
           setError("La liste récupérée n'est pas valide.");
@@ -128,7 +127,7 @@ const PageClub: React.FC = () => {
     <div className="container py-3 d-flex flex-column justify-content-center align-items-center">
       <h1>Club Info</h1>
       <Search mode = "clubInfo"/>
-    {loading && <p>Chargement des données...</p>}
+    {loading && <p>Loading data...</p>}
 
     {/* Afficher les erreurs */}
     {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -147,7 +146,7 @@ const PageClub: React.FC = () => {
             <h5>Owner :  <a href={`https://app.playmfl.com/fr/users/${dataClub.ownedBy.walletAddress}`} target="_blank"  rel="noopener noreferrer">{dataClub.ownedBy.name}</a></h5>
             <br/>
             <h3> {dataCompet[0].name} : {dataCompet[0].stats && dataCompet[0].stats.ranking}</h3>
-            <Link to={`/projections/${dataCompet[0].id}?club=${clubId}`}><p>Projections</p></Link>
+            <Link to={`/projections/${dataCompet[0].id}?clubId=${clubId}`}><p>Projections</p></Link>
             <p>Best 11 : {sum}</p>
              <p> Best 11 average : {(sum / 11).toFixed(2)}</p>
              <p> Best 16 average : {(A16).toFixed(2)}</p>

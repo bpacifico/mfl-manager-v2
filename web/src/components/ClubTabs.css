@@ -36,3 +36,15 @@
   height: 80%;  
              /* Un peu d'espace à l'intérieur */
 }
+
+@media (max-width: 768px) {
+  .position-depth {
+    font-size: 0.7rem;
+    padding: 4px !important;
+  }
+
+  .position-depth li {
+    font-size: 0.65rem;
+    padding: 3px;
+  }
+}

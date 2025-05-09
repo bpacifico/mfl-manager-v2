@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useSearchParams  } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate  } from 'react-router-dom';
 import "./PageProjection.css";
 import { getCompetition } from 'services/api-manager.js';
 import ProjectionTable from 'components/ProjectionTable';
@@ -9,9 +9,11 @@ const PageProjection: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { clubId: clubIdFromUrl } = useParams();
   const { competitionId: competitionIdFromUrl } = useParams();
-  const [clubId, setClubId] = useState(competitionIdFromUrl || "");
+  const [clubId, setClubId] = useState("");
   const [competitionId, setCompetitionId] = useState(competitionIdFromUrl || "");
   const [competition, setCompetition] = useState(null);
+  const navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -27,17 +29,23 @@ const PageProjection: React.FC = () => {
     }
   }, [searchParams, clubId]);
 
+  const goToCompetition = (offset) => {
+    const currentId = parseInt(competitionId || "0", 10);
+    if (!isNaN(currentId)) {
+      navigate(`/projections/${currentId + offset}`);
+    }  };
+
+
   const fetchCompetition = () => {
     const id = parseInt(competitionId, 10);
     if (isNaN(id)) {
       console.error("Invalid competition ID:", competitionId);
       return;
-    }
+    };
 
 
     getCompetition({
       handleSuccess: (d) => {
-        console.log("Réponse compétition:", d);
         if (d.data.competition) {
           setCompetition(d.data.competition);
         }
@@ -59,6 +67,16 @@ const PageProjection: React.FC = () => {
       <h1>Projections</h1>
     </div>
       <Search mode="projection"/>
+        {competitionId && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+        <button onClick={() => goToCompetition(-1)} className="btn btn-secondary">
+          Previous
+        </button>
+        <button onClick={() => goToCompetition(1)} className="btn btn-primary">
+          Next
+        </button>
+      </div>
+        )}
       { competitionId && competition && (
               <ProjectionTable competition={competition} clubId={clubId} />
       )}

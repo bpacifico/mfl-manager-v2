@@ -262,11 +262,17 @@ class Query(ObjectType):
     competitions_by_club = List(CompetitionType, club_id=Int(required=True),type=String(), status=String())
 
     async def resolve_competitions_by_club(parent, info, club_id, type = None, status = None):
+        filters = {
+        "participants._id": club_id
+    }
+        if status:
+            filters["status"] = status
+        if type:
+            filters["type"] = type
+
         db = info.context["db"]
         # On cherche les compétitions où l'un des participants a cet _id
-        competitions = await db.competitions.find({
-            "participants._id": club_id
-        }).to_list(None)
+        competitions = await db.competitions.find(filters).to_list(None)
         return competitions
 
 

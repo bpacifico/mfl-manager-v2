@@ -123,7 +123,7 @@ const ProjectionTable = ({ competition,clubId }) => {
       </div>
       <div style={{ backgroundColor: "rgba(0, 0, 0, 0.8)"}} >
       
-      <table className="table "
+      <table className="table desktop-table"
               style={{ borderColor: divisionColor }}>
         <thead>
           <tr>
@@ -177,6 +177,55 @@ const ProjectionTable = ({ competition,clubId }) => {
           ))}
         </tbody>
       </table>
+      {/*Mobile table */}
+      <table className="table mobile-table"
+              style={{ borderColor: divisionColor }}>
+        <thead>
+          <tr>
+            <th style={{color:"#ffffff", verticalAlign: "middle"}} className="center-column table-cell" >#</th>
+            <th className="center-column"></th>
+            <th style={{color:"#ffffff", verticalAlign: "middle"} }>Nom</th>
+            <th>  <select
+              id="sortMetric"
+              className="form-select mt-1"
+              value={sortColumn}
+              onChange={(e) => setSortColumn(e.target.value)}
+            >
+              <option value="MMR">MMR</option>
+              <option value="B11">Best 11</option>
+              <option value="B16A">Best 16 Avg</option>
+              <option value="IG11">In-Game 11</option>
+            </select>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedParticipants.map((p, index) => (
+            <tr
+                key={p.id} 
+                className={Number(p.id) === Number(clubId) ? "highlighted-row" : "non-highlighted-row"}
+                style={Number(p.id) === Number(clubId) ? { backgroundColor: divisionColor} : {}}
+              >
+              <td className="center-column table-cell">{index + 1}</td>
+              <td className="center-column" >
+                <img
+                  src={`https://d13e14gtps4iwl.cloudfront.net/u/clubs/${p.id}/logo.png?v=${p.logoVersion}`}
+                  alt="Logo"
+                  style={{ width: '40px', height: '40px', objectFit: 'contain' }}
+                  className="responsive-logo img-fluid"
+                />
+              </td>
+              <td style={{"font-weight": "bold" }}><Link to={`/club/${p.id}`} className="unstyled-link">{p.name}</Link></td>
+              <td className="center-column">
+              {sortColumn === 'B11'
+                  ? p.B11
+                  : renderB11WithColor((p[sortColumn] / 100).toFixed(2))}
+                  </td>
+                            </tr>
+          ))}
+        </tbody>
+      </table>
+
       <p style={{"margin-left": "20px", "padding-bottom":"5px", "margin-bottom":"15px"}}>{labelDetails}</p>
     </div>
     </div>
