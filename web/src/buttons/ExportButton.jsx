@@ -1,10 +1,14 @@
 import React from "react";
 import html2canvas from "html2canvas";
 import "./ExportButton.css";
+import { useState } from "react";
 
 
 const ExportButton = ({ targetRef, fileName = "exported-image.png" }) => {
+    const [isProcessing, setIsProcessing] = useState(false);
+
     const handleExport = async () => {
+        setIsProcessing(true);
         if (targetRef.current) {
             const target = targetRef.current;
             const proxyUrl = "http://localhost:5000/proxy?url=";
@@ -32,7 +36,7 @@ const ExportButton = ({ targetRef, fileName = "exported-image.png" }) => {
                     } catch (error) {
                         console.error("Erreur dans la récupération de l'image depuis le proxy :", error);
                     }
-                }
+                } 
             });
 
             // Attendre que toutes les images soient récupérées et remplacées par le proxy
@@ -65,10 +69,11 @@ const ExportButton = ({ targetRef, fileName = "exported-image.png" }) => {
             link.href = image;
             link.download = fileName;
             link.click();
+            setIsProcessing(false);
         }
     };
 
-    return <button className="py-2 transparent-button export-button" onClick={handleExport}>Download</button>;
+    return <button className="py-2 transparent-button export-button" onClick={handleExport}>{isProcessing ? "Processing..." : "Download"}</button>;
 };
 
 export default ExportButton;
