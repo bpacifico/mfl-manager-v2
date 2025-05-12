@@ -11,7 +11,7 @@ const ExportButton = ({ targetRef, fileName = "exported-image.png" }) => {
         setIsProcessing(true);
         if (targetRef.current) {
             const target = targetRef.current;
-            const proxyUrl = "http://mflmanager.fr/proxy?url=";
+            const proxyUrl = "http://api.mflmanager.fr/proxy?url=";
 
             // Sélectionner toutes les images dans l'élément à exporter
             const images = target.querySelectorAll("img");
