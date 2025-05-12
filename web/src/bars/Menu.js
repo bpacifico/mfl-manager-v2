@@ -52,17 +52,17 @@ return (
               to="/club"
               className="nav-link nav-link-search d-flex align-items-center gap-2 py-2 px-3"
             >
-            <i className="bi bi-building"></i> {getMenuLabel("Club", "d-md-inline")}
+            <i className="bi bi-building"></i> <span className="d-none d-md-inline">{getMenuLabel("Club", "d-md-inline")}</span>
             </Link>
         )}
         { !location.pathname.startsWith("/projection") && (
             <Link to="/projections" className="nav-link nav-link-search d-flex align-items-center gap-2 py-2 px-3">
-                <i className="bi bi-trophy"></i> {getMenuLabel("Projections", "d-md-inline")}
+                <i className="bi bi-trophy"></i> <span className="d-none d-md-inline">{getMenuLabel("Projections", "d-md-inline")}</span>
             </Link>
           )}
         { !location.pathname.startsWith("/division") && (
             <Link to="/division" className="nav-link nav-link-search d-flex align-items-center gap-2 py-2 px-3">
-                <i className="bi bi-diagram-2"></i> {getMenuLabel("Division", "d-md-inline")}
+                <i className="bi bi-diagram-2"></i> <span className="d-none d-md-inline">{getMenuLabel("Division", "d-md-inline")}</span>
             </Link>
           )}
         </div>
