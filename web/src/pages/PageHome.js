@@ -2,6 +2,7 @@ import React from 'react';
 import "./PageHome.css";
 import Search from 'components/Search.js'
 
+
 const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
   return (
     <div id="PageHome">
@@ -18,6 +19,16 @@ const PageHome: React.FC < PageHomeProps > = ({ yScrollPosition }) => {
         />
           Découvrir MFL
         </button>
+      </div>
+
+      <div className="py-4" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <a
+          href="https://www.buymeacoffee.com/mflmanager"
+          target="_blank"
+          style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        >
+          <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a beer&emoji=🍺&slug=mflmanager&button_colour=00001f&font_colour=FFFFFF&font_family=Bree&outline_colour=000000&coffee_colour=FFDD00" style={{ display: "block" }}/>
+        </a>
       </div>
 
     <footer className="footer bg-black d-none d-md-block text-white text-center py-3 mt-auto">

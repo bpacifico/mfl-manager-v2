@@ -17,9 +17,9 @@ function convertRanking(num) {
 
 const RankingChart = ({ data }) => {
   // Classement des divisions, inversé pour que le rang 1 soit le plus élevé
-  const rankingOrder = ["Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron", "Stone", "Ice"];
-  const divColorS = ["","#0081B8", "#A2F0E2", "#D4AF37", "#949FA6", "#9D7845", "#66615C", "#EBE2C4", "#9CB2BE"];
-  const seasonName = ["","","1","2","3","4"];
+  const rankingOrder = ["Diamond", "Platinum", "Gold", "Silver", "Bronze", "Iron", "Stone", "Ice","Spark"];
+  const divColorS = ["","#0081B8", "#A2F0E2", "#D4AF37", "#949FA6", "#9D7845", "#66615C", "#EBE2C4", "#9CB2BE","#FFB136"];
+
 
   const getDivisionIndex = (division) => {
     const index = rankingOrder.indexOf(division);
@@ -90,7 +90,7 @@ const RankingChart = ({ data }) => {
   
   // Mise à jour des données du graphique
   const chartData = {
-    labels: seasons.map((seasonId) => seasonName[seasonId] || seasonId), // Labels mis à jour pour ne garder que les saisons valides
+    labels: validSeasons.map((seasonId) => seasonId-10), // Labels mis à jour pour ne garder que les saisons valides
     datasets: datasets.map(dataset => ({
       ...dataset,
       data: dataset.data.filter((_, seasonIndex) =>
@@ -103,7 +103,7 @@ const options = {
   responsive: true,
   plugins: {
     legend: { display: false },
-    title: { display: true, text: 'Classements passés', color: 'white' },
+    title: { display: true, text: 'Previous rankings', color: 'white' },
     tooltip: {
       enabled: true,  // S'assurer que les tooltips sont activés
       callbacks: {
@@ -158,7 +158,7 @@ const options = {
     },
     x: {
       title: { display: true, text: 'Seasons', color: "white" },
-      max : validSeasons.length-1,
+      max : validSeasons.length,
       ticks: {
         max : 1,
         color: 'white',
