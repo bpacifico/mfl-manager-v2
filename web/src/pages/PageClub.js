@@ -145,8 +145,8 @@ const PageClub: React.FC = () => {
             <p><img src="/images/icones/stadium.svg" alt="Stade" width={20} height={20} /> {dataClub.stadium}</p>
             <h5>Owner :  <a href={`https://app.playmfl.com/fr/users/${dataClub.ownedBy.walletAddress}`} target="_blank"  rel="noopener noreferrer">{dataClub.ownedBy.name}</a></h5>
             <br/>
-            <h3> {dataCompet[0].name} : {dataCompet[0].stats && dataCompet[0].stats.ranking}</h3>
-            <Link to={`/projections/${dataCompet[0].id}?clubId=${clubId}`}><p>Projections</p></Link>
+            {dataCompet.length >0 && (<h3> {dataCompet?.[0]?.name} : {dataCompet?.[0]?.stats?.ranking}</h3>)}
+            {dataCompet.length >0 && (<Link to={`/projections/${dataCompet[0].id}?clubId=${clubId}`}><p>Projections</p></Link>)}
             <p>Best 11 : {sum}</p>
              <p> Best 11 average : {(sum / 11).toFixed(2)}</p>
              <p> Best 16 average : {(A16).toFixed(2)}</p>
