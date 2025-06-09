@@ -60,7 +60,7 @@ const ProjectionTable = ({ competition,clubId }) => {
     case 'B11':
       return 'The Best 11 is given by the overalls of of 11 players under contract regarding only their primary position.';
     case 'B16A':
-      return 'The Best 16 Average is given by the mean of the overalls of of 11 players under contract regarding only their primary position.';
+      return 'The Best 16 Average is given by the mean of the overalls of 11 players under contract regarding only their primary position.';
     case 'IG11':
       return 'The Best In-Game 11 is (roughly) the best possible 11 aligned on the pitch, without captain.';
     case 'MMR':

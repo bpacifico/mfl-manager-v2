@@ -135,7 +135,7 @@ class Query(ObjectType):
 
     competitions = List(
     CompetitionType,
-    status=String(),
+    status=List(String),
     type=String(),
     search=String(),
     skip=Int(),
@@ -152,7 +152,7 @@ class Query(ObjectType):
 
         filters = {}
         if status:
-            filters["status"] = status
+            filters["status"] = {"$in": status}
         if type:
             filters["type"] = type
 
@@ -259,14 +259,14 @@ class Query(ObjectType):
         return clubs
 
 
-    competitions_by_club = List(CompetitionType, club_id=Int(required=True),type=String(), status=String())
+    competitions_by_club = List(CompetitionType, club_id=Int(required=True),type=String(), status=List(String))
 
     async def resolve_competitions_by_club(parent, info, club_id, type = None, status = None):
         filters = {
         "participants._id": club_id
     }
         if status:
-            filters["status"] = status
+            filters["status"] = {"$in": status}
         if type:
             filters["type"] = type
 

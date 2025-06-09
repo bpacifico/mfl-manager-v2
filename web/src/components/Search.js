@@ -128,7 +128,7 @@ const Search: React.FC < SearchProps > = ( model ) => {
           console.error(e);
           reject(e);
         },
-        params: { search: searchValue, limit: 10, skip: competitionPage * 10, status:"LIVE",type: 'LEAGUE' },
+        params: { search: searchValue, limit: 10, skip: competitionPage * 10, status:["LIVE", "PLANNED"],type: 'LEAGUE' },
       });
     });
   };
@@ -139,6 +139,7 @@ const Search: React.FC < SearchProps > = ( model ) => {
         // Tu peux adapter ce bloc pour stocker les résultats comme tu le souhaites
         setClubCompetition(d.data.competitionsByClub);
         resolve(d.data.competitionsByClub);
+        console.log(d)
       },
       handleError: (e) => {
         console.error(e);
@@ -147,7 +148,7 @@ const Search: React.FC < SearchProps > = ( model ) => {
       params: {
         clubId: clubId,
         type: 'LEAGUE',
-        status: 'LIVE',
+        status: ["LIVE", "PLANNED"],
       },
     });
   });
@@ -176,7 +177,10 @@ const Search: React.FC < SearchProps > = ( model ) => {
 
   useEffect(() => {
     if (clubCompetition && clubCompetition.length > 0 && clubId) {
-      navigate("/projections/" + clubCompetition[0].id + "?clubId=" + clubId, "_blank");
+      const maxCompetition = clubCompetition.reduce((max, current) =>
+        Number(current.id) > Number(max.id) ? current : max
+      );
+      navigate("/projections/" + maxCompetition.id + "?clubId=" + clubId, "_blank");
     }
   }, [clubCompetition]);
 
