@@ -58,8 +58,6 @@ db.clubs.create_index(
 # Setup GraphQL
 
 def get_context_value(request: Request) -> dict:
-    print("Vérification du contexte GraphQL")
-    print("Base de données active ?", db is not None)
     return {
         "request": request,
         "mail": mail,

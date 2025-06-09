@@ -30,21 +30,24 @@ async def main(db):
 
                 clubs=[]
                 user = None
-                if "schedule" in competition :
-                    for group in competition['schedule']['stages'][0]['groups'] :
-                        for member in group['members'] : 
-                            club = await db.clubs.find_one({"_id":member['clubId']})
-                            if club : 
-                                clubs.append(club)
-                            else : 
-                                new_club = {
-                                        "_id": member['clubId']
-                                    } 
+                try :
+                    if "schedule" in competition :
+                        for group in competition['schedule']['stages'][0]['groups'] :
+                            for member in group['members'] : 
+                                club = await db.clubs.find_one({"_id":member['clubId']})
+                                if club : 
+                                    clubs.append(club)
+                                else : 
+                                    new_club = {
+                                            "_id": member['clubId']
+                                        } 
 
-                                club = await   build_and_upsert_club(db,new_club,user)
-                                
+                                    club = await   build_and_upsert_club(db,new_club,user)
+                                    
 
-                                clubs.append(new_club)
+                                    clubs.append(new_club)
+                except Exception as e :
+                    logger.critical(f"error fetching competition : {e}")
 
                 competition['participants'] = clubs
 
