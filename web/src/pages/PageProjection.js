@@ -77,8 +77,12 @@ const PageProjection: React.FC = () => {
         </button>
       </div>
         )}
+
       { competitionId && competition && (
+              <div className="container">
+              <h1 className="text-end">{competition.seasonName}</h1>
               <ProjectionTable competition={competition} clubId={clubId} />
+              </div>
       )}
     </div>
   );

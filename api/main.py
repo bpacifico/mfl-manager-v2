@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
 from graph.mutation import Mutation
 import config
-from cron import collect_players, collect_competitions, collect_competition_data, collect_clubs#, club0
+from cron import collect_players, collect_competitions, collect_competition_data, collect_clubs, update_competitions#, club0
 from endpoint.generate_nonce import generate_nonce
 from utils.jwt import create_access_token
 from utils.cookie import set_cookie
@@ -134,7 +134,7 @@ app.add_route("/proxy", proxy_image, methods=["GET"])
 
 
 scheduler = AsyncIOScheduler()
-#scheduler.add_job(collect_competitions.main, 'date', run_date=datetime.now(), args=[db])
+scheduler.add_job(update_competitions.main, 'date', run_date=datetime.now(), args=[db])
 scheduler.add_job(collect_competitions.main, 'interval', args=[db],          days=1, misfire_grace_time=10 )
 #scheduler.add_job(club0.main, 'date', run_date=datetime.now(), args=[db], misfire_grace_time=10)
 scheduler.add_job(collect_clubs.main,             'interval', args=[db],          seconds=60, misfire_grace_time=10 )

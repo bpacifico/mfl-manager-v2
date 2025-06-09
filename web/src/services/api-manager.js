@@ -134,6 +134,7 @@ export const getCompetition = ({ handleSuccess = null, handleError = null, param
     query: `query{ 
   competition(${jsonToParams(params)}){id 
   name
+  seasonName
   participants{
     id
     name
@@ -203,6 +204,7 @@ export const getCompetitions = ({ handleSuccess = null, handleError = null, para
       competitions(${jsonToParams(params)}) {
         id
         name
+        seasonName
       }
     }`,
   }),
