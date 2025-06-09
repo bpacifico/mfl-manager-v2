@@ -72,7 +72,7 @@ async def main(db):
 
 		else : 
 				### initialize the list of competitions to fetch 
-				live_competitions_cursor = db.competitions.find({"status": "LIVE"}, 
+				live_competitions_cursor = db.competitions.find({"status": {"$in": ["LIVE", "PLANNED"]}}, 
 					{"_id": 1,"participants":1}
 					)
 				clubs_id = []
@@ -81,17 +81,19 @@ async def main(db):
 						for participant in comp['participants'] :
 							if "_id" in participant :				
 								clubs_id.append(participant["_id"])
+				clubs_id= sorted(set(clubs_id), reverse=True)
 				await upsert_vars(db, club_id_list_var, clubs_id)
 
 	else : 
 		### initialize the list of competitions to fetch 
-		live_competitions_cursor = db.competitions.find({"status": "LIVE"}, {"_id": 1})
+		live_competitions_cursor = db.competitions.find({"status": {"$in": ["LIVE", "PLANNED"]}}, {"_id": 1})
 		clubs_id = []
 		async for comp in live_competitions_cursor : 
 			if "participants" in comp :
 				for participant in comp['participants'] :
 					if "_id" in participant :				
 						clubs_id.append(participant["_id"])
+		clubs_id= sorted(set(clubs_id), reverse=True)
 		await upsert_vars(db, club_id_list_var, clubs_id)
 
 	return 0
