@@ -16,12 +16,12 @@ logger.setLevel(logging.INFO)
 
 
 async def main(db):
-	club_id_list = await get_var_value(db, club_id_list_var)
+	club_id_list = ran
 
 	if club_id_list is not None :
 		if club_id_list != [] :
 
-			club_ids_to_fetch = club_id_list[:max_clubs_to_update]
+			club_ids_to_fetch = list(range(8700))
 			await upsert_vars(db, club_id_list_var, club_id_list[max_clubs_to_update:])
 
 			for i in club_ids_to_fetch:
