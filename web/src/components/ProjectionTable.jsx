@@ -6,8 +6,8 @@ import ExportButton from 'buttons/ExportButton';
 const ProjectionTable = ({ competition,clubId }) => {
   const [sortOrder, setSortOrder] = useState('desc');
   const [sortColumn, setSortColumn] = useState('MMR');
-  const divColors = {"Diamond":"#0081B8","Platinum":"#A2F0E2","Gold":"#D4AF37","Silver":"#949FA6","Bronze":"#9D7845","Iron":"#66615C","Stone":"#EBE2C4","Ice":"#9CB2BE", "Spark":"#FFB136"};
-  const divAntiColors = {"Diamond":"#0081B8","Platinum":"#A2F0E2","Gold":"#D4AF37","Silver":"#949FA6","Bronze":"#9D7845","Iron":"#66615C","Stone":"#EBE2C4","Ice":"#00004e", "Spark":"#FFB136"};
+  const divColors = {"Diamond":"#0081B8","Platinum":"#A2F0E2","Gold":"#D4AF37","Silver":"#949FA6","Bronze":"#9D7845","Iron":"#66615C","Stone":"#EBE2C4","Ice":"#9CB2BE", "Spark":"#FFB136", "Flint":"#757061"};
+  const divAntiColors = {"Diamond":"#0081B8","Platinum":"#A2F0E2","Gold":"#D4AF37","Silver":"#949FA6","Bronze":"#9D7845","Iron":"#66615C","Stone":"#EBE2C4","Ice":"#00004e", "Spark":"#FFB136", "Flint":"#757061"};
   const division = competition.name.split(" ")[0];
   const divisionColor = divColors[division];
   const divisionAntiColor = divAntiColors[division];

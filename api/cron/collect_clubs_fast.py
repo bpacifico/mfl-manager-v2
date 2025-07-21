@@ -15,9 +15,8 @@ logger.setLevel(logging.INFO)
 
 async def main(db):
 
-	club_ids_to_fetch = list(range(8700))
-	
-	for i in club_ids_to_fetch:
+	i= 1 
+	while i < 7900
 		response = requests.get(url=base_url + str(i))
 		logger.critical(f"collect_clubs: Response status: {response.status_code} with id {i}")
 
@@ -51,14 +50,7 @@ async def main(db):
 						logging.critical(e)
 			club = await build_and_upsert_club(db, data, user)
 
+		i+=1
 
-		if response.status_code == 404:
-			if not added_clubs:
-				club_ids_to_fetch.append(club_ids_to_fetch[-1] + 1)
-				added_clubs = True
-
-			if added_clubs and club_ids_to_fetch[-1] == i:
-				reset_var = True
-				break
 
 	return 0
