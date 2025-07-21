@@ -16,10 +16,6 @@ logger.setLevel(logging.INFO)
 
 
 async def main(db):
-	club_id_list = ran
-
-	if club_id_list is not None :
-		if club_id_list != [] :
 
 			club_ids_to_fetch = list(range(8700))
 			await upsert_vars(db, club_id_list_var, club_id_list[max_clubs_to_update:])
@@ -67,33 +63,5 @@ async def main(db):
 					if added_clubs and club_ids_to_fetch[-1] == i:
 						reset_var = True
 						break
-
-			
-
-		else : 
-				### initialize the list of competitions to fetch 
-				live_competitions_cursor = db.competitions.find({"status": {"$in": ["LIVE", "PLANNED"]}}, 
-					{"_id": 1,"participants":1}
-					)
-				clubs_id = []
-				async for comp in live_competitions_cursor : 
-					if "participants" in comp :
-						for participant in comp['participants'] :
-							if "_id" in participant :				
-								clubs_id.append(participant["_id"])
-				clubs_id= sorted(set(clubs_id), reverse=True)
-				await upsert_vars(db, club_id_list_var, clubs_id)
-
-	else : 
-		### initialize the list of competitions to fetch 
-		live_competitions_cursor = db.competitions.find({"status": {"$in": ["LIVE", "PLANNED"]}}, {"_id": 1})
-		clubs_id = []
-		async for comp in live_competitions_cursor : 
-			if "participants" in comp :
-				for participant in comp['participants'] :
-					if "_id" in participant :				
-						clubs_id.append(participant["_id"])
-		clubs_id= sorted(set(clubs_id), reverse=True)
-		await upsert_vars(db, club_id_list_var, clubs_id)
 
 	return 0
