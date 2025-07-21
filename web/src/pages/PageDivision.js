@@ -13,7 +13,8 @@ const PageDivision: React.FC = () => {
   { name: 'Silver', value: 4, color: '#949FA6' },{ name: 'Bronze', value: 5, color: '#9D7845' },{ name: 'Iron', value: 6, color: '#66615C' },
   { name: 'Stone', value: 7, color: '#EBE2C4' },
     { name: 'Ice', value: 8, color: '#9CB2BE' },
-  { name: 'Spark', value: 9, color: '#FFB136' }, 
+  { name: 'Spark', value: 9, color: '#FFB136' },
+  { name: 'Flint', value: 10, color: '#cacccb'} 
 ];
 
 
