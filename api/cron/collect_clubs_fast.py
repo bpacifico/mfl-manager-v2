@@ -16,7 +16,7 @@ logger.setLevel(logging.INFO)
 async def main(db):
 
 	i= 1 
-	while i < 7900
+	while i < 7900 :
 		response = requests.get(url=base_url + str(i))
 		logger.critical(f"collect_clubs: Response status: {response.status_code} with id {i}")
 
