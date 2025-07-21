@@ -7,9 +7,7 @@ from utils.compute_ratings import compute_B11, compute_B16, compute_formations
 from utils.player import positions, formations
 
 base_url = "https://z519wdyajg.execute-api.us-east-1.amazonaws.com/prod/clubs/"
-max_clubs_to_update = 15000
 
-club_id_list_var = "club_id_list"
 
 logger = logging.getLogger("collect_clubs")
 logger.setLevel(logging.INFO)
@@ -18,8 +16,7 @@ logger.setLevel(logging.INFO)
 async def main(db):
 
 	club_ids_to_fetch = list(range(8700))
-	await upsert_vars(db, club_id_list_var, club_id_list[max_clubs_to_update:])
-
+	
 	for i in club_ids_to_fetch:
 		response = requests.get(url=base_url + str(i))
 		logger.critical(f"collect_clubs: Response status: {response.status_code} with id {i}")
