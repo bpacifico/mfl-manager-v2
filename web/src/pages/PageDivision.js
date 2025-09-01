@@ -41,7 +41,12 @@ const PageDivision: React.FC = () => {
     fetchClubs();
   }, [division]);
 
-  const sortedClubs = clubs ? [...clubs].sort((a, b) => b.MMR - a.MMR) : [];
+  const sortedClubs = clubs
+  ? [...clubs]
+      .filter(club => club.MMR > 0)   // garde seulement les clubs avec MMR positif
+      .sort((a, b) => b.MMR - a.MMR)  // puis trie du plus grand au plus petit
+  : [];
+
   const quartileValues = clubs ? {
     top1: sortedClubs[0],
     q25: sortedClubs[Math.floor(sortedClubs.length * 0.25)]?.MMR,
@@ -70,7 +75,7 @@ const PageDivision: React.FC = () => {
     <div className="transparent-box py-3 ">
     <div className="col-md-12 mx-auto d-flex flex-column justify-content-center align-items-center">
     <h2> Division {currentDivision.name}</h2>
-    { sortedClubs && (<h3> {sortedClubs.length}/{12*2**(division-1)} clubs</h3>)}
+    { sortedClubs && clubs && (<h4> {sortedClubs.length}/{clubs.length} clubs in database with MMR</h4>)}
     <div className="row w-100 justify-content-center">
     <div className="col-md-6 d-flex flex-column align-items-center">
     {clubs && currentDivision && (<div className='chart-container'>
