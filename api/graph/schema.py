@@ -45,7 +45,7 @@ class ClubType(ObjectType):
     )
 
     def resolve_history(self, info, start_date=None, end_date=None):
-        snapshots = self.history or []
+        snapshots = self.get("history", [])  # <-- ici on utilise .get()
         if start_date or end_date:
             filtered = []
             for snap in snapshots:
@@ -56,6 +56,7 @@ class ClubType(ObjectType):
                 filtered.append(snap)
             return filtered
         return snapshots
+
 
 
 
