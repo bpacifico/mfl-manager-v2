@@ -9,7 +9,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from graph.query import Query
 from graph.mutation import Mutation
 import config
-from cron import collect_players, collect_competitions, collect_competition_data, collect_clubs, update_competitions#,  collect_clubs_fast #, update_competitions #, club0, remove_club_list,
+from cron import collect_players, collect_competitions, collect_competition_data, collect_clubs, snapshot_clubs, update_competitions_rankings
+#update_competitions#,  collect_clubs_fast #, update_competitions #, club0, remove_club_list,
 from endpoint.generate_nonce import generate_nonce
 from utils.jwt import create_access_token
 from utils.cookie import set_cookie
@@ -134,13 +135,33 @@ app.add_route("/proxy", proxy_image, methods=["GET"])
 
 
 scheduler = AsyncIOScheduler()
+
+####update pré saison
+
 #scheduler.add_job(remove_club_list.main, 'date', run_date=datetime.now(), args=[db])
 #scheduler.add_job(collect_clubs_fast.main, 'date', run_date=datetime.now(), args=[db])
-scheduler.add_job(update_competitions.main, 'date', run_date=datetime.now(), args=[db], misfire_grace_time=10)
+#scheduler.add_job(update_competitions.main, 'date', run_date=datetime.now(), args=[db], misfire_grace_time=10)
+
+#scheduled
+scheduler.add_job(snapshot_clubs.main,   'cron',
+    hour=23,
+    minute=25,
+    args=[db],
+    misfire_grace_time=60
+)
+scheduler.add_job(update_competitions_rankings.main,   'cron',
+    hour=23,
+    minute=31,
+    args=[db],
+    misfire_grace_time=60
+)
+
+#interval
 scheduler.add_job(collect_competitions.main, 'interval', args=[db],          days=1, misfire_grace_time=10 )
 #scheduler.add_job(club0.main, 'date', run_date=datetime.now(), args=[db], misfire_grace_time=10)
 scheduler.add_job(collect_clubs.main,             'interval', args=[db],          seconds=60, misfire_grace_time=10 )
 scheduler.add_job(collect_competition_data.main,             'interval', args=[db],          seconds=30, misfire_grace_time=10 )
+
 scheduler.start()
 
 if __name__ == "__main__":
